@@ -18,13 +18,16 @@
 ;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+(stufe-load-file "menu.el")
+
+
+
 ;; *************************************************
 ;; * 
 ;; * Function to access easily to a cvs repository
 ;; *
 ;; *************************************************
-
-
 
 
 (defun stufe-cvs-commit (description)
@@ -70,6 +73,12 @@
 			       (format "cd %s; " stufe-working-folder)
 			     ""))
 			 options)))
+
+
+
+
+
+
 
 
 

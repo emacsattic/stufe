@@ -224,7 +224,11 @@
 		       "Set working folder..." 
 		       'stufe-interactive-set-working-folder)
 
+
 (global-set-key [(control shift r)] 'stufe-interactive-set-working-folder)
+
+
+(stufe-load-file "stufe.el")
 
 
 ;; *************************************************
