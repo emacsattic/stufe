@@ -20,12 +20,12 @@
 
 ;; *************************************************
 ;; * 
-;; * Template for c/c++ project
+;; * Template for c++ project
 ;; *
 ;; *************************************************
 
 
-;; Template to create a C project makefile
+;; Template to create a c++ project makefile
 (stufe-register-template 
  '("cpp-makefile"
    (["Name of the project" "%project-name%"]
@@ -33,13 +33,6 @@
    "cpp_makefile.model"
    (model-from-file)))
 
-;; Template to create a C++ project makefile
-(stufe-register-template 
- '("c-makefile"
-   (["Name of the project" "%project-name%"]
-    ["Options for shared object project" "%shared-object-options%"])
-   "c_makefile.model"
-   (model-from-file)))
 
 ;; Template to create a c/c++ shared object makefile options 
 (stufe-register-template
@@ -77,19 +70,6 @@
     ["Author" "%Author%" (function . (lambda (argument)
 				       (user-full-name)))])
    "cpp_class_cpp.model"
-   (model-from-file)))
-
-
-;; Template to create a new module file
-(stufe-register-template 
- '("c-module-h" 
-   (["Name of the module" "%ModuleName%"])
-   "c_module_h.model"
-   (model-from-file)))
-(stufe-register-template 
- '("c-module-c" 
-   (["Name of the module" "%ModuleName%"])
-   "c_module_c.model"
    (model-from-file)))
 
 

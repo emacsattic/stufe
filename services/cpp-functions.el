@@ -190,52 +190,62 @@ declaration"
        (string-match  ")" member-declaration)))
 
 
+(defun stufe-exist-body-file (header-file)
+  (let ((file-extension (file-name-extension header-file))
+	(search-body-file (lambda (extension)
+			    (or (file-exists-p 
+				 (concat (get-file-name header-file) extension))
+				(get-file-buffer
+				 (concat (get-file-name header-file) extension))))))
+    (cond 
+     ((string= file-extension "hpp") (funcall search-body-file ".cpp"))
+     ((string= file-extension "h") (or (funcall search-body-file ".c")
+				       (funcall search-body-file ".cpp"))))))
+
+
+(defun stufe-goto-print-area (searched-element)
+  (goto-char (point-max))
+  (let ((case-fold-search-old case-fold-search))
+    (setq case-fold-search nil)
+    (search-backward (format "//) %s" searched-element))
+    (setq case-fold-search case-fold-search-old))
+  (backward-char 1))
+  
+
 (defun stufe-create-new-cpp-function (function-declaration)
   "Create a new cpp function in C/CPP code"
-  (if (string= (file-name-extension (buffer-name)) "hpp")
-      (progn
-	(stufe-string-to-current-buffer
-	 (stufe-apply-args-on-template "cpp-class-member-declaration"
-					 (list function-declaration
-					       (stufe-make-arguments-documentation
-						function-declaration)
-					       (stufe-make-return-value-documentation
-						function-declaration)))
-	 't)
-	(if (and 
-	     (or (file-exists-p 
-		  (concat (get-file-name (buffer-name)) ".cpp"))
-		 (get-buffer
-		  (concat (get-file-name (buffer-name)) ".cpp")))
-	     (not (stufe-is-function-purely-virtual function-declaration)))
-	    (save-current-buffer 
-	      (let* ((class-name (stufe-get-cpp-class-name)))
-		(stufe-switch-cpp-file)
-		(goto-char (point-max))
-		(let ((case-fold-search-old case-fold-search))
-		  (setq case-fold-search nil)
-		  (search-backward (format "//) %s" class-name))
-		  (setq case-fold-search case-fold-search-old))
-		(backward-char 1)
-		(stufe-string-to-current-buffer
-		 (stufe-apply-args-on-template "function-body-declaration"
-						 (list 
-						  (stufe-build-return-value-string 
-						   function-declaration)
-						  class-name
-						  (stufe-build-function-name 
-						   function-declaration)
-						  (stufe-build-arguments-string
-						   function-declaration)
-						  (stufe-build-modifiers-string
-						   function-declaration)))
-		 't)
-		(stufe-switch-cpp-file)))))
-	(error "You can only create a function in a hpp file")))
+  (stufe-string-to-current-buffer
+   (stufe-apply-args-on-template "cpp-class-member-declaration"
+				 (list function-declaration
+				       (stufe-make-arguments-documentation
+					function-declaration)
+				       (stufe-make-return-value-documentation
+					function-declaration)))
+   't)
+  (if (and (stufe-exist-body-file (buffer-file-name))
+	   (not (stufe-is-function-purely-virtual function-declaration)))
+      (save-current-buffer 
+	(let* ((class-name (stufe-get-cpp-class-name)))
+	  (stufe-switch-cpp-file)
+	  (stufe-goto-print-area class-name)
+	  (stufe-string-to-current-buffer
+	   (stufe-apply-args-on-template "function-body-declaration"
+					 (list 
+					  (stufe-build-return-value-string 
+					   function-declaration)
+					  class-name
+					  (stufe-build-function-name 
+					   function-declaration)
+					  (stufe-build-arguments-string
+					   function-declaration)
+					  (stufe-build-modifiers-string
+					   function-declaration)))
+	   't)
+	  (stufe-switch-cpp-file)))))
 
 
 (defun stufe-create-new-cpp-variable (variable-declaration)
-  "Create a new cpp variable in C/CPP code"
+  "Create a new cpp variable in CPP code"
   (stufe-string-to-current-buffer
    (stufe-apply-args-on-template "cpp-class-member-declaration"
 				   (list variable-declaration))
@@ -243,12 +253,17 @@ declaration"
  
 
 (defun stufe-create-new-cpp-class-member (member-declaration)
-  "Create a new variable/function in C/CPP code"
+  "Create a new variable/function in CPP code"
   (interactive "*sMember declaration: ")
-  (if (stufe-is-a-function-declaration member-declaration)
-      (stufe-create-new-cpp-function member-declaration)
-    (stufe-create-new-cpp-variable member-declaration)))
-
+  (if (or (string= (file-name-extension (buffer-name)) "h")
+	  (string= (file-name-extension (buffer-name)) "hpp"))
+      (if (stufe-is-a-function-declaration member-declaration)
+	  (stufe-create-new-cpp-function member-declaration)
+	(stufe-create-new-cpp-variable member-declaration))
+    (if (stufe-is-a-function-declaration member-declaration)
+	(stufe-create-new-intern-c-function member-declaration)
+      (stufe-create-new-intern-c-variable member-declaration))))
+  
 
 ;; *************************************************
 ;; * 
@@ -269,30 +284,6 @@ declaration"
     (stufe-template-args-into-file "cpp-class-hpp"
 				     (list classname "")
 				     (concat filepath ".hpp")
-				     'view-file
-				     'no-save
-				     'indent)))
-
-
-;; *************************************************
-;; * 
-;; * Functions to create a new c gnu module
-;; *
-;; *************************************************
-(defun stufe-create-new-c-module (modulename)
-  "Create a new C module with a GNU headers"
-  (interactive "*sModule name: ")
-  (let ((filepath (expand-file-name (downcase modulename)
-				    (file-name-directory buffer-file-name))))
-    (stufe-template-args-into-file "c-module-c"
-				     (list modulename "")
-				     (concat filepath ".c")
-				     'view-file
-				     'no-save
-				     'indent)
-    (stufe-template-args-into-file "c-module-h"
-				     (list modulename "")
-				     (concat filepath ".h")
 				     'view-file
 				     'no-save
 				     'indent)))

@@ -73,9 +73,6 @@
 (stufe-add-menu-item (stufe-get-stufe-context)
 		       "Run command..." 
 		       'compile)
-(stufe-add-menu-item (stufe-get-stufe-context)
-		       "Center on line" 
-		       'stufe-center-on-line)
 
 
 

@@ -72,10 +72,16 @@
 			  (lambda ()
 			    (stufe-menu-add-item-local "Create a new module..." 
 							 'stufe-create-new-c-module))
+			  (lambda ()
+			    (stufe-menu-add-item-local "Create a new function..." 
+							 'stufe-create-new-c-member))
 			  ;; Keyboard shortcut
 			  (lambda ()
-			    (stufe-shortcut-add-local [(control o)] 
+			    (stufe-shortcut-add-local [(control ?c) (control ?o)] 
 							'stufe-create-new-c-module))
+			  (lambda ()
+			    (stufe-shortcut-add-local [(control ?c) (control ?f)] 
+							'stufe-create-new-c-member))
 			  )))
 
 
