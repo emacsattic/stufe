@@ -24,7 +24,7 @@
   (interactive)
   (let* ((current-working-folder stufe-working-folder))
     (setq stufe-working-folder stufe-root)
-    (stufe-cvs-update)
+    (stufe-cvs-update "-C")
     (stufe)
     (setq stufe-working-folder current-working-folder)))
 
