@@ -51,4 +51,7 @@
 			  (lambda ()
 			    (stufe-shortcut-add-local [(control shift s)] 
 							`stufe-open-makefile))
+
+			  (lambda()
+			    (setq completion-ignore-case nil))
 			  )))

@@ -37,9 +37,19 @@
 ;;     debug-command))
 
 (defun stufe-run-debugger-java-mode (debug-command)
+  (let ((debug-command (format "%s %s"
+			       debug-command
+			       (format "-classpath%s:%s:."
+				       (getenv "CLASSPATH")
+				       (stufe-makefile-get-atomic-value (stufe-project-makefile-path)
+									"PROJECTPATH")))))
+    (message debug-command)
+    debug-command))
+
+
+(defun stufe-run-debugger-java-mode (debug-command)
   (message debug-command)
   debug-command)
-
 
 
 (setq stufe-java-debug-command-table
