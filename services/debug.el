@@ -171,6 +171,7 @@
 
 (global-set-key [(f10)] 'gud-next)
 (global-set-key [(f11)] 'gud-step)
+(global-set-key [(shift f9)] 'gud-tbreak)
 (global-set-key [(shift f10)] 'gud-finish)
 (global-set-key [(shift f5)] 'stufe-debug-kill-debugger)
 (global-set-key [(f8)] 'stufe-debug-watch-variable-at-point)
