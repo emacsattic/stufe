@@ -52,3 +52,13 @@
 				       (user-full-name)))])
    "latex_letter.model"
    (model-from-file)))
+
+
+;; Template to create a LaTeX presentation
+(stufe-register-template
+ '("latex-presentation" 
+   (["Name of the project" "%project-name%"]
+    ["Author" "%author%" (function . (lambda (argument)
+				       (user-full-name)))])
+   "latex_presentation.model"
+   (model-from-file)))

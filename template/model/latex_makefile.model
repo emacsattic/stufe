@@ -94,8 +94,8 @@ BIBTEX_COMPILER = bibtex
 endif
 
 # Default pdf compiler
-ifeq ($(strip $(PDFLATEX_COMPILER)),)
-PDFLATEX_COMPILER = pdflatex
+ifeq ($(strip $(PS2PDF)),)
+PS2PDF = ps2pdf
 endif
 
 # Default ps converter
@@ -115,7 +115,7 @@ endif
 
 # Default pdf viewer
 ifeq ($(strip $(PDF_VIEWER)),)
-PDF_VIEWER = xpdf
+PDF_VIEWER = acroread
 endif
 
 #
@@ -130,8 +130,8 @@ endif
 
 # Define the different command used
 LATEX= $(DEBUGMARK)$(LATEX_COMPILER)
-PDFLATEX= $(DEBUGMARK)$(PDFLATEX_COMPILER)
 DVIPS = $(DEBUGMARK)$(DVI2PS)
+PSPDF= $(DEBUGMARK)$(PS2PDF)
 BIBTEX= $(DEBUGMARK)$(BIBTEX_COMPILER)
 
 
@@ -213,18 +213,9 @@ $(PROJECTFILE) : all
 	@echo "Converting $@ into postcript format..."
 	$(DVIPS) $< -o $(addsuffix .ps, $(basename $<))
 
-%.pdf : %.tex $(DEPENDENCIES) makefile
-	@echo "Compiling $@ in pdf..."
-  ifeq ($(BIBLIOGRAPHY),true) 
-	-$(PDFLATEX) -interaction=nonstopmode $<
-	-$(BIBTEX) $(basename $<)
-  endif
-	$(PDFLATEX) -interaction=nonstopmode $<
-  ifeq ($(INDEX),true) 	
-	makeindex $(addsuffix .idx, $(basename $<))
-  endif	
-	$(PDFLATEX) -interaction=nonstopmode $<
-	$(PDFLATEX) -interaction=nonstopmode $<
+%.pdf : %.ps
+	@echo "Compiling $@ into pdf..."
+	$(PSPDF) $<
 
 
 #

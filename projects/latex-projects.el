@@ -56,6 +56,21 @@
 						".tex")
 					't 't)))))
 
+(stufe-register-project 
+ '("latex-presentation"
+   (stufe-projects-new-folder
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details 
+					"latex-makefile" 
+					"makefile"))
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details 
+					"latex-presentation" 
+					(concat (stufe-format-standard-name 
+						 (stufe-project-get-name project-details))
+						".tex")
+					't 't)))))
+
 ;; Add the menu item
 
 (setq stufe-menu-latex-projects-context
@@ -69,6 +84,10 @@
 (stufe-project-add-menu-item stufe-menu-latex-projects-context
 			     "New LaTeX letter..." 
 			     "latex-letter")
+
+(stufe-project-add-menu-item stufe-menu-latex-projects-context
+			     "New LaTeX presentation..." 
+			     "latex-presentation")
 
 
 

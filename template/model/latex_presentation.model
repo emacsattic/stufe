@@ -1,0 +1,37 @@
+\documentclass[final]{prosper}
+
+
+\usepackage[T1]{fontenc}
+
+
+\title{Title}
+\subtitle{Subtitle}
+\author{Author}
+\email{Author email}
+\slideCaption{slideCaption}
+
+%\DefaultTransition{Glitter}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{slide}{The Title of the Slide}
+  \begin{itemize}
+  \item Item 1
+  \item Item 2
+  \item Item 3
+  \end{itemize}
+\end{slide}
+
+\begin{slide}{The Title of the Slide 2}
+  \begin{itemize}
+  \item Item 1
+  \item Item 2
+  \item Item 3
+  \end{itemize}
+\end{slide}
+
+
+\end{document}
