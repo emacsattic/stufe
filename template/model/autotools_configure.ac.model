@@ -15,7 +15,7 @@ AC_PROG_LIBTOOL
 
 dnl Checking for headers file
 AC_STDC_HEADERS
-AC_HAVE_HEADERS(stdio.h assert.h)
+AC_CHECK_HEADERS(stdio.h assert.h)
 
 
 AC_OUTPUT([
