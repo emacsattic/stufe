@@ -30,8 +30,8 @@
 
 
 ;; Bindings keys on handy functions
-(global-set-key [(f3)] 'ispell-word)
-(global-set-key [(meta f3)] 'flyspell-buffer)
+(global-set-key [(meta f3)] 'ispell-word)
+(global-set-key [(f3)] 'flyspell-buffer)
 
 
 ;; Items menu

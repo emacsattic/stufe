@@ -63,6 +63,10 @@
 			 "./")))
 
 
+(defun stufe-makefile-get-atomic-value (makefile key)
+  (car (split-string (stufe-makefile-get-value makefile key))))
+
+
 (defun stufe-makefile-get-value (makefile key)
   (save-current-buffer
     (stufe-rebuild-string (stufe-makefile-get-values makefile key)

@@ -35,13 +35,16 @@
   "Run grep to match the current word with a file pattern recursively"
   (interactive)
   (stufe-grep-word-current 
-   (format "$(find %s -name \"%s\")" 
-	   (if stufe-working-folder
-	       (concat stufe-working-folder "/")
-	     "./")
-	   (stufe-rebuild-string (split-string stufe-grep-file-pattern)
-				 "\" -or -name \""))))
-
+   (let ((filename (buffer-file-name)))
+     (format "$(find %s -name \"%s\")" 
+	     (stufe-choose-new-folder "Starting grep folder: "      
+				      (if filename
+					  (file-name-directory filename)
+					"."))
+	     (stufe-rebuild-string (split-string (if filename
+						     stufe-grep-file-pattern
+						   "*"))				 
+				   "\" -or -name \"")))))
 
 
 (defun stufe-grep-word-current (&optional file-pattern)

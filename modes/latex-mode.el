@@ -30,19 +30,27 @@
 			 ("prog-mode"
 			  (lambda ()
 			    (stufe-menu-add-item-local "View" 
-							 'stufe-make-exec))
+						       'stufe-make-exec))
 			  (lambda ()
 			    (stufe-shortcut-add-local [(f5)]
-							'stufe-make-exec))
+						      'stufe-make-exec))
+
+			  
 			  (lambda ()
 			    (setq tex-start-options-string "")
 			    (make-local-variable 'stufe-compile-function)
 			    (setq stufe-compile-function 
 				  (lambda (command) 
 				    (save-some-buffers 1)
-				    (if (tex-shell-running) 
-					(tex-kill-job) 
-				      (tex-start-shell)) 
+				    (if (not (tex-shell-running))
+					(tex-start-shell)
+				      (save-current-buffer
+					(save-excursion 
+					  (set-buffer (get-buffer "*tex-shell*"))
+					  (end-of-buffer)
+					  (if (eq (current-column) 0)
+					      (progn (stop-process (tex-shell-running) t)
+						     (tex-send-command "bg"))))))
 				    (tex-start-tex command "")
 				    (if (stufe-get-compilation-window)
 					(save-selected-window
@@ -54,7 +62,7 @@
 			  (lambda() 
 			    (flyspell-mode 't))
 			  (lambda()
-			    (let ((dictionary (stufe-makefile-get-value 
+			    (let ((dictionary (stufe-makefile-get-atomic-value 
 					       (stufe-project-makefile-path) 
 					       "DICTIONARY")))
 			      (if dictionary
