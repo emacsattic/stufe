@@ -27,6 +27,7 @@ public:
  **/
 ~%ClassName%();
 
+public:
 
 protected:
 
