@@ -165,17 +165,10 @@
 
 (defun stufe-java-compile-current ()
   (interactive)
-  (let* ((classname (file-name-sans-extension 
-		     (file-name-nondirectory buffer-file-name)))
-	 (javamakefile (stufe-makefile-get-value 
-			(stufe-project-makefile-path) 
-			"JAVA_INTERPRETER"))
-	 (java (if (string= javamakefile "")
-		   "java"
-		 javamakefile))
+  (let ((classidentity (stufe-java-get-class-identity (current-buffer)))
+	 (java "java")
 	 (options (stufe-makefile-get-value 
 		   (stufe-project-makefile-path) 
-		   (format "%s_OPTION" classname))))
-    (stufe-run-make (format "all && %s %s %s" java classname options))))
-
+		   (format "%s_OPTION" classidentity))))
+    (message (format "all && %s %s %s" java classidentity options))))
 
