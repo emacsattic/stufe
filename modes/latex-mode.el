@@ -66,17 +66,16 @@
 							     (window-height)))))))
 			    (make-local-variable 'stufe-compilation-buffer-name)
 			    (setq stufe-compilation-buffer-name "*tex-shell*"))
-			  (lambda() 
-			    (flyspell-mode 't))
 			  (lambda()
-			    (let ((dictionary (stufe-makefile-get-atomic-value 
-					       (stufe-project-makefile-path) 
-					       "DICTIONARY")))
+			    (let* ((makefile-path (stufe-project-makefile-path))
+				   (dictionary (if makefile-path
+						   (stufe-makefile-get-atomic-value 
+						    makefile-path
+						    "DICTIONARY"))))
 			      (message "Dictionary: %s" dictionary)
 			      (if dictionary
-				  (ispell-change-dictionary dictionary))))
-
-			  )))
+				  (ispell-change-dictionary dictionary))
+			      (flyspell-mode 't))))))
 
 
 ;; Add the hook to list of the things to do when opening a LaTeX file
