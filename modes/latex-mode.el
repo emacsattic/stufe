@@ -72,6 +72,7 @@
 			    (let ((dictionary (stufe-makefile-get-atomic-value 
 					       (stufe-project-makefile-path) 
 					       "DICTIONARY")))
+			      (message "Dictionary: %s" dictionary)
 			      (if dictionary
 				  (ispell-change-dictionary dictionary))))
 
