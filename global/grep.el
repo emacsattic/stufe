@@ -26,41 +26,68 @@
 
 
 (defvar stufe-grep-file-pattern
-  "*.*"
+  "*"
   "Default pattern used for the grep command")
 
 
-(defun stufe-grep-word-recursively
- (&optional file-pattern)
+(defun stufe-grep-word-recursively (&optional directory expression)
   "Run grep to match the current word with a file pattern recursively"
   (interactive)
-  (stufe-grep-word-current 
-   (let ((filename (buffer-file-name)))
+  (let ((filename (buffer-file-name))
+	(expression-pattern (if expression
+				expression
+			      (current-word))))
+    (stufe-grep-word-current 
      (format "$(find %s -name \"%s\")" 
-	     (stufe-choose-new-folder "Starting grep folder: "      
-				      (if filename
-					  (file-name-directory filename)
-					"."))
+	     (if directory
+		 directory
+	       (if filename
+		   (file-name-directory filename)
+		 "."))
 	     (stufe-rebuild-string (split-string (if filename
 						     stufe-grep-file-pattern
 						   "*"))				 
-				   "\" -or -name \"")))))
+				   "\" -or -name \""))
+     expression-pattern)))
 
 
-(defun stufe-grep-word-current (&optional file-pattern)
+(defun stufe-grep-word-current (&optional file-pattern expression)
   "Run grep to match the current word with a file pattern"
   (interactive)
   (grep (format "%s -n %s %s" 
 		grep-program 
-		(current-word)
+		expression
 		(if file-pattern
 		    file-pattern
 		    stufe-grep-file-pattern))))
 
-;; Define global key to bind with these functions
-(global-set-key [(f2)] 'stufe-grep-word-current)
-(global-set-key [(shift f2)] 'stufe-grep-word-recursively)
 
+(defun stufe-grep-word-in-directory (&optional expression)
+  "Grep the current word in a defined folder"
+  (interactive)
+  (let ((filename (buffer-file-name))
+	(expression-pattern (if expression
+				expression
+			      (current-word))))
+    (stufe-grep-word-recursively (stufe-choose-new-folder 
+				  (format "Starting grep of '%s' in folder: "
+					  expression-pattern)
+				  (if filename
+				      (file-name-directory filename)
+				    "."))
+				 expression-pattern)))
+
+
+(defun stufe-grep-expression-in-directory (expression)
+  "Grep a specific expression in a defined folder"
+  (interactive "sExpression to grep: ")
+  (stufe-grep-word-in-directory expression))
+
+
+;; Define global key to bind with these functions
+(global-set-key [(f2)] 'stufe-grep-word-recursively)
+(global-set-key [(shift f2)] 'stufe-grep-word-in-directory)
+(global-set-key [(control f2)] 'stufe-grep-expression-in-directory)
 
 ;; Add the items in the stufe menu
 (defvar stufe-menu-grep-context
@@ -71,12 +98,16 @@
       (stufe-add-menu-item-group "Grep" nil "Projects"))
 
 (stufe-add-menu-item stufe-menu-grep-context
-		       "Grep word" 
-		       'stufe-grep-word-current)
+		     "Grep word" 
+		     'stufe-grep-word-recursively)
 
 (stufe-add-menu-item stufe-menu-grep-context
-		       "Grep word recursively" 
-		       'stufe-grep-word-recursively)
+		     "Grep word in folder..." 
+		     'stufe-grep-word-in-directory)
+
+(stufe-add-menu-item stufe-menu-grep-context
+		     "Grep expression in folder..." 
+		     'stufe-grep-expression-in-directory)
 
 
 
