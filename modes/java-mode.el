@@ -26,18 +26,19 @@
 
 (stufe-require-file "services/register.el")
 
+;; (defun stufe-run-debugger-java-mode (debug-command)
+;;   (let ((debug-command (format "%s %s"
+;; 			       debug-command
+;; 			       (format "-classpath %s:%s:."
+;; 				       (getenv "CLASSPATH")
+;; 				       (stufe-makefile-get-atomic-value (stufe-project-makefile-path)
+;; 									"PROJECTPATH")))))
+;;     (message debug-command)
+;;     debug-command))
+
 (defun stufe-run-debugger-java-mode (debug-command)
-  (let ((debug-command (format "%s%s %s"
-			       (if stufe-working-folder
-				   (format "cd %s && " stufe-working-folder)
-				 "")
-			       debug-command
-			       (format "-classpath%s:%s:."
-				       (getenv "CLASSPATH")
-				       (stufe-makefile-get-atomic-value (stufe-project-makefile-path)
-									"PROJECTPATH")))))
-    (message debug-command)
-    debug-command))
+  (message debug-command)
+  debug-command)
 
 
 
