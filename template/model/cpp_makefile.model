@@ -216,7 +216,7 @@ ifeq ($(strip $(DEBUGINFO)),gdb)
 endif
 
 # Profiling information options
-ifeq ($strip $(PROFILING)),true)
+ifeq ($(strip $(PROFILING)),true)
  PROFILINGFLAG = -pg
 endif
 
