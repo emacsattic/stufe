@@ -157,9 +157,12 @@ permissions"
 (defun stufe-string-to-current-buffer (string &optional indent)
   "Insert the string in the current buffer and indent"
   (save-excursion 
-    (insert-string string)
-    (if indent
-	(indent-region 0 (point-max) nil))))
+    (let* ((current-position (point)))
+      (insert-string string)
+      (if indent
+	  (indent-region current-position 
+			 (+ (length string) current-position)
+			 nil)))))
 
 
 (defun stufe-get-max-length (list)
