@@ -35,8 +35,8 @@
   (interactive)
   (let ((filename (buffer-file-name))
 	(expression-pattern (if expression
-				expression
-			      (current-word))))
+				(format "\"%s\"" expression)
+			      (format "\"%s\"" (current-word)))))
     (stufe-grep-word-current 
      (format "$(find %s -name \"%s\")" 
 	     (if directory
