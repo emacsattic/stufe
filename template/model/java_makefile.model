@@ -139,7 +139,7 @@ $(PROJECTFILE): $(SRCS) makefile
 #
 clean: subdirs
 	@echo "Cleaning class file(s)..."
-	@find $(PATHTOCLEAN) -name *.class -exec rm -f {} \;
+	@find $(PATHTOCLEAN) -name "*.class" -exec rm -f {} \;
 
 #
 # We define a target to be able to run the program

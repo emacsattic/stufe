@@ -102,7 +102,7 @@ project"
   (let ((make-command stufe-make-command)
 	(bootstrap-command (if (and (not (stufe-is-configurable)) 
 				    (stufe-is-bootstrapable))
-			       "./bootstrap && "
+			       "sh ./bootstrap && "
 			     ""))
 	(configurable-command (if (and (not (stufe-is-make-runnable))
 				       (or (stufe-is-bootstrapable)

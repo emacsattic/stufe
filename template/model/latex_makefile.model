@@ -214,7 +214,7 @@ $(PROJECTFILE) : all
 	$(DVIPS) $< -o $(addsuffix .ps, $(basename $<))
 
 %.pdf : %.ps
-	@echo "Compiling $@ into pdf..."
+	@echo "Compiling $< into pdf..."
 	$(PSPDF) $<
 
 

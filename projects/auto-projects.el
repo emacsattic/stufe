@@ -43,9 +43,7 @@
     (lambda (project-details)
       (stufe-project-template-to-file project-details
 				      "autotools-bootstrap" 
-				      "bootstrap")
-      (set-file-modes (expand-file-name "bootstrap"
-					(stufe-project-get-location project-details)) 755))
+				      "bootstrap"))
     (lambda (project-details)
       (stufe-project-template-to-file project-details 
 				      "cpp-main" 
@@ -83,12 +81,7 @@
     (lambda (project-details)
       (stufe-project-template-to-file project-details
 				      "autotools-bootstrap" 
-				      "bootstrap")
-      (message "%s" (expand-file-name "bootstrap"
-				      (stufe-project-get-location project-details)))
-      (set-file-modes (expand-file-name "bootstrap"
-					(stufe-project-get-location project-details)) 
-		      755))
+				      "bootstrap"))
     (lambda (project-details)
       (stufe-project-template-to-file project-details 
 				      "cpp-main-so" 

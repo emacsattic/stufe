@@ -179,6 +179,7 @@ permissions"
     (while (< (length working-string) len)
       (setq working-string (concat working-string " ")))
     working-string))
+
       
 ;; Define the 'butlast' function if not defined
 ;; (I know... this is a quick bug fix, this is not
@@ -193,3 +194,4 @@ permissions"
     "Execute FORMS; if an error occurs, return nil. 
 Otherwise, return result of last FORM."
     `(condition-case nil (progn ,@body) (error nil))))
+
