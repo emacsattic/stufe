@@ -1,0 +1,42 @@
+//( %classname%.hpp
+
+#ifndef %CLASSNAME%_HPP
+#define %CLASSNAME%_HPP
+
+
+
+//( %ClassName%
+
+/**
+ * ...
+ *
+ * @author %Author%
+**/
+class %ClassName% 
+{
+public:
+/**
+ * Default constructor
+ * 
+ **/
+%ClassName%();
+
+/**
+ * Default destructor
+ *
+ **/
+~%ClassName%();
+
+protected:
+
+private:
+
+}
+;
+
+//) %ClassName%
+
+
+#endif
+
+//) %classname%.hpp

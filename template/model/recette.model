@@ -1,0 +1,31 @@
+\documentclass{recette}
+
+\nom{%nom-recette%}
+\type{%type-recette%}
+\cuissonTemps{%temp-cuisson%}
+\cuissonDegre{%degre-cuisson%}
+
+\begin{document}
+
+\entete
+
+\begin{ingredients}
+\item ingrédient 1
+\item ingrédient 2
+\end{ingredients}
+
+\begin{preparation}
+\item étape 1
+\item étape 2
+\end{preparation}
+
+\begin{conseil}
+\item Conseil 1
+\item Conseil 2
+\end{conseil}
+
+\end{document}
+
+
+
+

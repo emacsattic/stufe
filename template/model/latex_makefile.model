@@ -1,0 +1,232 @@
+# Options for the makefile
+
+
+# Name of the project (also the name of the output)
+PROJECT = %project-name%
+
+# Other folder to compile
+DIRS = 
+
+# Output of the full compilation
+#   dvi : compile with LaTeX and stop after its dvi output
+#   ps : compile with LaTeX and apply the dvips command on the dvi 
+#   pdf : compile with pdflatex
+LATEXFORMAT = ps
+
+# Verbose compiling
+#   yes: command line used are displayed
+#   no: command line used are not displayed
+VERBOSE = no
+
+
+#*****************************************************************#
+#*                                                               *#
+#* You shouldn't have to modify this part. You have to know      *#
+#* exactly what you are doing. If you really want to modify it   *#
+#* then maybe it is better to modify directly the template       *#
+#* associated                                                    *#
+#*                                                               *#
+#*****************************************************************#
+
+
+#
+# Define default options for the project. They are used only 
+# if they are not already defined
+#
+
+# Default name of the output
+ifeq ($(strip $(PROJECT)),)
+PROJECT = project
+endif
+
+# Output of the full compilation
+#   dvi : compile with LaTeX and stop after its dvi output
+#   ps : compile with LaTeX and apply the dvips command on the dvi 
+#   pdf : compile with pdflatex
+ifeq ($(strip $(LATEXFORMAT)),)
+LATEXFORMAT = ps
+endif
+
+
+#
+# Define the default program to use. Same as options: they
+# are used only if they are not already defined
+#
+
+# Default LaTeX compiler
+ifeq ($(strip $(LATEX_COMPILER)),)
+LATEX_COMPILER = latex
+endif
+
+# Default pdf compiler
+ifeq ($(strip $(PDFLATEX_COMPILER)),)
+PDFLATEX_COMPILER = pdflatex
+endif
+
+# Default ps converter
+ifeq ($(strip $(DVI2PS)),)
+DVI2PS = dvips
+endif
+
+# Default dvi viewer
+ifeq ($(strip $(DVI_VIEWER)),)
+DVI_VIEWER = xdvi
+endif
+
+# Default ps viewer
+ifeq ($(strip $(PS_VIEWER)),)
+PS_VIEWER = gv
+endif
+
+# Default pdf viewer
+ifeq ($(strip $(PDF_VIEWER)),)
+PDF_VIEWER = xpdf
+endif
+
+#
+# Define command line options from the makefile options
+#
+
+# Set the debug mark if the verbose option is no. It will be used
+# when calling the command line
+ifeq ($(VERBOSE),no)
+ DEBUGMARK = @
+endif
+
+# Define the different command used
+LATEX= $(DEBUGMARK)$(LATEX_COMPILER)
+PDFLATEX= $(DEBUGMARK)$(PDFLATEX_COMPILER)
+DVIPS = $(DEBUGMARK)$(DVI2PS)
+
+
+#
+# The next step is to make lists of the files we want to compile
+#
+
+# File reference to build
+PROJECTFILE = $(PROJECT)
+
+# List of the source files
+SRCS := $(wildcard *.tex)
+
+# List of LaTeX output files 
+DVIS := $(patsubst %.tex,%.dvi,$(wildcard *.tex))
+PDFS := $(patsubst %.tex,%.pdf,$(wildcard *.tex))
+
+# List of PS output files
+PSS := $(patsubst %.tex,%.ps,$(wildcard *.tex))
+
+# Make a list of the files we want to see
+ifeq ($(LATEXFORMAT),dvi)
+VIEWEDFILES := $(patsubst %.tex,%.dvi,$(wildcard *.tex))
+VIEWER = $(DVI_VIEWER)
+endif
+ifeq ($(LATEXFORMAT),ps)
+VIEWEDFILES := $(patsubst %.tex,%.dvi.ps,$(wildcard *.tex))
+VIEWER = $(PS_VIEWER)
+endif
+ifeq ($(LATEXFORMAT),pdf)
+VIEWEDFILES := $(patsubst %.tex,%.pdf,$(wildcard *.tex))
+VIEWER = $(PDF_VIEWER)
+endif
+
+# 
+# All the options and commands are now define. So, we can start
+# to defining the target to build the program
+#
+
+
+# This is the default target. It points to the other folder to build
+# and the program to build
+all: subdirs $(LATEXFORMAT)
+
+# Start by compiling the other folders
+GOALS := $(subst exec,$(EMPTY),$(MAKECMDGOALS))
+subdirs:
+  ifneq ($(strip $(DIRS)),)
+	@for dir in $(DIRS); do $(MAKE) -C $$dir $(GOALS); done
+  endif
+
+$(PROJECTFILE) : all
+
+
+# Compilation des fichiers LaTeX
+dvi : $(DVIS)
+
+ps : $(PSS)
+
+pdf : $(PDFS)
+
+%.dvi : %.tex makefile
+	@echo "Compiling $@..."
+	$(LATEX) -interaction=nonstopmode $< 
+	$(LATEX) -interaction=nonstopmode $< 
+	$(LATEX) -interaction=nonstopmode $< 
+ifeq ($(LATEXFORMAT),dvi)
+	@mv $(addsuffix .dvi, $(basename $<)) tmp.dvi
+	@mv tmp.dvi $(PROJECTFILE).dvi
+endif
+
+%.ps : %.dvi
+	@echo "Converting $@ into postcript format..."
+	$(DVIPS) $< -o $<.ps
+
+%.pdf : %.tex makefile
+	@echo "Compiling $@ in pdf..."
+	$(PDFLATEX) -interaction=nonstopmode $<
+	$(PDFLATEX) -interaction=nonstopmode $<
+
+
+#
+# We define a target to be able to clean all the build files
+#
+clean : subdirs
+ifneq ($(strip $(wildcard *~)),)
+	@echo "Cleaning backup file(s)..."
+	-@rm $(wildcard *~)
+endif
+
+ifneq ($(strip $(wildcard $(PROJECTFILE))),)
+	@echo "Cleaning project file(s)..."
+	-@rm $ $(PROJECTFILE)
+endif
+
+ifneq ($(strip $(wildcard *.dvi)),)
+	@echo "Cleaning dvi file(s)..."
+	-@rm $(wildcard *.dvi)
+endif
+ifneq ($(strip $(wildcard *.pdf)),)
+	@echo "Cleaning pdf file(s)..."
+	-@rm $(wildcard *.pdf)
+endif
+ifneq ($(strip $(wildcard *.ps)),)
+	@echo "Cleaning postscript file(s)..."
+	-@rm $(wildcard *.ps)
+endif
+ifneq ($(strip $(wildcard *.aux)),)
+	@echo "Cleaning LaTeX file(s)..."
+	-@rm $(wildcard *.aux) $(wildcard *.log) $(wildcard *.out)
+endif
+
+
+#
+# We define a target to be able to run the program
+# This will disappear when stufe will be finished
+#
+
+# We first fix this variable in case a script 
+# file has been found in the current folder
+SCRIPT := $(wildcard script)
+
+exec:  subdirs $(PROJECTFILE)
+ifeq ($(strip $(SCRIPT)),)
+# No script file has been found
+	@for file in $(VIEWEDFILES); do $(VIEWER) $$file; done
+else
+	./$(SCRIPT)
+endif
+
+
+.PHONY : all exec clean subdirs
+
+

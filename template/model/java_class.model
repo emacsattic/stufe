@@ -1,0 +1,14 @@
+/**
+ * %ClassName%
+ *
+ * ...
+ *
+ * @author %author%
+ * 
+ */
+
+public class %ClassName% {
+
+%classbody%
+
+}
