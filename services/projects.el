@@ -207,7 +207,8 @@
 		  (error "%s: no such directory" working-folder))
 	      (if (file-executable-p working-folder)
 		  working-folder
-		(error "Cannot cd to %s:  Permission denied" working-folder))))))
+		(error "Cannot cd to %s:  Permission denied" working-folder)))))
+  (setq compilation-search-path (list stufe-working-folder)))
 
 
 (defun stufe-interactive-set-working-folder ()
