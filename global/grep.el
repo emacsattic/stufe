@@ -37,18 +37,17 @@
 	(expression-pattern (if expression
 				(format "\"%s\"" expression)
 			      (format "\"%s\"" (current-word)))))
-    (stufe-grep-word-current 
-     (format "$(find %s -name \"%s\")" 
-	     (if directory
-		 directory
-	       (if filename
-		   (file-name-directory filename)
-		 "."))
-	     (stufe-rebuild-string (split-string (if filename
-						     stufe-grep-file-pattern
-						   "*"))				 
-				   "\" -or -name \""))
-     expression-pattern)))
+    (grep (format "find %s -name \"%s\" -exec grep -n -H -I %s {} \\; 2> "
+		  (if directory
+		      directory
+		    (if filename
+			(file-name-directory filename)
+		      "."))
+		  (stufe-rebuild-string (split-string (if filename
+							  stufe-grep-file-pattern
+							"*"))				 
+					"\" -or -name \"")
+		  expression-pattern))))
 
 
 (defun stufe-grep-word-current (&optional file-pattern expression)
