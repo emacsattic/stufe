@@ -38,7 +38,7 @@ DEBUGINFO = gdb
 # Profiling information
 #   true: enable profiling
 #   false: disable profiling
-PROFILING = true
+PROFILING = false
 
 # Profiler output file
 PROFILEROUTPUT = gprof.out

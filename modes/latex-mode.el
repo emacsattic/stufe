@@ -50,6 +50,7 @@
 							     (window-height)))))))
 			    (make-local-variable 'stufe-compilation-buffer-name)
 			    (setq stufe-compilation-buffer-name "*tex-shell*"))
+			  (lambda() (flyspell-mode 't))
 			  )))
 
 

@@ -6,7 +6,7 @@
 * @return  the %variable-name% property
 *
 **/
-final public %variable-type% get%variable-standard-name%() 
+public %variable-type% get%variable-standard-name%() 
 {
 return %variable-name%;
 }
