@@ -124,10 +124,11 @@
    (["Returned value" "%return-value%"]
     ["Name of the class" "%class-name%"]
     ["Function name" "%function-name%"]
-    ["Arguments of the function" "%arguments%"])
+    ["Arguments of the function" "%arguments%"]
+    ["Modifiers of the function" "%modifiers%"])
    "
 
-%return-value% %class-name%::%function-name%(%arguments%) 
+%return-value% %class-name%::%function-name%(%arguments%) %modifiers%
 {
 }
 "))

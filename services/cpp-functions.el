@@ -96,18 +96,15 @@ declaration"
 ;; *
 ;; *************************************************
 
-
-(defun stufe-build-return-value-list (function-declaration)
-  "Build a list of the return definition of the function"
-  (butlast (split-string (car (split-string function-declaration "(")) " ") 1))
-
 (defun stufe-build-return-value-string (function-declaration)
   "Build a string of the return definition of the function"
-  (stufe-rebuild-string (stufe-build-return-value-list function-declaration)
-			  " "))
+  (stufe-rebuild-string 
+   (delete "virtual" 
+	   (delete "static"
+		   (butlast (split-string (car (split-string function-declaration 
+							     "(")) " ") 1)))
+   " "))
 
-
- 
 (defun stufe-build-function-name (function-declaration)
   "Build a list of the return definition of the function"
   (car (last (split-string (car (split-string function-declaration "(")) " "))))
@@ -122,13 +119,27 @@ declaration"
 						"...")))
       "")))
 
+;; *************************************************
+;; * 
+;; * Functions to deals with modifiers of the 
+;; * function like const or pure virtual 
+;; *
+;; *************************************************
+
+(defun stufe-build-modifiers-string (function-declaration)
+  (stufe-rebuild-string 
+   (delete "=" 
+	   (delete "0"
+		   (split-string (car (last (split-string function-declaration 
+							  ")")))
+				 " ")))
+   " "))
 
 ;; *************************************************
 ;; * 
 ;; * Functions to create a new member of a class
 ;; *
 ;; *************************************************
-
 
 (defun stufe-get-cpp-class-name ()
   (save-excursion 
@@ -175,6 +186,8 @@ declaration"
 						  class-name
 						  (stufe-build-function-name function-declaration)
 						  (stufe-build-arguments-string
+						   function-declaration)
+						  (stufe-build-modifiers-string
 						   function-declaration)))
 		 't)
 		(stufe-switch-cpp-file)))))
