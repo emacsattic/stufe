@@ -95,6 +95,7 @@
 			    (stufe-shortcut-add-local [(control 0)] 
 							'stufe-switch-cpp-file))
 
+			  ;; Add a default context for the man pages
 			  (lambda ()
 			    (make-local-variable 'stufe-default-man-page)
 			    (setq stufe-default-man-page "2"))
