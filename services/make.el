@@ -87,19 +87,25 @@
 	  command
 	  argument))
 
+
 (defun stufe-guess-project-makefile ()
   (cond
    ;; Default makefile for LaTeX mode
    ((eq major-mode 'latex-mode) 
     (stufe-project-template-to-file 
-     (stufe-create-project-details-from-working-folder)
+     (stufe-create-project-details-from-working-folder
+      (file-name-nondirectory
+       (file-name-sans-versions
+	(file-name-sans-extension (buffer-file-name)))))
      "latex-makefile" 
      "makefile"))
    ;; Default makefile for C++ mode
    ((or (eq major-mode 'c++-mode)
 	(eq major-mode 'c-mode))
     (stufe-project-template-to-file 
-     (stufe-create-project-details-from-working-folder)
+     (stufe-create-project-details-from-working-folder 
+      (file-name-sans-versions 
+       (file-name-nondirectory current-folder)))
      "cpp-makefile" 
      "makefile"))
    (t (error "No makefile associated with %s" major-mode))))

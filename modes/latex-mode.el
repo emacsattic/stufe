@@ -51,11 +51,19 @@
 							     (window-height)))))))
 			    (make-local-variable 'stufe-compilation-buffer-name)
 			    (setq stufe-compilation-buffer-name "*tex-shell*"))
-;;			  (lambda() (flyspell-mode 't))
+			  (lambda() 
+			    (flyspell-mode 't))
+			  (lambda()
+			    (let ((dictionary (stufe-makefile-get-value 
+					       (stufe-project-makefile-path) 
+					       "DICTIONARY")))
+			      (if dictionary
+				  (ispell-change-dictionary dictionary))))
+
 			  )))
 
 
-;; Add the hook to list of the things to do when opening a C++ file
+;; Add the hook to list of the things to do when opening a LaTeX file
 (stufe-associate-mode-with-hook 'tex-mode-hook "latex-mode")
 (stufe-associate-mode-with-hook 'latex-mode-hook "latex-mode")
 

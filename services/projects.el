@@ -146,6 +146,10 @@
 (defun stufe-project-get-location (project-details)
   (cdr project-details))
 
+(defun stufe-project-create-details (project-path project-name)
+  (message "Creating project (%s, %s)" project-path project-name)
+  (cons project-path project-name))
+
 ;; *************************************************
 ;; * 
 ;; * Function to create a project detail when
@@ -153,18 +157,17 @@
 ;; *
 ;; *************************************************
 
-(defun stufe-create-project-details-from-folder (folder)
-  (let ((current-folder (directory-file-name folder)))
-    (cons (file-name-sans-versions 
-	   (file-name-nondirectory current-folder))
-	  current-folder)))
+(defun stufe-create-project-details-from-folder (folder project-name)
+  (stufe-project-create-details project-name 
+				(directory-file-name folder)))
 
 
-(defun stufe-create-project-details-from-working-folder ()
+(defun stufe-create-project-details-from-working-folder (project-name)
   (stufe-create-project-details-from-folder
    (if stufe-working-folder
        stufe-working-folder
-     (file-name-directory (buffer-file-name)))))
+     (file-name-directory (buffer-file-name)))
+   project-name))
 
 
 ;; *************************************************

@@ -49,7 +49,7 @@ the mouse wheel")
 
 (defvar stufe-recettes-default-path
   nil
-  "Répertoire par défaut des recettes de cuisine")
+  "Répertoire par défaut des recettes de cuisine")
 (setq stufe-recettes-default-path "~/recettes")
 
 

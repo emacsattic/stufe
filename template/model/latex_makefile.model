@@ -28,6 +28,9 @@ INDEX = false
 #  false - only $(PROJECT).tex is compiled
 MULTIPLEFILES = false
 
+# Dictionary to use to correct the document
+DICTIONARY = default
+
 # Verbose compiling
 #   yes: command line used are displayed
 #   no: command line used are not displayed
