@@ -85,8 +85,7 @@
  * ...
  * %argument-documentation%%function-return-value%
  **/
-%declaration% 
-{
+%declaration% {
 
 }"))
 

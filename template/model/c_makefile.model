@@ -13,6 +13,15 @@ OPTION =
 # Other folder to compile
 DIRS = 
 
+# Other include paths to add when compiling the project
+ADDINCPATH = 
+
+# Other libraries to add when linking the project
+ADDLIB = 
+
+# Other library paths to add when linking the project
+ADDLIBPATH = 
+
 # Compiler ptimisation level
 #   0: no optimisation (necessary when debuging)
 #   1: first level
@@ -26,14 +35,14 @@ OPTIMISATION = 0
 #   gdb: gdb debug information (used only for gdb)
 DEBUGINFO = gdb
 
-# Other include paths to add when compiling the project
-ADDINCPATH = 
+# Profiling information
+#   true: enable profiling
+#   false: disable profiling
+PROFILING = true
 
-# Other libraries to add when linking the project
-ADDLIB = 
+# Profiler output file
+PROFILEROUTPUT = gprof.out
 
-# Other library paths to add when linking the project
-ADDLIBPATH = 
 
 # Verbose compiling
 #   yes: command line used are displayed
@@ -81,6 +90,11 @@ endif
 # Default debugging information
 ifeq ($(strip $(DEBUGINFO)),)
 DEBUGINFO = gdb
+endif
+
+# Default profiling information
+ifeq ($(strip $(PROFILING)),)
+PROFILING = false
 endif
 
 # Default project type options
@@ -146,6 +160,11 @@ ifeq ($(strip $(LINKER)),)
 LINKER = gcc
 endif
 
+# Default profiler
+ifeq ($(strip $(PROFILER)),)
+PROFILER = gprof
+endif
+
 #
 # Define command line options from the makefile options
 #
@@ -190,6 +209,11 @@ endif
 ifeq ($(DEBUGINFO),gdb)
  DEBUGINFOFLAG = -ggdb3
 endif
+# Profiling information options
+ifeq ($(PROFILING),true)
+ PROFILINGFLAG = -pg
+endif
+
 # Shared object options
 ifeq ($(PROJECTTYPE),so)
   SOPROPERTIES = -D_REENTRANT -fPIC
@@ -203,7 +227,7 @@ CPPFLAGS += $(ADDITIONALPATHINCLUDE)
 # Define the command for the C compiler
 CC = $(DEBUGMARK)$(C_COMPILER)
 CFLAGS += $(ADDITIONALPATHINCLUDE) -c $(OPTIMISATIONFLAG) $(DEBUGINFOFLAG) \
-$(SOPROPERTIES)
+$(PROFILINGFLAG) $(SOPROPERTIES)
 # Define the command for the C++ compiler
 CXX = $(DEBUGMARK)$(CXX_COMPILER)
 CXXFLAGS = $(CFLAGS)
@@ -330,6 +354,10 @@ else
 # We didn't find a script file, so we run the program
 	$(PROJECTFILE) $(OPTION)
 endif
+ifeq ($(PROFILING),true)
+	$(PROFILER) $(PROJECTFILE) > $(PROFILEROUTPUT)
+endif
+
 
 
 .PHONY : all exec clean subdirs doc

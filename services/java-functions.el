@@ -58,7 +58,7 @@
 (defun stufe-create-new-java-class (classname)
   "Create a new java class"
   (interactive "*sClass name: ")
-  (let ((filepath (expand-file-name (downcase classname)
+  (let ((filepath (expand-file-name classname
 				    (file-name-directory buffer-file-name))))
     (stufe-template-args-into-file "java-class"
 				     (list classname "")
