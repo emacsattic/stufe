@@ -66,6 +66,17 @@
 				     'view-file
 				     'no-save
 				     'indent)))
+(defun stufe-create-new-java-interface (classname)
+  "Create a new java interface"
+  (interactive "*sInterface name: ")
+  (let ((filepath (expand-file-name classname
+				    (file-name-directory buffer-file-name))))
+    (stufe-template-args-into-file "java-interface"
+				   (list classname "")
+				   (concat filepath ".java")
+				   'view-file
+				   'no-save
+				   'indent)))
 
 (defun stufe-get-java-class-name ()
   (file-name-sans-extension (file-name-nondirectory buffer-file-name)))

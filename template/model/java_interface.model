@@ -1,0 +1,13 @@
+/**
+ * %ClassName%
+ *
+ * ...
+ *
+ * @author %author%
+ * 
+ **/
+public interface %ClassName% {
+
+%classbody%
+
+}

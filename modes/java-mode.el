@@ -90,6 +90,9 @@
 			     (stufe-menu-add-item-local "Create a new class..." 
 							  'stufe-create-new-java-class))
 			   (lambda ()
+			     (stufe-menu-add-item-local "Create a new interface..." 
+							  'stufe-create-new-java-interface))
+			   (lambda ()
 			     (stufe-menu-add-item-local "Create a new member..." 
 							  'stufe-create-new-java-class-member))
 
@@ -101,6 +104,9 @@
 			   (lambda ()
 			     (stufe-shortcut-add-local [(control ?c) (control ?o)] 
 							 'stufe-create-new-java-class))
+			   (lambda ()
+			     (stufe-shortcut-add-local [(control ?c) (control ?i)] 
+							 'stufe-create-new-java-interface))
 			   (lambda ()
 			     (stufe-shortcut-add-local [(control ?c) (control ?f)] 
 							 'stufe-create-new-java-class-member))

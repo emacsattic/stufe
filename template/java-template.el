@@ -42,6 +42,14 @@
     ["Class body" "%classbody%"])
    "java_class.model"
    (model-from-file)))
+(stufe-register-template
+ '("java-interface" 
+   (["Name of the class" "%ClassName%"]
+    ["Author" "%Author%" (function . (lambda (argument)
+				       (user-full-name)))]
+    ["Class body" "%classbody%"])
+   "java_interface.model"
+   (model-from-file)))
 
 
 ;; Template to create a Java bean property
