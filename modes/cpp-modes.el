@@ -65,8 +65,7 @@
 			   (gud-call "run")
 			   (mapcar (lambda (breakpoint) 
 				     (stufe-debug-add-breakpoint breakpoint))
-				   stufe-breakpoint-list)
-			   (gud-cont nil)))
+				   stufe-breakpoint-list)))
 
 	("Add breakpoint" (lambda (file line)
 			    (gud-call (format "break %s:%s" 
