@@ -39,38 +39,26 @@
 
 
 (setq stufe-java-debug-command-table
-      '(("Load project" nil)
-
-	("Run project" (lambda () 
- 			 (stufe-send-debug-command "run")))
-
-	("Stufe Set BreakPoint" (lambda (buffer)
-				  (stufe-java-get-class-identity buffer)))
-
-	("Add main breakpoint" (lambda()
-				 (stufe-send-debug-command
-				  (format "stop in %s.main"
-					  (stufe-makefile-get-value 
-					   (stufe-project-makefile-path)
-					   "PROJECT")))))
-
-	("Add breakpoint" (lambda (classid line)
-			    (stufe-send-debug-command 
-			     (format "stop at %s:%s" classid line))))
+      '(("Debug project" (lambda ()
+			  (mapcar (lambda (breakpoint) 
+				    (stufe-debug-add-breakpoint breakpoint))
+				  stufe-breakpoint-list)
+			  (gud-call "run")))
+	
+	("Add breakpoint" (lambda (file line)
+			    (gud-call (format "stop at %s:%s" 
+					      (file-name-nondirectory 
+					       (file-name-sans-extension file))
+					      line))))
 	
 	("Clear breakpoint" (lambda (file line)
-			      (stufe-send-debug-command 
-			       (format "clear %s:%s"
-				       (file-name-nondirectory 
-					(file-name-sans-extension file))
-				       line))))
+			      (gud-call "clear " 
+					(format "%s:%s"
+						(file-name-nondirectory 
+						 (file-name-sans-extension file))
+						line))))
 
-	("Continue" (lambda () 
-		      (stufe-send-debug-command "cont")))
-
-	("Print variable" (lambda (variable) 
-			    (stufe-send-debug-command 
-			     (format "print %s" variable))))))
+	("Print variable" (lambda (variable) (gud-call (format "print %s" variable))))))
 
 
 

@@ -34,29 +34,27 @@
 
 
 (setq stufe-c-debug-command-table
-      '(("Load project" (lambda (project)
-			  (stufe-send-debug-command (format "file %s" project))))
+      '(("Debug project" (lambda ()
+			   (gud-call (format "file %s" 
+					     (stufe-makefile-get-value 
+					      (stufe-project-makefile-path)
+					      "PROJECT")))
+			   (gud-call "break main")
+			   (gud-call "run")
+			   (mapcar (lambda (breakpoint) 
+				     (stufe-debug-add-breakpoint breakpoint))
+				   stufe-breakpoint-list)
+			   (gud-cont nil)))
 
-        ("Run project" (lambda () 
-			 (stufe-send-debug-command "run")))
-
-	("Add main breakpoint" (lambda () 
-				 (stufe-send-debug-command "break main")))
 
 	("Add breakpoint" (lambda (file line)
-			    (stufe-send-debug-command 
-			     (format "break %s:%s" file line))))
+			    (gud-call (format "break %s:%s" file line))))
 	
 	("Clear breakpoint" (lambda (file line)
-			      (stufe-send-debug-command 
-			     (format "clear %s:%s" file line))))
-
-	("Continue" (lambda () 
-		      (stufe-send-debug-command "continue")))
+			      (gud-call (format "clear %s:%s" file line))))
 
 	("Print variable" (lambda (variable) 
-			    (stufe-send-debug-command 
-			     (format "print %s" variable))))))
+			    (gud-call (format "print %s" variable))))))
 
 
 (stufe-register-mode '("c-prog-mode"
