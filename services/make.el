@@ -59,7 +59,9 @@
 	 (save-some-buffers 1)
 	 (if command
 	     (compile command)
-	   (call-interactively 'compile))
+	   (if (stufe-project-makefile-path)
+	       (stufe-run-make "")
+	     (call-interactively 'compile)))
 	 (if (stufe-get-compilation-window)
 	     (save-selected-window
 	       (select-window (stufe-get-compilation-window))
