@@ -8,6 +8,7 @@
  * @return the result of the execution of the program
  *
 **/
-int main(int argc, char * * argv) {
+int main(int argc, char * * argv) 
+{
   return 0;
 }

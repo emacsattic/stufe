@@ -163,10 +163,12 @@ declaration"
 (defun stufe-is-function-purely-virtual (function-declaration)
   "Test if a function is purely virtual from its declaration"
   (let ((modifiers-string (stufe-build-modifiers-string function-declaration)))
-    (member "0"
-	    (split-string (stufe-rebuild-string (split-string modifiers-string "=") 
-						" ")
-			  " "))))
+    (if modifiers-string
+	(member "0"
+		(split-string (stufe-rebuild-string (split-string modifiers-string "=") 
+						    " ")
+			      " "))
+      nil)))
 	
 
 
