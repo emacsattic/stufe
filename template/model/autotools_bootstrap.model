@@ -1,0 +1,15 @@
+#!/bin/sh
+
+echo "libtoolize" \
+libtoolize --force \
+&& echo "automake --foreign --add-missing" \
+&& automake --foreign --add-missing \
+&& echo "aclocal" \
+&& aclocal \
+&& echo "autoheader" \
+&& autoheader \
+&& echo "autoconf" \
+&& autoconf \
+&& echo "automake --foreign" \
+&& automake --foreign 
+
