@@ -32,7 +32,7 @@
 				   (format "cd %s && " stufe-working-folder)
 				 "")
 			       debug-command
-			       (format "-classpath=%s:%s"
+			       (format "-classpath%s:%s:."
 				       (getenv "CLASSPATH")
 				       (stufe-makefile-get-atomic-value (stufe-project-makefile-path)
 									"PROJECTPATH")))))
@@ -51,11 +51,11 @@
 									     "PROJECT")))))
 	
 	("Add breakpoint" (lambda (file line)
-			    (gud-call (format "stop at %s:%s" 
-					      (file-name-nondirectory 
-					       (file-name-sans-extension file))
-					      line))))
-	
+			    (gud-call (format "stop at %s:%s" file line))))
+
+	("Set BreakPoint" (lambda (buffer)
+			    (stufe-java-get-class-identity buffer)))
+		
 	("Clear breakpoint" (lambda (file line)
 			      (gud-call "clear " 
 					(format "%s:%s"
@@ -129,16 +129,13 @@
 							 `stufe-make-exec))
 
 			   (lambda ()
-			     (stufe-shortcut-add-local [(shift f5)] 
+			     (stufe-shortcut-add-local [(meta f5)] 
 							 `stufe-java-compile-current))
 
 			   ;; Initialize debugging
 			   (lambda ()
 			     (make-local-variable 'stufe-debug-buffer-name)
-			     (setq stufe-debug-buffer-name 
-				   (format "*gud-%s*" 
-					   (stufe-makefile-get-value 
-					    (stufe-project-makefile-path) "PROJECT")))
+			     (setq stufe-debug-buffer-name "*gud*")
 			     
 			     (make-local-variable 'stufe-debug-command)
 			     (setq stufe-debug-command "jdb")

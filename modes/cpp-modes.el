@@ -73,12 +73,12 @@
 			    (gud-call (format "break %s:%s" 
 					      (file-name-nondirectory file) 
 					      line))))
-	
+
 	("Clear breakpoint" (lambda (file line)
 			      (gud-call (format "clear %s:%s" 
 						(file-name-nondirectory file)
 						line))))
-
+	
 	("Print variable" (lambda (variable) 
 			    (gud-call (format "print %s" variable))))))
 
