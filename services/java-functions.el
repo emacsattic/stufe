@@ -156,3 +156,26 @@
 		  (car (split-string (car (split-string package-name " ")) "\n")))
 		class-name)
       class-name)))
+
+;; *************************************************
+;; * 
+;; * Function to run the current class
+;; *
+;; *************************************************
+
+(defun stufe-java-compile-current ()
+  (interactive)
+  (let* ((classname (file-name-sans-extension 
+		     (file-name-nondirectory buffer-file-name)))
+	 (javamakefile (stufe-makefile-get-value 
+			(stufe-project-makefile-path) 
+			"JAVA_INTERPRETER"))
+	 (java (if (string= javamakefile "")
+		   "java"
+		 javamakefile))
+	 (options (stufe-makefile-get-value 
+		   (stufe-project-makefile-path) 
+		   (format "%s_OPTION" classname))))
+    (stufe-run-make (format "all && %s %s %s" java classname options))))
+
+

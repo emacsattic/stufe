@@ -78,6 +78,10 @@
 
 			   ;; Menu item
 			   (lambda ()
+			     (stufe-menu-add-item-local "Exec current class" 
+							  'stufe-java-compile-current))
+
+			   (lambda ()
 			     (stufe-menu-add-item-local "Exec" 
 							  'stufe-make-exec))
 
@@ -119,6 +123,10 @@
 			   (lambda ()
 			     (stufe-shortcut-add-local [(f5)] 
 							 `stufe-make-exec))
+
+			   (lambda ()
+			     (stufe-shortcut-add-local [(shift f5)] 
+							 `stufe-java-compile-current))
 
 			   ;; Initialize debugging
 			   (lambda ()
