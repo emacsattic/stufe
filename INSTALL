@@ -17,10 +17,11 @@ Two lines have to be add in the $HOME/.emacs to be able to use stufe :
    For example : (load-file "~/stufe/stufe.el")
 
 
+I would advise to put these lines at the beginning of the .emacs file,
+so Stufe won't overload settings you already have for Emacs (like
+colors, keyboard shortcuts, ...).
+
 Then, most of the functions of stufe are accessible from the Stufe
 menu and from the Project menu (when Stufe functions are accessible
 for a particular mode).
 
-I would advise to put these lines at the beginning of the .emacs file,
-so Stufe won't overload settings you already have for Emacs (like
-colors, keyboard shortcut, ...).

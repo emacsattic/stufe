@@ -1,5 +1,19 @@
 Stufe (0.0.1r01)
 
+  * Correct bugs in the generation of C++ functions
+  * Split makefile for C and C++ projects
+	
+ --  Thomas Degris  Friday, 29 Sep 2002
+	
+Stufe (0.0.1r01)
+
+  * I corrected one or two default settings 
+	
+ --  Thomas Degris  Friday, 29 Sep 2002
+
+
+Stufe (0.0.1)
+
   * Nothing to say here because this is the first release of stufe 
 	
  --  Thomas Degris  Friday, 27 Sep 2002
