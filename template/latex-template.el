@@ -35,9 +35,9 @@
 
 ;; Template to create a c/c++ main file
 (stufe-register-template
- '("latex-main" 
+ '("latex-article" 
    (["Name of the project" "%project-name%"]
     ["Author" "%author%" (function . (lambda (argument)
 				       (user-full-name)))])
-   "latex_main.model"
+   "latex_article.model"
    (model-from-file)))
