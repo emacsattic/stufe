@@ -68,7 +68,7 @@
 				      't 't)))))
 
 
-;; Autotools project
+;; Autotools library project
 (stufe-register-project 
  '("autotools-library-project"
    (stufe-projects-new-folder
@@ -98,18 +98,20 @@
 				      't 't)))))
 
 
-;; Autotools sub project
+;; Autotools library sub project
 (stufe-register-project 
  '("autotools-library-sub-project"
    (stufe-projects-new-folder
     (lambda (project-details)
       (stufe-project-template-to-file project-details
-				      "autotools-Makefile.am" 
+				      "autotools-library-Makefile.am" 
 				      "Makefile.am"))
     (lambda (project-details)
       (stufe-project-template-to-file project-details 
-				      "cpp-main" 
-				      "main.cpp"
+				      "cpp-main-so" 
+				      (concat (stufe-format-standard-name 
+					       (stufe-project-get-name project-details))
+					      ".cpp")
 				      't 't)))))
 
 ;; Add the menu item
