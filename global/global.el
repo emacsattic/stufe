@@ -69,6 +69,7 @@
 								   (current-word)))))
 
 (global-set-key [(control ?c) (control ?c)] 'comment-region)
+(global-set-key [(control ?c) (control ?k)] 'kill-compilation)
 
 
 
