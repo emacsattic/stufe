@@ -32,6 +32,8 @@
 			   (lambda ()
 			     (stufe-menu-add-item-local "Exec" 
 							  'stufe-make-exec))
+
+			   "debug-mode" 
 			   
 			   ;; Menu item
 			   (lambda ()
@@ -63,7 +65,11 @@
 			   (lambda ()
 			     (stufe-shortcut-add-local [(f5)] 
 							 `stufe-make-exec))
-			   )))
+
+			   ;; Initialize debugging
+			   (lambda ()
+			     (make-local-variable 'stufe-debug-command)
+			     (setq stufe-debug-command "jdb")))))
 
 
 ;; Add the hook to list of the things to do when opening a Java file
