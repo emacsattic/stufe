@@ -55,7 +55,6 @@
 					     (stufe-project-makefile-path)
 					     "PROJECT"))))
 			     (gud-call (format "file %s" target)))
-			   (gud-call "break main")
 			   (let ((options (stufe-makefile-get-value 
 					   (stufe-project-makefile-path) 
 					   "OPTION")))
