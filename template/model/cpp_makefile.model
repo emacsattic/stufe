@@ -26,7 +26,7 @@ ADDLIBPATH =
 #   0: no optimisation (necessary when debuging)
 #   1: first level
 #   2: second level
-#   3: third level (the strongest: be careful using it, may add some bugs)
+#   3: third level
 OPTIMISATION = 0
 
 # Debuging informations

@@ -40,12 +40,15 @@
 					      (stufe-project-makefile-path)
 					      "PROJECT")))
 			   (gud-call "break main")
+			   (gud-call (format "set args %s" 
+					     (stufe-makefile-get-value 
+					      (stufe-project-makefile-path)
+					      "OPTION")))			   
 			   (gud-call "run")
 			   (mapcar (lambda (breakpoint) 
 				     (stufe-debug-add-breakpoint breakpoint))
 				   stufe-breakpoint-list)
 			   (gud-cont nil)))
-
 
 	("Add breakpoint" (lambda (file line)
 			    (gud-call (format "break %s:%s" 
