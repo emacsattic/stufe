@@ -7,7 +7,7 @@ PROJECT = %project-name%
 # Path of the output
 PROJECTPATH = .
 
-# Options to pass to the program when debuging
+# Options to pass to the program
 OPTION = 
 
 # Other folder to compile
@@ -152,7 +152,7 @@ ifneq ($(strip $(SCRIPT)),)
 	./$(SCRIPT)
 else
 # We didn't find a script file, so we run the program
-	$(JAVA) $(PROJECT)
+	$(JAVA) $(PROJECT) $(OPTION)
 endif
 
 
