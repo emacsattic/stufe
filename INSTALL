@@ -5,14 +5,14 @@ Two lines have to be add in the $HOME/.emacs to be able to use stufe :
 
 1) The root folder of stufe has to be specified :
 
-      (setq stufe-root "<where you installed stufe>")
+      (setq stufe-root "<where you have installed stufe>")
 
    For example : (setq stufe-root "~/stufe")
 
 
 2) Then, we load stufe : 
 
-      (load-file "<where you installed stufe>/stufe.el")
+      (load-file "<where you have installed stufe>/stufe.el")
 
    For example : (load-file "~/stufe/stufe.el")
 
