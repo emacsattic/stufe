@@ -91,11 +91,10 @@
 ;; Appel à la fonction précédente pour définir les couleurs
 (defun stufe-activate-color ()
   "Active the stufe theme color for Emacs"
-  (define-colors)
+  (unless stufe-no-color-theme (define-colors))
   (setq global-font-lock-mode t)
   (global-font-lock-mode)
   (global-font-lock-mode))
 
 
-(unless stufe-no-color-theme (stufe-activate-color))
 
