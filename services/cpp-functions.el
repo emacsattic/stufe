@@ -158,7 +158,7 @@ declaration"
 
 (defun stufe-build-modifiers-string (function-declaration)
   (cadr (split-string (car (split-string function-declaration 
-					 ";")) 
+					 ";"))
 		      ")")))
 
 
