@@ -34,7 +34,7 @@
 					"makefile"))
     (lambda (project-details)
       (stufe-project-template-to-file project-details 
-					"latex-main" 
+					"latex-article" 
 					(concat (stufe-format-standard-name 
 						 (stufe-project-get-name project-details))
 						".tex")
