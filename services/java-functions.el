@@ -167,8 +167,17 @@
   (interactive)
   (let* ((classidentity (stufe-java-get-class-identity (current-buffer)))
 	 (java "java")
+	 (makefilepath (stufe-project-makefile-path))
+	 (classpathmakefile (stufe-makefile-get-atomic-value
+			     makefilepath "CLASSPATH"))
+	 (javaoptions (format "-cp %s:%s" 
+			      (if classpathmakefile
+				  classpathmakefile
+				"")
+			      (stufe-makefile-get-atomic-value
+			       makefilepath "PROJECTPATH")))
 	 (options (stufe-makefile-get-value 
-		   (stufe-project-makefile-path) 
+		   makefilepath
 		   (format "%s_OPTION" classidentity))))
-    (stufe-run-make (format "all && %s %s %s" java classidentity options))))
+    (stufe-run-make (format "all && %s %s %s %s" java javaoptions classidentity options))))
 
