@@ -86,7 +86,7 @@ ifeq ($(DEBUGINFO),yes)
 endif
 
 # We define exactly what file is the output of the project
-OUTPUTFILENAME = $(PROJECT).class
+OUTPUTFILENAME = $(subst .,/,$(PROJECT)).class
 
 
 # Define the command for the C++ compiler
@@ -125,17 +125,15 @@ subdirs:
 
 $(PROJECTFILE): $(SRCS) makefile
 	@echo "Building..."
-	$(JAVAC) $(DEBUGINFOFLAG) -d $(PROJECTPATH) *.java
+	$(JAVAC) -classpath $(PROJECTPATH) $(DEBUGINFOFLAG) -d $(PROJECTPATH) *.java
 	@echo "The project '$(PROJECT)' has been build."
 
 #
 # We define a target to be able to clean all the build files
 #
 clean : subdirs
-ifneq ($(strip $(wildcard *.class)),)
 	@echo "Cleaning class file(s)..."
-	-@rm $(wildcard *.class)
-endif
+	@find $(PROJECTPATH) -name *.class -exec rm -f {} \;
 
 #
 # We define a target to be able to run the program
@@ -152,7 +150,7 @@ ifneq ($(strip $(SCRIPT)),)
 	./$(SCRIPT)
 else
 # We didn't find a script file, so we run the program
-	$(JAVA) $(PROJECT) $(OPTION)
+	$(JAVA) -cp $(PROJECTPATH) $(PROJECT) $(OPTION)
 endif
 
 
