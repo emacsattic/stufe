@@ -66,10 +66,13 @@
       (error "This buffer doesn't visit any file"))))
 
 
-(defun stufe-cvs-update ()
+(defun stufe-cvs-update (&optional options)
   "Run the 'update' command for the current folder and update buffers in emacs"
   (interactive)
-  (stufe-cvs-run-cvs "update -d")
+  (stufe-cvs-run-cvs (format "update -d" 
+			     (if options
+				 options
+			       "")))
   (update-all-buffers))
 
 
