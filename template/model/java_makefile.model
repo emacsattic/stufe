@@ -13,8 +13,9 @@ OPTION =
 # Other folder to compile
 DIRS = 
 
-# Set a classpath if this is needed
-# CLASSPATH = 
+# Set a classpath if this is needed added to the original CLASSPATH
+# variable of system. Directories and zip/jar files separated by :
+EXTRACLASSPATH = $(CLASSPATH)
 
 # Verbose compiling
 #   yes: command line used are displayed
@@ -125,7 +126,7 @@ subdirs:
 
 $(PROJECTFILE): $(SRCS) makefile
 	@echo "Building..."
-	$(JAVAC) -classpath $(PROJECTPATH) $(DEBUGINFOFLAG) -d $(PROJECTPATH) *.java
+	$(JAVAC) -classpath $(EXTRACLASSPATH) $(DEBUGINFOFLAG) -d $(PROJECTPATH) *.java
 	@echo "The project '$(PROJECT)' has been build."
 
 #
@@ -150,7 +151,7 @@ ifneq ($(strip $(SCRIPT)),)
 	./$(SCRIPT)
 else
 # We didn't find a script file, so we run the program
-	$(JAVA) -cp $(PROJECTPATH) $(PROJECT) $(OPTION)
+	$(JAVA) -cp $(EXTRACLASSPATH) $(PROJECT) $(OPTION)
 endif
 
 
