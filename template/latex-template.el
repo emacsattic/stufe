@@ -33,11 +33,22 @@
    (model-from-file)))
 
 
-;; Template to create a c/c++ main file
+;; Template to create a LaTeX article
 (stufe-register-template
  '("latex-article" 
    (["Name of the project" "%project-name%"]
     ["Author" "%author%" (function . (lambda (argument)
 				       (user-full-name)))])
    "latex_article.model"
+   (model-from-file)))
+
+
+
+;; Template to create a LaTeX letter
+(stufe-register-template
+ '("latex-letter" 
+   (["Name of the project" "%project-name%"]
+    ["Author" "%author%" (function . (lambda (argument)
+				       (user-full-name)))])
+   "latex_letter.model"
    (model-from-file)))

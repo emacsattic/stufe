@@ -24,7 +24,7 @@
 ;; *
 ;; *************************************************
 
-;; C/C++ project
+;; LaTeX project
 (stufe-register-project 
  '("latex-article"
    (stufe-projects-new-folder
@@ -41,6 +41,21 @@
 					't 't)))))
 
 
+(stufe-register-project 
+ '("latex-letter"
+   (stufe-projects-new-folder
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details 
+					"latex-makefile" 
+					"makefile"))
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details 
+					"latex-letter" 
+					(concat (stufe-format-standard-name 
+						 (stufe-project-get-name project-details))
+						".tex")
+					't 't)))))
+
 ;; Add the menu item
 
 (setq stufe-menu-latex-projects-context
@@ -50,6 +65,10 @@
 (stufe-project-add-menu-item stufe-menu-latex-projects-context
 			       "New LaTeX article..." 
 			       "latex-article")
+
+(stufe-project-add-menu-item stufe-menu-latex-projects-context
+			       "New LaTeX letter..." 
+			       "latex-letter")
 
 
 
