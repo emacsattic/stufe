@@ -5,7 +5,7 @@
 \usepackage{babel}
 
 
-\address{My address}
+\address{My address \\ My country}
 
 \signature{%author%}
 
@@ -13,13 +13,12 @@
 \begin{document}
 \begin{letter}{Beginning of the letter}
 
-\opening{Opening}
+\opening{Opening of the letter}
+
+This is where the letter has to be written.
 
 
-My letter
-
-
-\closing{Closing}
+\closing{Closing of the letter}
 
 \end{letter}
 \end{document}
