@@ -25,7 +25,7 @@
   (let* ((current-working-folder stufe-working-folder))
     (setq stufe-working-folder stufe-root)
     (stufe-cvs-update)
-    (message "Warning: you need to reload Emacs to get the new version of Stufe running")
+    (stufe)
     (setq stufe-working-folder current-working-folder)))
 
 
