@@ -280,7 +280,7 @@ subdirs:
 	@for dir in $(DIRS); do $(MAKE) -C $$dir $(GOALS); done
   endif
 
-$(PROJECTFILE): $(PROJECT).sti $(DEPS) $(OBJS)
+$(PROJECTFILE): $(STI) $(DEPS) $(OBJS)
 	@echo "Linking..."
 	$(LINKCC) -o $(PROJECTFILE) $(OBJS) $(LDFLAGS)
 ifeq ($(strip $(PROJECTTYPE)),so)
@@ -383,6 +383,8 @@ endif
 ifneq ($(strip $(DEPS)),)
 ifeq (,$(findstring clean,$(MAKECMDGOALS)))
 -include $(DEPS)
--include $(STI)
 endif
+endif
+ifneq ($(strip $(STI)),)
+-include $(STI)
 endif
