@@ -39,6 +39,7 @@
 			    (make-local-variable 'stufe-compile-function)
 			    (setq stufe-compile-function 
 				  (lambda (command) 
+				    (save-some-buffers 1)
 				    (if (tex-shell-running) 
 					(tex-kill-job) 
 				      (tex-start-shell)) 
