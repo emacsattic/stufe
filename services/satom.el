@@ -18,44 +18,28 @@
 ;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
 ;; *************************************************
 ;; * 
-;; * Functions to specify the prog mode used in most
-;; * programming mode
+;; * Function to set the major-mode of a stc file
 ;; *
 ;; *************************************************
 
-;; Define the prog mode
+(setq auto-mode-alist
+      (append '(("\\.stc\\'" . sgml-mode)) auto-mode-alist))
 
-(stufe-require-file "services/register.el")
 
+;; *************************************************
+;; * 
+;; * Function to open a stc file
+;; *
+;; *************************************************
 
-(stufe-register-mode '("prog-mode"
-			 (
-			  "imenu-mode"
-
-			  "makefile-mode"
-
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
-
-			  "cvs-mode"
-
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
-
-			  (lambda ()
-			    (stufe-menu-add-item-local "Open settings" 
-							 'stufe-open-makefile))
-
-			  (lambda ()
-			    (stufe-shortcut-add-local [(control shift s)] 
-							`stufe-open-makefile))
-
-			  (lambda ()
-			    (stufe-shortcut-add-local [(control shift t)] 
-							`stufe-satom-open-stc))
-
-			  (lambda()
-			    (setq completion-ignore-case nil))
-			  )))
+(defun stufe-satom-open-stc ()
+  (interactive)
+  (let* ((folder (file-name-directory (buffer-file-name)))
+	 (stcname (file-name-nondirectory (substring folder 0 -1)))
+	 (stcfile (concat folder stcname ".stc")))
+    (if (file-exists-p stcfile)
+	(find-file stcfile)
+      (message "%s not found" stcfile))))
