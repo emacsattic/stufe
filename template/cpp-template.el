@@ -84,12 +84,12 @@
 (stufe-register-template 
  '("c-module-h" 
    (["Name of the module" "%ModuleName%"])
-   "c_module_gnu_h.model"
+   "c_module_h.model"
    (model-from-file)))
 (stufe-register-template 
  '("c-module-c" 
    (["Name of the module" "%ModuleName%"])
-   "c_module_gnu_c.model"
+   "c_module_c.model"
    (model-from-file)))
 
 

@@ -216,7 +216,9 @@
    (stufe-choose-new-folder "Set a working folder: "
 			      (if stufe-working-folder
 				  stufe-working-folder
-				(file-name-directory (buffer-file-name))))))
+				(if (buffer-file-name)
+				    (file-name-directory (buffer-file-name))
+				  "~/")))))
 
 
 (stufe-add-menu-item (stufe-get-stufe-context)
