@@ -96,28 +96,34 @@ project"
 ;;   (funcall stufe-compile-function 
 ;; 	   (stufe-run-in-work-folder stufe-make-command command)))
 
+;; (defun stufe-run-make (command)
+;;   "Try to run the make command (build a makefile if possible or necessary)"
+;;   (interactive)
+;;   (let ((make-command stufe-make-command)
+;; 	(bootstrap-command (if (and (not (stufe-is-configurable)) 
+;; 				    (stufe-is-bootstrapable))
+;; 			       "sh ./bootstrap && "
+;; 			     ""))
+;; 	(configurable-command (if (and (not (stufe-is-make-runnable))
+;; 				       (or (stufe-is-bootstrapable)
+;; 					   (stufe-is-configurable)))
+;; 				  "./configure --enable-debug && "
+;; 				"")))
+;;     (if (not (or (stufe-is-make-runnable)
+;; 		 (stufe-is-configurable)
+;; 		 (stufe-is-bootstrapable)))
+;; 	(stufe-guess-project-makefile))
+;;     (funcall stufe-compile-function 
+;;  	     (stufe-run-in-work-folder (format "%s%s%s" 
+;; 					       bootstrap-command 
+;; 					       configurable-command
+;; 					       stufe-make-command) command))))
+
 (defun stufe-run-make (command)
   "Try to run the make command (build a makefile if possible or necessary)"
   (interactive)
-  (let ((make-command stufe-make-command)
-	(bootstrap-command (if (and (not (stufe-is-configurable)) 
-				    (stufe-is-bootstrapable))
-			       "sh ./bootstrap && "
-			     ""))
-	(configurable-command (if (and (not (stufe-is-make-runnable))
-				       (or (stufe-is-bootstrapable)
-					   (stufe-is-configurable)))
-				  "./configure --enable-debug && "
-				"")))
-    (if (not (or (stufe-is-make-runnable)
-		 (stufe-is-configurable)
-		 (stufe-is-bootstrapable)))
-	(stufe-guess-project-makefile))
-    (funcall stufe-compile-function 
- 	     (stufe-run-in-work-folder (format "%s%s%s" 
-					       bootstrap-command 
-					       configurable-command
-					       stufe-make-command) command))))
+  (funcall stufe-compile-function 
+	   (stufe-run-in-work-folder stufe-make-command command)))
 
 
 
