@@ -21,6 +21,10 @@ DIRS =
 #   no: command line used are not displayed
 VERBOSE = no
 
+# Debuging informations
+#   no: no debug information 
+#   yes: debug info for jdb
+DEBUGINFO = no
 
 #*****************************************************************#
 #*                                                               *#
@@ -45,6 +49,11 @@ endif
 ifeq ($(strip $(PROJECTPATH)),)
 PROJECTPATH = .
 endif
+# Default debugging information
+ifeq ($(strip $(DEBUGINFO)),)
+DEBUGINFO = no
+endif
+
 
 #
 # Define the default program to use. Same as options: they
@@ -69,6 +78,11 @@ endif
 # when calling the command line
 ifeq ($(VERBOSE),no)
  DEBUGMARK = @
+endif
+
+# Debugging information options
+ifeq ($(DEBUGINFO),yes)
+ DEBUGINFOFLAG = -g
 endif
 
 # We define exactly what file is the output of the project
@@ -111,7 +125,7 @@ subdirs:
 
 $(PROJECTFILE): $(SRCS) makefile
 	@echo "Building..."
-	$(JAVAC) *.java 
+	$(JAVAC) $(DEBUGINFOFLAG) -d $(PROJECTPATH) *.java
 	@echo "The project '$(PROJECT)' has been build."
 
 #
