@@ -29,7 +29,12 @@
 
 (stufe-register-mode '("latex-mode"
 
-			 ("prog-mode"
+			 ((lambda ()
+ 			    (make-local-variable 'imenu-sort-function)
+ 			    (setq imenu-sort-function nil))
+
+			  "prog-mode"
+
 			  (lambda ()
 			    (stufe-menu-add-item-local "View" 
 						       'stufe-make-exec))

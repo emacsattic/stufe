@@ -25,6 +25,9 @@
 ;; *************************************************
 
 
+;; Alphabetic orders for IMenu
+(setq imenu-sort-function 'imenu--sort-by-name)
+
 ;; Definition of the selection for this Windows
 (custom-set-variables
  '(pc-select-meta-moves-sexps t)
