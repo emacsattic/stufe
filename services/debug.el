@@ -87,6 +87,7 @@
 (defun stufe-debug-project () 
   "Start the debug mode"
   (interactive)
+  (save-some-buffers 1)
   (if (stufe-get-debug-process)
       (stufe-debug-continue-program)
     (progn
