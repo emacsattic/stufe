@@ -38,3 +38,5 @@
 				   (file-name-nondirectory (buffer-file-name))))
 			       (buffer-name))))))))
 
+(add-hook 'semantic-init-hooks 'senator-minor-mode)
+
