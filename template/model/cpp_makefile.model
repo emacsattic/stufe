@@ -193,24 +193,25 @@ ADDITIONALPATHINCLUDE = $(foreach INCPATH,$(ADDINCPATH),-I$(INCPATH))
 
 
 # Optimisation option
-ifeq ($(OPTIMISATION),1)
+ifeq ($(strip $(OPTIMISATION)),1)
  OPTIMISATIONFLAG = -O1
 endif
-ifeq ($(OPTIMISATION),2)
+ifeq ($(strip $(OPTIMISATION)),2)
  OPTIMISATIONFLAG = -O2
 endif
-ifeq ($(OPTIMISATION),3)
+ifeq ($(strip $(OPTIMISATION)),3)
  OPTIMISATIONFLAG = -O3
 endif
 # Debugging information options
-ifeq ($(DEBUGINFO),standard)
+ifeq ($(strip $(DEBUGINFO)),standard)
  DEBUGINFOFLAG = -g
 endif
-ifeq ($(DEBUGINFO),gdb)
+ifeq ($(strip $(DEBUGINFO)),gdb)
  DEBUGINFOFLAG = -ggdb3
 endif
+
 # Profiling information options
-ifeq ($(PROFILING),true)
+ifeq ($strip $(PROFILING)),true)
  PROFILINGFLAG = -pg
 endif
 
