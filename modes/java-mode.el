@@ -45,10 +45,10 @@
 			   
 			   ;; Keyboard shortcut
 			   (lambda ()
-			     (stufe-shortcut-add-local [(control o)] 
+			     (stufe-shortcut-add-local [(control ?c) (control ?o)] 
 							 'stufe-create-new-java-class))
 			   (lambda ()
-			     (stufe-shortcut-add-local [(control f)] 
+			     (stufe-shortcut-add-local [(control ?c) (control ?f)] 
 							 'stufe-create-new-java-class-member))
 			   
 			   ;; Keyboard shortcut

@@ -65,7 +65,6 @@
 (global-set-key [(f4)] 'next-error)
 (global-set-key [(control z)] 'undo)
 (global-set-key [(f9)] 'compile)
-(global-set-key [(control-l)] 'stufe-center-on-line)
 (setq Man-notify-method 'newframe)
 (global-set-key [(f1)] (lambda () (interactive) (man (current-word))))
 

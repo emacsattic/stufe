@@ -25,12 +25,6 @@
 ;; *************************************************
 
 
-(defun stufe-center-on-line ()
-  "Make the current buffer center on the current line"
-  (interactive)
-  (recenter 0))
-
-
 (defun stufe-get-current-line ()
   "Return the current line of the current buffer"
   (+ (count-lines (point-min) (stufe-get-beginning-of-line)) 1))
