@@ -31,9 +31,10 @@
 			    (make-local-variable 'stufe-compilation-buffer-name)
 			    (setq stufe-compilation-buffer-name "*tex-shell*"))
 			  (lambda () 
-			    (ispell-change-dictionary stufe-default-ispell-langage)
-			    (flyspell-buffer)
-			    (flyspell-mode 1))
+			    (if stufe-default-ispell-langage
+				((ispell-change-dictionary stufe-default-ispell-langage)
+				 (flyspell-mode 1)
+				 (flyspell-buffer))))
 			  )))
 
 
