@@ -105,16 +105,6 @@
    (t (error "No makefile associated with %s" major-mode))))
 
 
-(defun stufe-open-makefile ()
-  "Open the makefile found in the current folder"
-  (interactive)
-  (cond ((file-exists-p "Makefile.am") (find-file "Makefile.am"))
-	((file-exists-p "makefile") (find-file "makefile"))
-	((file-exists-p "Makefile") (find-file "Makefile"))
-	(t (progn 
-	     (stufe-guess-project-makefile)
-	     (find-file "makefile")))))
-
 
 ;; *************************************************
 ;; * 

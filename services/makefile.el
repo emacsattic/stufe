@@ -25,6 +25,29 @@
 ;; *
 ;; *************************************************
 
+(defun stufe-find-makefile (folder)
+  "Try to find a makefile in a folder"
+  (cond 
+   ((file-exists-p (expand-file-name "Makefile.am" folder))
+    (expand-file-name "Makefile.am" folder))
+   ((file-exists-p (expand-file-name "Makefile" folder))
+    (expand-file-name "Makefile" folder))
+   ((file-exists-p (expand-file-name "makefile" folder))
+    (expand-file-name "makefile" folder))
+   (t nil)))
+
+
+(defun stufe-open-makefile ()
+  "Open the makefile found in the current folder"
+  (interactive)
+  (let ((makefile-path (stufe-find-makefile "./")))
+    (if makefile-path
+	(find-file makefile-path)
+      (progn 
+	(stufe-guess-project-makefile)
+	(find-file "makefile")))))
+
+
 (defun stufe-current-makefile-path ()
   (let ((current-filename (buffer-file-name)))
     (if current-filename 
@@ -34,10 +57,10 @@
 
 
 (defun stufe-project-makefile-path ()
-  (if stufe-working-folder
-      (expand-file-name "makefile" 
-			(file-name-directory stufe-working-folder))
-    (stufe-current-makefile-path)))
+  "Try to find a makefile for the current project"
+  (stufe-find-makefile (if stufe-working-folder
+			   stufe-working-folder
+			 "./")))
 
 
 (defun stufe-makefile-get-value (makefile key)
@@ -48,8 +71,11 @@
 
 (defun stufe-makefile-get-values (makefile key)
   "Get the corresponding value in a makefile for a specified key"
-  (cdr (split-string (stufe-makefile-get-line-value makefile key)
-		     "[= \f\t\n\r\v]+")))
+  (let ((makefile-line-value (stufe-makefile-get-line-value makefile key)))
+    (if makefile-line-value
+	(cdr (split-string makefile-line-value
+			   "[= \f\t\n\r\v]+"))
+      nil)))
 
 (defun stufe-makefile-get-line-value (makefile key)
   "Get the corresponding line of a value in a makefile for a specified key"
@@ -61,18 +87,21 @@
     (save-current-buffer
       (set-buffer makefile-buffer)
       (goto-char 0)
-      (while (> (string-match key current-string)
-		(let ((position (string-match "#" current-string)))
-		  (if position
-		      position
-		    (length current-string))))
-	(search-forward key)
-	(setq current-string (thing-at-point 'line)))
+      (while (and current-string 
+		  (> (string-match key current-string)
+		     (let ((position (string-match "#" current-string)))
+		       (if position
+			   position
+			 (length current-string)))))
+	(if (search-forward key (point-max) t)
+	    (setq current-string (thing-at-point 'line))
+	  (setq current-string nil)))
       (if (not initial-buffer)
 	  (kill-buffer makefile-buffer))
-      (set-text-properties 0 
-			   (length current-string)
-			   nil
-			   current-string)
+      (if current-string
+	  (set-text-properties 0 
+			       (length current-string)
+			       nil
+			       current-string))
       current-string)))
       

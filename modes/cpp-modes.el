@@ -40,10 +40,11 @@
 					      (stufe-project-makefile-path)
 					      "PROJECT")))
 			   (gud-call "break main")
-			   (gud-call (format "set args %s" 
-					     (stufe-makefile-get-value 
-					      (stufe-project-makefile-path)
-					      "OPTION")))			   
+			   (let ((options (stufe-makefile-get-value 
+					   (stufe-project-makefile-path) 
+					   "OPTION")))
+			     (if options
+				 (gud-call (format "set args %s" options))))
 			   (gud-call "run")
 			   (mapcar (lambda (breakpoint) 
 				     (stufe-debug-add-breakpoint breakpoint))
