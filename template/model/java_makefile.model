@@ -5,7 +5,7 @@
 PROJECT = %project-name%
 
 # Path of the output (full directory name, without environment
-  variable)
+#  variable)
 PROJECTPATH = .
 
 # Options to pass to the program
