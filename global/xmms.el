@@ -34,6 +34,14 @@
   "*Xmms-Process*"
   "Name used for the xmms process")
 
+(defvar stufe-aumix-command 
+  "aumix"
+  "Command modify the volume")
+
+(defvar stufe-aumix-process
+  "*Aumix-Process*"
+  "Name used for the aumix process")
+
 
 (defun stufe-run-xmms (option)
   "Run a xmms command with an option. Display the output of the
@@ -41,6 +49,16 @@ command in a buffer."
   (start-process stufe-xmms-process
 		 nil 
 		 stufe-xmms-command  
+		 option))
+
+
+(defun stufe-run-aumix (option)
+  "Run an aumix command with an option. Display the output of the
+command in a buffer."
+  (message "%s %s %s" stufe-aumix-process stufe-aumix-command option)
+  (start-process stufe-aumix-process
+		 nil 
+		 stufe-aumix-command  
 		 option))
 
 
@@ -61,10 +79,22 @@ command in a buffer."
   (interactive)
   (stufe-run-xmms "-t"))
 
+(defun stufe-aumix-up ()
+  "Change the current volume of the mixer"
+  (interactive)
+  (stufe-run-aumix "-w+5"))
+
+(defun stufe-aumix-down ()
+  "Change the current volume of the mixer"
+  (interactive)
+  (stufe-run-aumix "-w-5"))
+
 ;; Define global key to bind with this functions
 (global-set-key [(control shift j)] `stufe-xmms-last)
 (global-set-key [(control shift k)] `stufe-xmms-change)
 (global-set-key [(control shift l)] `stufe-xmms-next)
+(global-set-key [(control shift m)] `stufe-aumix-down)
+(global-set-key [(control shift p)] `stufe-aumix-up)
 
 
 ;; Add the items in the stufe menu
@@ -84,5 +114,11 @@ command in a buffer."
 (stufe-add-menu-item stufe-menu-xmms-context
 		       "Play/Stop music" 
 		       'stufe-xmms-change)
+(stufe-add-menu-item stufe-menu-xmms-context
+		       "Decrease Pcm" 
+		       'stufe-aumix-down)
+(stufe-add-menu-item stufe-menu-xmms-context
+		       "Increase Pcm" 
+		       'stufe-aumix-up)
 
 
