@@ -29,12 +29,14 @@
  '("perl-script"
    (stufe-projects-new-folder
     (lambda (project-details)
-      (stufe-project-template-to-file project-details 
-				      "perl-script" 
-				      (concat (stufe-format-standard-name 
-					       (stufe-project-get-name project-details))
-					      ".pl")
-				      't 't)))))
+      (let ((filename (concat (stufe-format-standard-name 
+			       (stufe-project-get-name project-details))
+			      ".pl")))
+	(stufe-project-template-to-file project-details 
+					"perl-script" 
+					filename t)
+	(set-file-modes (expand-file-name filename
+					  (stufe-project-get-location project-details)) 755))))))
 
 
 ;; Add the menu item

@@ -63,12 +63,12 @@
 				   (stufe-get-project-menu)))
 
 (stufe-project-add-menu-item stufe-menu-latex-projects-context
-			       "New LaTeX article..." 
-			       "latex-article")
+			     "New LaTeX article..." 
+			     "latex-article")
 
 (stufe-project-add-menu-item stufe-menu-latex-projects-context
-			       "New LaTeX letter..." 
-			       "latex-letter")
+			     "New LaTeX letter..." 
+			     "latex-letter")
 
 
 

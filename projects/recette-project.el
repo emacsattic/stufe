@@ -25,7 +25,8 @@
 ;; *
 ;; *************************************************
 
-(stufe-load-file "latex-projects.el")
+;; Need the LaTeX menu
+(stufe-require-file "projects/latex-projects.el")
 
 (stufe-register-project 
  '("recette-de-cuisine"
@@ -33,15 +34,16 @@
    (no-project-details)))
 
 
-(defun stufe-create-recette-folder (recette-folder)
+(defun stufe-create-recette-folder (recette-folder recette-file)
   (make-directory stufe-recettes-default-path)
-  (let ((project-details (stufe-create-project-details-from-folder recette-folder)))
+  (let ((project-details (stufe-create-project-details-from-folder recette-folder
+								   recette-file)))
     (stufe-project-template-to-file project-details
-				      "latex-makefile" 
-				      "makefile")
+				    "latex-makefile" 
+				    "makefile")
     (stufe-project-template-to-file project-details
-				      "recette-cls" 
-				      "recette.cls")))
+				    "recette-cls" 
+				    "recette.cls")))
 
 
 (defun stufe-nouvelle-recette ()
@@ -51,14 +53,15 @@
 					     ".tex")
 				     stufe-recettes-default-path)))
     (if (not (file-exists-p stufe-recettes-default-path))
-	(stufe-create-recette-folder stufe-recettes-default-path))
+	(stufe-create-recette-folder stufe-recettes-default-path
+				     (stufe-format-standard-name (car template-args))))
     (stufe-template-args-into-file template-name
-				     template-args
-				     filepath 't 't)))
+				   template-args
+				   filepath 't 't)))
 
 
 ;; Add the menu item 
 
 (stufe-project-add-menu-item stufe-menu-latex-projects-context
-			       "Nouvelle recette de cuisine..." 
-			       "recette-de-cuisine")
+			     "Nouvelle recette de cuisine..." 
+			     "recette-de-cuisine")
