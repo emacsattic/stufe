@@ -66,80 +66,84 @@
 
 
 (stufe-register-mode '("c-prog-mode"
-			 (
-			   ;; Menu item
-			  (lambda ()
-			    (stufe-menu-add-item-local "Generate documentation" 
-							 'stufe-make-doc))
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
+		       (
+			;; Menu item
+			"debug-mode" 
 
-			  "prog-mode" 
-			   
-			   (lambda ()
-			     (stufe-menu-add-item-local "Exec" 
-							  'stufe-make-exec))
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
+			(lambda ()
+			  (stufe-menu-add-menubar-local))
 
-			   "debug-mode" 
+			(lambda ()
+			  (stufe-menu-add-item-local "Exec" 
+						     'stufe-make-exec))
 
-			   ;; Keyboard shortcut
-			   (lambda ()
-			     (stufe-shortcut-add-local [(f5)] 
-							 `stufe-make-exec))
-			  (lambda ()
-			    (stufe-shortcut-add-local [(control $)] 
-							'stufe-switch-cpp-file))
-			  (lambda ()
-			    (stufe-shortcut-add-local [(control 0)] 
-							'stufe-switch-cpp-file))
+			"prog-mode" 
+			  
+			(lambda ()
+			  (stufe-menu-add-menubar-local))
+			  			  
+			(lambda ()
+			  (stufe-menu-add-item-local "Generate documentation" 
+						     'stufe-make-doc))
 
-			  ;; Defines local buffer variables
-			  (lambda ()
-			    ;; Man pages
-			    (make-local-variable 'stufe-default-man-page)
-			    (setq stufe-default-man-page "2")
-			    ;; Grep patterns
-			    (make-local-variable 'stufe-grep-file-pattern)
-			    (setq stufe-grep-file-pattern "*.[cChH] *.[ch]pp"))
+			;; Keyboard shortcut
+			(lambda ()
+			  (stufe-shortcut-add-local [(f5)] 
+						    `stufe-make-exec))
+			(lambda ()
+			  (stufe-shortcut-add-local [(control $)] 
+						    'stufe-switch-cpp-file))
+			(lambda ()
+			  (stufe-shortcut-add-local [(control 0)] 
+						    'stufe-switch-cpp-file))
 
-			   ;; Initialize debugging
-			   (lambda ()
-			     (make-local-variable 'stufe-debug-buffer-name)
-			     (setq stufe-debug-buffer-name "*gud*")
+			;; Defines local buffer variables
+			(lambda ()
+			  ;; Man pages
+			  (make-local-variable 'stufe-default-man-page)
+			  (setq stufe-default-man-page "2")
+			  ;; Grep patterns
+			  (make-local-variable 'stufe-grep-file-pattern)
+			  (setq stufe-grep-file-pattern "*.[cChH] *.[ch]pp"))
 
-			     (make-local-variable 'stufe-debug-command)
-			     (setq stufe-debug-command "gdb")
+			;; Initialize debugging
+			(lambda ()
+			  (make-local-variable 'stufe-debug-buffer-name)
+			  (setq stufe-debug-buffer-name "*gud*")
 
-			     (make-local-variable 'stufe-debug-command)
-			     (setq stufe-debug-function 'gdb)
+			  (make-local-variable 'stufe-debug-command)
+			  (setq stufe-debug-command "gdb")
 
-			     (make-local-variable 'stufe-run-debugger)
-			     (setq stufe-run-debugger 'stufe-run-debugger-c-mode)
+			  (make-local-variable 'stufe-debug-command)
+			  (setq stufe-debug-function 'gdb)
 
-			     (make-local-variable 'stufe-debug-command-table)
-			     (setq stufe-debug-command-table stufe-c-debug-command-table)))))
+			  (make-local-variable 'stufe-run-debugger)
+			  (setq stufe-run-debugger 'stufe-run-debugger-c-mode)
+
+			  (make-local-variable 'stufe-debug-command-table)
+			  (setq stufe-debug-command-table stufe-c-debug-command-table)))))
 
 (stufe-register-mode '("c-mode"
 			 ( 
-			  (lambda ()
-			    (stufe-menu-add-item-local "Switch c<-->h" 
-							 'stufe-switch-cpp-file))
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
-
-			  "c-prog-mode" 
-			   
 			   ;; Menu item
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
 			  (lambda ()
 			    (stufe-menu-add-item-local "Create a new module..." 
 							 'stufe-create-new-c-module))
 			  (lambda ()
 			    (stufe-menu-add-item-local "Create a new function..." 
 							 'stufe-create-new-c-member))
+			  (lambda ()
+			    (stufe-menu-add-menubar-local))
+
+			  "c-prog-mode" 
+
+			  (lambda ()
+			    (stufe-menu-add-menubar-local))
+
+			  (lambda ()
+			    (stufe-menu-add-item-local "Switch c<-->h" 
+							 'stufe-switch-cpp-file))
+			   
 			  ;; Keyboard shortcut
 			  (lambda ()
 			    (stufe-shortcut-add-local [(control ?c) (control ?o)] 
@@ -152,24 +156,26 @@
 
 (stufe-register-mode '("cpp-mode"
 			 ( 
-			  (lambda ()
-			    (stufe-menu-add-item-local "Switch cpp<-->hpp" 
-							 'stufe-switch-cpp-file))
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
 
-			  "c-prog-mode" 
-			   
-			   ;; Menu item
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
 			  (lambda ()
 			    (stufe-menu-add-item-local "Create a new class..." 
 							 'stufe-create-new-cpp-class))
 			  (lambda ()
 			    (stufe-menu-add-item-local "Create a new member..." 
 							 'stufe-create-new-cpp-class-member))
+			  (lambda ()
+			    (stufe-menu-add-menubar-local))
+
+			  "c-prog-mode" 
+			   
+			   ;; Menu item
 			  
+			  (lambda ()
+			    (stufe-menu-add-menubar-local))
+			  (lambda ()
+			    (stufe-menu-add-item-local "Switch cpp<-->hpp" 
+							 'stufe-switch-cpp-file))
+
 			  ;; Keyboard shortcut
 			  (lambda ()
 			    (stufe-shortcut-add-local [(control ?c) (control ?o)] 

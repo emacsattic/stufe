@@ -29,11 +29,12 @@
 			 (
 			  ;; Menu item
 			  (lambda ()
-			    (stufe-menu-add-item-local "Set/unset breakpoints" 
-							 'stufe-set-breakpoint))
-			  (lambda ()
 			    (stufe-menu-add-item-local "Debug project..." 
 							 'stufe-debug-project))
+
+			  (lambda ()
+			    (stufe-menu-add-item-local "Set/unset breakpoints" 
+							 'stufe-set-breakpoint))
 
 			   ;; Keyboard shortcut
 			   (lambda ()

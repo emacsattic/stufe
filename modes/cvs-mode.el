@@ -28,18 +28,18 @@
 (stufe-register-mode '("cvs-mode"
 			 (
 			  (lambda ()
-			    (stufe-menu-add-item-local "Add buffer" 
-							 'stufe-cvs-add-buffer))
-			  (lambda ()
-			    (stufe-menu-add-item-local "Branch" 
-							 'stufe-cvs-branch))
-			  (lambda ()
-			    (stufe-menu-add-item-local "Tag" 
-							 'stufe-cvs-tag))
+			    (stufe-menu-add-item-local "Commit..." 
+							 'stufe-cvs-commit))
 			  (lambda ()
 			    (stufe-menu-add-item-local "Update" 
 							 'stufe-cvs-update))
 			  (lambda ()
-			    (stufe-menu-add-item-local "Commit..." 
-							 'stufe-cvs-commit)))))
+			    (stufe-menu-add-item-local "Tag" 
+							 'stufe-cvs-tag))
+			  (lambda ()
+			    (stufe-menu-add-item-local "Branch" 
+							 'stufe-cvs-branch))
+			  (lambda ()
+			    (stufe-menu-add-item-local "Add buffer" 
+							 'stufe-cvs-add-buffer)))))
 

@@ -31,9 +31,8 @@
 			 (
 			  "imenu-mode"
 
-			  (lambda ()
-			    (stufe-menu-add-item-local "Open settings" 
-							 'stufe-open-makefile))
+			  "makefile-mode"
+
 			  (lambda ()
 			    (stufe-menu-add-menubar-local))
 
@@ -42,10 +41,9 @@
 			  (lambda ()
 			    (stufe-menu-add-menubar-local))
 
-			  "makefile-mode"
-
 			  (lambda ()
-			    (stufe-menu-add-menubar-local))
+			    (stufe-menu-add-item-local "Open settings" 
+							 'stufe-open-makefile))
 
 			  (lambda ()
 			    (stufe-shortcut-add-local [(control shift s)] 
