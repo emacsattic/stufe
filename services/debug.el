@@ -52,27 +52,36 @@
 (defun stufe-kill-debug-window ()
   "Kill the buffer used to debug"
   (if (stufe-get-debug-buffer)
-      (kill-buffer (stufe-get-debug-buffer))))
+      (kill-buffer (stufe-get-debug-buffer))
+    nil))
 
 
 (defun stufe-get-debug-window ()
   "Get the current window used to debug"
   (if (stufe-get-debug-buffer)
-      (get-buffer-window (stufe-get-debug-buffer))))
+      (get-buffer-window (stufe-get-debug-buffer))
+    nil))
 
 
 (defun stufe-launch-debug-window ()
   "Find a place for the debug buffer"
-  (let* ((debug-window (stufe-get-debug-window))
+  (let* ((current-buffer (current-buffer))
+	 (debug-window (stufe-get-debug-window))
 	 (compilation-window (stufe-get-compilation-window)))
+
     (stufe-kill-debug-window)
-    (if (and (not debug-window) compilation-window)
-	(setq debug-window (split-window compilation-window nil t)))
-    (if debug-window
-	(set-window-buffer debug-window (get-buffer-create stufe-debug-buffer-name))))
-  (save-selected-window
-    (funcall stufe-debug-function
-	     (funcall stufe-run-debugger stufe-debug-command))))
+
+    (if (not debug-window)
+	(if compilation-window
+	    (setq debug-window (split-window compilation-window nil t))
+	  (setq debug-window (split-window (selected-window) nil nil))))
+
+    (set-window-buffer debug-window (get-buffer-create stufe-debug-buffer-name))
+    (save-selected-window
+      (funcall stufe-debug-function
+	       (funcall stufe-run-debugger stufe-debug-command)))
+
+    (set-window-buffer (selected-window) current-buffer)))
 
 
 (defun stufe-debug-project () 
@@ -84,11 +93,11 @@
       (stufe-launch-debug-window)
       (save-current-buffer
 	(stufe-load-project-file))
-	(stufe-debug-add-main-breakpoint)
-	(stufe-debug-run-program)
-	(mapcar (lambda (breakpoint) (stufe-debug-add-breakpoint breakpoint))
-		stufe-breakpoint-list)
-	(stufe-debug-continue-program))))
+      (stufe-debug-add-main-breakpoint)
+      (stufe-debug-run-program)
+      (mapcar (lambda (breakpoint) (stufe-debug-add-breakpoint breakpoint))
+	      stufe-breakpoint-list)
+      (stufe-debug-continue-program))))
 
 
 (defun stufe-debug-watch-variable-at-point ()
@@ -103,58 +112,71 @@
 ;; *
 ;; *************************************************
 
-(defun stufe-get-debugger-command (debugger-command)
+(defun stufe-get-debugger-function (debugger-function)
   "Get the corresponding debugger (gdb, jdb) command for a debug command"
-  (cadr (assoc debugger-command stufe-debug-command-table)))
+  (cadr (assoc debugger-function stufe-debug-command-table)))
+
 
 (defun stufe-load-project-file ()
   "Load the project file into the debugger"
-  (stufe-send-debug-command (stufe-get-debugger-command "LoadProject")
-			    (stufe-makefile-get-value (stufe-project-makefile-path)
-						      "PROJECT")))
+  (let ((command-function (stufe-get-debugger-function "Load project")))
+    (if command-function
+	(funcall command-function
+		 (stufe-makefile-get-value (stufe-project-makefile-path)
+					   "PROJECT")))))
+
 
 (defun stufe-debug-run-program ()
   "Start the program in the debugger"
-  (stufe-send-debug-command (stufe-get-debugger-command "RunProject") ""))
+  (let ((command-function (stufe-get-debugger-function "Run project")))
+    (if command-function
+	(funcall command-function))))
 
 
 (defun stufe-debug-continue-program ()
   "Start the program in the debugger"
-  (stufe-send-debug-command (stufe-get-debugger-command "Continue") ""))
+  (let ((command-function (stufe-get-debugger-function "Continue")))
+    (if command-function
+	(funcall command-function))))
 
 
 (defun stufe-debug-print-variable (variable)
   "Print a variable in the debugger"
-  (stufe-send-debug-command (stufe-get-debugger-command "Print") variable))
+  (let ((command-function (stufe-get-debugger-function "Print variable")))
+    (if command-function
+	(funcall command-function))))
 
 
 (defun stufe-debug-add-main-breakpoint ()
   "Add a breakpoint at the beginning of the main function"
-  (stufe-send-debug-command (stufe-get-debugger-command "AddMainBreakpoint") 
-			    (funcall stufe-debug-get-main-breakpoint)))
-
-
-(defun stufe-send-debug-command (command argument)
-  "Send a debug command to the debugger"
-  (if (and command (not (string= command "")))
-      (let ((debugger-command (format "%s %s" command argument)))
-	(message "Debug command: %s" debugger-command)
-	(save-current-buffer
-	  (process-send-string (stufe-get-debug-buffer) 
-			       (concat debugger-command "\n"))))))
+  (let ((command-function (stufe-get-debugger-function "Add main breakpoint")))
+    (if command-function
+	(funcall command-function))))
 
 
 (defun stufe-debug-add-breakpoint (breakpoint)
-  (stufe-send-debug-command (stufe-get-debugger-command "AddBreakpoint")
-			    (format "%s:%s"
-				    (stufe-breakpoint-get-file breakpoint)
-				    (stufe-breakpoint-get-line breakpoint))))
+  (let ((command-function (stufe-get-debugger-function "Add breakpoint")))
+    (if command-function
+	(funcall command-function
+		 (stufe-breakpoint-get-file breakpoint)
+		 (stufe-breakpoint-get-line breakpoint)))))
+
 
 (defun stufe-debug-remove-breakpoint (breakpoint)
-  (stufe-send-debug-command  (stufe-get-debugger-command "ClearBreakpoint")
-			     (format "%s:%s"
-				     (stufe-breakpoint-get-file breakpoint)
-				     (stufe-breakpoint-get-line breakpoint))))
+  (let ((command-function (stufe-get-debugger-function "Clear breakpoint")))
+    (if command-function
+	(funcall command-function
+		 (stufe-breakpoint-get-file breakpoint)
+		 (stufe-breakpoint-get-line breakpoint)))))
+
+
+(defun stufe-send-debug-command (command)
+  "Send a debug command to the debugger"
+  (save-current-buffer
+    (message "Debug command: %s" command)
+    (process-send-string (stufe-get-debug-buffer)
+			 (concat command "\n"))))
+
 	   
 (defun stufe-debug-kill-debugger ()
   (interactive)

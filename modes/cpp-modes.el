@@ -34,13 +34,29 @@
 
 
 (setq stufe-c-debug-command-table
-      '(("LoadProject" "file")
-        ("RunProject" "run")
-	("AddMainBreakpoint" "break")
-	("AddBreakpoint" "break")
-	("ClearBreakpoint" "clear")
-	("Continue" "continue")
-	("Print" "print")))
+      '(("Load project" (lambda (project)
+			  (stufe-send-debug-command (format "file %s" project))))
+
+        ("Run project" (lambda () 
+			 (stufe-send-debug-command "run")))
+
+	("Add main breakpoint" (lambda () 
+				 (stufe-send-debug-command "break main")))
+
+	("Add breakpoint" (lambda (file line)
+			    (stufe-send-debug-command 
+			     (format "break %s:%s" file line))))
+	
+	("Clear breakpoint" (lambda (file line)
+			      (stufe-send-debug-command 
+			     (format "clear %s:%s" file line))))
+
+	("Continue" (lambda () 
+		      (stufe-send-debug-command "continue")))
+
+	("Print variable" (lambda (variable) 
+			    (stufe-send-debug-command 
+			     (format "print %s" variable))))))
 
 
 (stufe-register-mode '("c-prog-mode"
@@ -75,6 +91,9 @@
 
 			   ;; Initialize debugging
 			   (lambda ()
+			     (make-local-variable 'stufe-debug-buffer-name)
+			     (setq stufe-debug-buffer-name "*gud*")
+
 			     (make-local-variable 'stufe-debug-command)
 			     (setq stufe-debug-command "gdb")
 
@@ -83,9 +102,6 @@
 
 			     (make-local-variable 'stufe-run-debugger)
 			     (setq stufe-run-debugger 'stufe-run-debugger-c-mode)
-
-			     (make-local-variable 'stufe-debug-get-main-breakpoint)
-			     (setq stufe-debug-get-main-breakpoint (lambda () "main"))
 
 			     (make-local-variable 'stufe-debug-command-table)
 			     (setq stufe-debug-command-table stufe-c-debug-command-table)))))

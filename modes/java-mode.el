@@ -26,31 +26,44 @@
 
 
 (defun stufe-run-debugger-java-mode (debug-command)
-  (let ((project (stufe-makefile-get-value (stufe-project-makefile-path)
-					   "PROJECT")))
-    (setq stufe-debug-buffer-name (format "*gud-%s*" project))
-    (format "%s %s %s"
-	    (if stufe-working-folder
-		(format "cd %s &&" stufe-working-folder)
-	      "")
-	    debug-command
-	    project)))
+  (format "%s %s %s"
+	  (if stufe-working-folder
+	      (format "cd %s &&" stufe-working-folder)
+	    "")
+	  debug-command
+	  (stufe-makefile-get-value (stufe-project-makefile-path)
+				    "PROJECT")))
+
 
 
 (setq stufe-java-debug-command-table
-      '(("LoadProject" "")
-        ("RunProject" "run")
-	("AddMainBreakpoint" "stop in")
-	("AddBreakpoint" "stop at")
-	("ClearBreakpoint" "clear")
-	("Continue" "cont")
-	("Print" "print")))
+      '(("Load project" nil)
 
+        ("Run project" (lambda () 
+			 (stufe-send-debug-command "run")))
 
-(defun stufe-debug-java-get-main-breakpoint ()
-  "Get a string to represent the breakpoint to the main method"
-  (format "%s.main" (stufe-makefile-get-value (stufe-project-makefile-path)
-					      "PROJECT"))) 
+	("Add main breakpoint" nil)
+
+	("Add breakpoint" (lambda (file line)
+			    (stufe-send-debug-command 
+			     (format "stop at %s:%s"
+				     (file-name-nondirectory 
+				      (file-name-sans-extension file))
+				     line))))
+	
+	("Clear breakpoint" (lambda (file line)
+			      (stufe-send-debug-command 
+			       (format "clear %s:%s"
+				       (file-name-nondirectory 
+					(file-name-sans-extension file))
+				       line))))
+
+	("Continue" (lambda () 
+		      (stufe-send-debug-command "cont")))
+
+	("Print variable" (lambda (variable) 
+			    (stufe-send-debug-command 
+			     (format "print %s" variable))))))
 
 
 
@@ -97,16 +110,17 @@
 
 			   ;; Initialize debugging
 			   (lambda ()
+			     (make-local-variable 'stufe-debug-buffer-name)
+			     (setq stufe-debug-buffer-name 
+				   (format "*gud-%s*" 
+					   (stufe-makefile-get-value 
+					    (stufe-project-makefile-path) "PROJECT")))
+			     
 			     (make-local-variable 'stufe-debug-command)
 			     (setq stufe-debug-command "jdb")
 
 			     (make-local-variable 'stufe-debug-command)
 			     (setq stufe-debug-function 'jdb)
-
-			     ;;(make-local-variable 'stufe-debug-get-main-breakpoint)
-
-			     (setq stufe-debug-get-main-breakpoint
-				   'stufe-debug-java-get-main-breakpoint)
 
 			     (make-local-variable 'stufe-run-debugger)
 			     (setq stufe-run-debugger 'stufe-run-debugger-java-mode)

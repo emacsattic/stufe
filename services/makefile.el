@@ -41,7 +41,9 @@
 
 
 (defun stufe-makefile-get-value (makefile key)
-  (car (stufe-makefile-get-values makefile key)))
+  (save-current-buffer
+    (car (stufe-makefile-get-values makefile key))))
+
 
 (defun stufe-makefile-get-values (makefile key)
   "Get the corresponding value in a makefile for a specified key"
