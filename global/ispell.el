@@ -43,6 +43,10 @@
       (stufe-add-menu-item-group "Spell check"))
 
 (stufe-add-menu-item stufe-menu-spell-check-context 
+		       "Define current dictionary" 
+		       'ispell-change-dictionary)
+
+(stufe-add-menu-item stufe-menu-spell-check-context 
 		       "Buffer spell check" 
 		       'flyspell-buffer)
 
