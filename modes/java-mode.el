@@ -27,17 +27,15 @@
 (stufe-require-file "services/register.el")
 
 (defun stufe-run-debugger-java-mode (debug-command)
-  (let ((debug-command (format "%s%s %s %s"
+  (let ((debug-command (format "%s%s %s"
 			       (if stufe-working-folder
 				   (format "cd %s && " stufe-working-folder)
 				 "")
 			       debug-command
 			       (format "-classpath=%s:%s"
 				       (getenv "CLASSPATH")
-				       (stufe-makefile-get-value (stufe-project-makefile-path)
-								 "PROJECTPATH"))
-			       (stufe-makefile-get-value (stufe-project-makefile-path)
-							 "PROJECT"))))
+				       (stufe-makefile-get-atomic-value (stufe-project-makefile-path)
+									"PROJECTPATH")))))
     (message debug-command)
     debug-command))
 
@@ -48,7 +46,9 @@
 			  (mapcar (lambda (breakpoint) 
 				    (stufe-debug-add-breakpoint breakpoint))
 				  stufe-breakpoint-list)
-			  (gud-call "run")))
+			  (gud-call (format "run %s" 
+					    (stufe-makefile-get-atomic-value (stufe-project-makefile-path)
+									     "PROJECT")))))
 	
 	("Add breakpoint" (lambda (file line)
 			    (gud-call (format "stop at %s:%s" 
