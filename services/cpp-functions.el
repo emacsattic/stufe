@@ -157,14 +157,18 @@ declaration"
 ;; *************************************************
 
 (defun stufe-build-modifiers-string (function-declaration)
-  (let ((modifiers (cadr (split-string function-declaration ")"))))
-    (if modifiers
-	(stufe-rebuild-string 
-	 (delete "=" 
-		 (delete "0"
-			 (split-string modifiers " ")))
-	 " ")
-      "")))
+  (cadr (split-string function-declaration ")")))
+
+
+(defun stufe-is-function-purely-virtual (function-declaration)
+  "Test if a function is purely virtual from its declaration"
+  (let ((modifiers-string (stufe-build-modifiers-string function-declaration)))
+    (member "0"
+	    (split-string (stufe-rebuild-string (split-string modifiers-string "=") 
+						" ")
+			  " "))))
+	
+
 
 ;; *************************************************
 ;; * 
@@ -196,10 +200,12 @@ declaration"
 					       (stufe-make-return-value-documentation
 						function-declaration)))
 	 't)
-	(if (or (file-exists-p 
-		 (concat (get-file-name (buffer-name)) ".cpp"))
-		(get-buffer
-		 (concat (get-file-name (buffer-name)) ".cpp")))
+	(if (and 
+	     (or (file-exists-p 
+		  (concat (get-file-name (buffer-name)) ".cpp"))
+		 (get-buffer
+		  (concat (get-file-name (buffer-name)) ".cpp")))
+	     (not (stufe-is-function-purely-virtual function-declaration)))
 	    (save-current-buffer 
 	      (let* ((class-name (stufe-get-cpp-class-name)))
 		(stufe-switch-cpp-file)

@@ -141,7 +141,7 @@
     ["Modifiers of the function" "%modifiers%"])
    "
 
-%return-value% %class-name%::%function-name%(%arguments%) %modifiers%
+%return-value% %class-name%::%function-name%(%arguments%)%modifiers%
 {
 }
 "))
