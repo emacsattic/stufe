@@ -1,0 +1,13 @@
+#
+# Options used to define the output of the project as
+# a dynamic library (or shared object)
+#
+
+# Define the type of the output of the project
+#   elf: output as an elf executable
+#    so: output as a dynamic library (so: shared object)
+PROJECTTYPE = so
+# Version of the dynamic library
+LIBRARYVERSION = 1
+# Build version of the dynamic library
+BUILDVERSION = 1

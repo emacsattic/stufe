@@ -1,0 +1,342 @@
+# Options for the makefile
+
+
+# Name of the project (also the name of the output)
+PROJECT = %project-name%
+
+# Path of the output
+PROJECTPATH = .
+
+# Options to pass to the program when debuging
+OPTION = 
+
+# Other folder to compile
+DIRS = 
+
+# Compiler ptimisation level
+#   0: no optimisation (necessary when debuging)
+#   1: first level
+#   2: second level
+#   3: third level (the strongest: be careful using it, may add some bugs)
+OPTIMISATION = 0
+
+# Debuging informations
+#   none: no debug information 
+#   standard: standard debug information 
+#   gdb: gdb debug information (used only for gdb)
+DEBUGINFO = gdb
+
+# Other include paths to add when compiling the project
+ADDINCPATH = 
+
+# Other libraries to add when linking the project
+ADDLIB = 
+
+# Other library paths to add when linking the project
+ADDLIBPATH = 
+
+# Verbose compiling
+#   yes: command line used are displayed
+#   no: command line used are not displayed
+VERBOSE = no
+
+
+%shared-object-options%
+
+
+# Program used for the generation of the documentation
+#   doxygen: use the doxygen documentation program
+#     doc++: use the doc++ documentation program
+DOCUMENTATIONPROGRAM = doxygen
+
+
+#*****************************************************************#
+#*                                                               *#
+#* You shouldn't have to modify this part. You have to know      *#
+#* exactly what you are doing. If you really want to modify it   *#
+#* then maybe it is better to modify directly the template       *#
+#* associated                                                    *#
+#*                                                               *#
+#*****************************************************************#
+
+
+#
+# Define default options for the project. They are used only 
+# if they are not already defined
+#
+
+# Default name of the output
+ifeq ($(strip $(PROJECT)),)
+PROJECT = project
+endif
+# Default path of the output
+ifeq ($(strip $(PROJECTPATH)),)
+PROJECTPATH = .
+endif
+
+# Default optimisation option
+ifeq ($(strip $(OPTIMISATION)),)
+OPTIMISATION = 0
+endif
+# Default debugging information
+ifeq ($(strip $(DEBUGINFO)),)
+DEBUGINFO = gdb
+endif
+
+# Default project type options
+ifeq ($(strip $(PROJECTTYPE)),)
+PROJECTTYPE = elf
+endif
+# Default library version
+ifeq ($(strip $(LIBRARYVERSION)),)
+LIBRARYVERSION = 1
+endif
+# Default library build version
+ifeq ($(strip $(BUILDVERSION)),)
+BUILDVERSION = 1
+endif
+
+
+# Program used to generate the documentation
+
+# Program used for the generation of the documentation
+#   doxygen: use the doxygen documentation program
+#     doc++: use the doc++ documentation program
+ifeq ($(strip $(DOCUMENTATIONPROGRAM)),)
+DOCUMENTATIONPROGRAM = doxygen
+endif
+
+# Program used to generate the documentation
+ifeq ($(strip $(DOCPROG)),)
+  ifeq ($(DOCUMENTATIONPROGRAM),doxygen)
+  DOCPROG = doxygen
+  else
+  DOCPROG = doc++
+  endif
+endif
+
+# Output directories for doc++
+ifeq ($(strip $(DOCPPOUPUTDIR)),)
+DOCPLUSPLUSOUPUTDIR = html
+endif
+
+# Configuration file for the doxygen program
+ifeq ($(strip $(DOXYGENCONFIGURATIONFILE)),)
+DOXYGENCONFIGURATIONFILE = doxygen.config
+endif
+
+
+#
+# Define the default program to use. Same as options: they
+# are used only if they are not already defined
+#
+
+# Default C compiler
+ifeq ($(strip $(C_COMPILER)),)
+C_COMPILER = gcc
+endif
+
+# Default C++ compiler
+ifeq ($(strip $(CXX_COMPILER)),)
+CXX_COMPILER = g++
+endif
+
+# Default linker
+ifeq ($(strip $(LINKER)),)
+LINKER = gcc
+endif
+
+#
+# Define command line options from the makefile options
+#
+
+# Set the debug mark if the verbose option is no. It will be used
+# when calling the command line
+ifeq ($(VERBOSE),no)
+ DEBUGMARK = @
+endif
+
+# We define exactly what file is the output of the project
+OUTPUTFILENAME = $(PROJECT)
+ifeq ($(PROJECTTYPE),so)
+  OUTPUTFILENAME = lib$(PROJECT).so.$(LIBRARYVERSION).$(BUILDVERSION).0
+  SOVERSIONNAME = lib$(PROJECT).so.$(LIBRARYVERSION)
+  SOLINKNAME = lib$(PROJECT).so
+endif
+
+
+# Libraries to add to the project
+ADDITIONALLIBRARY = $(foreach LIB,$(ADDLIB),-l$(LIB))
+# Libraries path to add to the project
+ADDITIONALPATHLIBRARY = $(foreach LIBPATH,$(ADDLIBPATH),-L$(LIBPATH))
+# Includes path to add to the project
+ADDITIONALPATHINCLUDE = $(foreach INCPATH,$(ADDINCPATH),-I$(INCPATH))
+
+
+# Optimisation option
+ifeq ($(OPTIMISATION),1)
+ OPTIMISATIONFLAG = -O1
+endif
+ifeq ($(OPTIMISATION),2)
+ OPTIMISATIONFLAG = -O2
+endif
+ifeq ($(OPTIMISATION),3)
+ OPTIMISATIONFLAG = -O3
+endif
+# Debugging information options
+ifeq ($(DEBUGINFO),standard)
+ DEBUGINFOFLAG = -g
+endif
+ifeq ($(DEBUGINFO),gdb)
+ DEBUGINFOFLAG = -ggdb3
+endif
+# Shared object options
+ifeq ($(PROJECTTYPE),so)
+  SOPROPERTIES = -D_REENTRANT -fPIC
+  LDSOPROPERTIES = -shared -Wl,-soname,$(SOVERSIONNAME)
+endif
+
+
+
+# Define the options for the C preprocessor
+CPPFLAGS += $(ADDITIONALPATHINCLUDE)
+# Define the command for the C compiler
+CC = $(DEBUGMARK)$(C_COMPILER)
+CFLAGS += $(ADDITIONALPATHINCLUDE) -c $(OPTIMISATIONFLAG) $(DEBUGINFOFLAG) \
+$(SOPROPERTIES)
+# Define the command for the C++ compiler
+CXX = $(DEBUGMARK)$(CXX_COMPILER)
+CXXFLAGS = $(CFLAGS)
+# Define the command for the linker
+LINKCC = $(DEBUGMARK)$(LINKER)
+LDFLAGS += $(ADDITIONALLIBRARY) $(ADDITIONALPATHLIBRARY) $(LDSOPROPERTIES)
+
+
+#
+# The next step is to make lists of the files we want to compile
+#
+
+# List of the source file
+SRCS := $(wildcard *.c) $(wildcard *.cpp)
+# List of the object file
+OBJS := $(patsubst %.c,%.o,$(wildcard *.c)) \
+        $(patsubst %.cpp,%.o,$(wildcard *.cpp))
+# List of the dependies files
+DEPS := $(patsubst %.o,%.d,$(OBJS))
+
+# 
+# All the options and commands are now define. So, we can start
+# to defining the target to build the program
+#
+
+# We first define the file to build
+PROJECTFILE := $(PROJECTPATH)/$(OUTPUTFILENAME)
+
+
+# This is the default target. It points to the other folder to build
+# and the program to build
+all: subdirs $(PROJECTFILE)
+
+# Start by compiling the other folders
+GOALS := $(subst exec,$(EMPTY),$(MAKECMDGOALS))
+subdirs:
+  ifneq ($(strip $(DIRS)),)
+	@for dir in $(DIRS); do $(MAKE) -C $$dir $(GOALS); done
+  endif
+
+$(PROJECTFILE): $(DEPS) $(OBJS)
+	@echo "Linking..."
+	$(LINKCC) -o $(PROJECTFILE) $(OBJS) $(LDFLAGS)
+ifeq ($(PROJECTTYPE),so)
+	@echo "Creating symbolic links for the library..."	
+	$(DEBUGMARK)ln -sf $(OUTPUTFILENAME) $(PROJECTPATH)/$(SOVERSIONNAME)
+	$(DEBUGMARK)ln -sf $(OUTPUTFILENAME) $(PROJECTPATH)/$(SOLINKNAME)
+endif
+	@echo "The project '$(PROJECT)' has been build."
+
+# We build the depencies for modified source files
+%.d : %.cpp
+	@echo "Creating dependencies for $@..."
+	$(CXX) -M $(CPPFLAGS) $< > $@
+	$(CXX) -M $(CPPFLAGS) $< | sed s/\\.o/.d/ >> $@
+%.d : %.c
+	@echo "Creating dependencies for $@..."
+	$(CC) -M $(CPPFLAGS) $< > $@
+	$(CC) -M $(CPPFLAGS) $< | sed s/\\.o/.d/ >> $@
+
+# We build the object file if the source file or the makefile changed
+%.o : %.c makefile
+	@echo "Compiling $@..."
+	$(CC) $(CFLAGS) -o $@ $<
+%.o : %.cpp makefile
+	@echo "Compiling $@..."
+	$(CXX) $(CXXFLAGS) -o $@ $<
+
+#
+# We define a target to be able to clean all the build files
+#
+clean : subdirs
+ifneq ($(strip $(wildcard *.o)),)
+	@echo "Cleaning object file(s)..."
+	-@rm $(wildcard *.o)
+endif
+ifneq ($(strip $(wildcard *.d)),)
+	@echo "Cleaning dependencies file(s)..."
+	-@rm $(wildcard *.d)
+endif
+ifneq ($(strip $(wildcard *~)),)
+	@echo "Cleaning backup file(s)..."
+	-@rm $(wildcard *~)
+endif
+ifneq ($(strip $(wildcard $(PROJECTFILE))),)
+	@echo "Cleaning project file(s)..."
+	-@rm $ $(PROJECTFILE)
+endif
+
+
+# Includes path to add to the project
+DOCINCLUDEFILES = $(foreach ADDITIONALDIR,$(DIRS),$(ADDITIONALDIR)/*pp $(ADDITIONALDIR)/*.h)
+
+#
+# Target to build the documentation
+#
+
+$(DOXYGENCONFIGURATIONFILE):
+	$(DOCPROG) -g $(DOXYGENCONFIGURATIONFILE)
+
+ifeq ($(DOCUMENTATIONPROGRAM),doxygen)
+doc: $(DOXYGENCONFIGURATIONFILE)
+	$(DOCPROG) doxygen.config
+else
+doc:
+	$(DOCPROG) -d $(DOCPLUSPLUSOUPUTDIR) *pp *.h $(DOCINCLUDEFILES)
+endif
+
+
+#
+# We define a target to be able to run the program
+# This will disappear when stufe will be finished
+#
+
+# We first fix this variable in case a script 
+# file has been found in the current folder
+SCRIPT := $(wildcard script)
+
+exec:  subdirs $(PROJECTFILE)
+ifneq ($(strip $(SCRIPT)),)
+# We found a script so we run it
+	./$(SCRIPT)
+else
+# We didn't find a script file, so we run the program
+	$(PROJECTFILE) $(OPTION)
+endif
+
+
+.PHONY : all exec clean subdirs doc
+
+
+ifneq ($(strip $(DEPS)),)
+ifeq (,$(findstring clean,$(MAKECMDGOALS)))
+-include $(DEPS)
+endif
+endif
