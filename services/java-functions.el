@@ -165,10 +165,10 @@
 
 (defun stufe-java-compile-current ()
   (interactive)
-  (let ((classidentity (stufe-java-get-class-identity (current-buffer)))
+  (let* ((classidentity (stufe-java-get-class-identity (current-buffer)))
 	 (java "java")
 	 (options (stufe-makefile-get-value 
 		   (stufe-project-makefile-path) 
 		   (format "%s_OPTION" classidentity))))
-    (message (format "all && %s %s %s" java classidentity options))))
+    (stufe-run-make (format "all && %s %s %s" java classidentity options))))
 
