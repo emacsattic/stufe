@@ -274,7 +274,7 @@ PROJECTFILE := $(PROJECTPATH)/$(OUTPUTFILENAME)
 all: subdirs $(PROJECTFILE)
 
 # Start by compiling the other folders
-GOALS := $(subst exec,$(EMPTY),$(MAKECMDGOALS))
+GOALS := $(subst tests,$(EMPTY),$(MAKECMDGOALS))
 subdirs:
   ifneq ($(strip $(DIRS)),)
 	@for dir in $(DIRS); do $(MAKE) -C $$dir $(GOALS); done
@@ -368,7 +368,7 @@ endif
 # file has been found in the current folder
 SCRIPT := $(wildcard script)
 
-exec:  subdirs $(PROJECTFILE)
+tests:  subdirs $(PROJECTFILE)
 ifneq ($(strip $(SCRIPT)),)
 # We found a script so we run it
 	./$(SCRIPT)
@@ -381,7 +381,7 @@ ifeq ($(PROFILING),true)
 endif
 
 
-.PHONY : all exec clean subdirs doc
+.PHONY : all tests clean subdirs doc
 
 
 ifneq ($(strip $(DEPS)),)

@@ -30,7 +30,7 @@
 
 (defun stufe-make-exec ()
   (interactive)
-  (stufe-run-make "exec"))
+  (stufe-run-make "tests"))
 
 
 (defun stufe-make-doc ()
@@ -68,15 +68,57 @@
 	       (goto-char (point-max))))))
 
 
+(defun stufe-is-make-runnable ()
+  "Test if the command make is runnable in the current state of the
+project"
+  (or (stufe-project-file-existp "Makefile")
+      (stufe-project-file-existp "makefile")))
+
+
+(defun stufe-is-configurable ()
+  "Test if the project is configurable in the current state of the
+project"
+  (stufe-project-file-existp "configure"))
+
+
+(defun stufe-is-bootstrapable ()
+  "Test if the project can generate configure file in its current state"
+  (stufe-project-file-existp "bootstrap"))
+
+
+;; (defun stufe-run-make (command)
+;;   "Run the make command if a makefile is found"
+;;   (interactive)
+;;   (if (and (not stufe-working-folder)
+;; 	   (not (or (file-exists-p "makefile")
+;; 		    (file-exists-p "Makefile"))))
+;;       (stufe-guess-project-makefile))
+;;   (funcall stufe-compile-function 
+;; 	   (stufe-run-in-work-folder stufe-make-command command)))
+
 (defun stufe-run-make (command)
-  "Save all the buffers and run the make command"
+  "Try to run the make command (build a makefile if possible or necessary)"
   (interactive)
-  (if (and (not stufe-working-folder)
-	   (not (or (file-exists-p "makefile")
-		    (file-exists-p "Makefile"))))
-      (stufe-guess-project-makefile))
-  (funcall stufe-compile-function 
-	   (stufe-run-in-work-folder stufe-make-command command)))
+  (let ((make-command stufe-make-command)
+	(bootstrap-command (if (and (not (stufe-is-configurable)) 
+				    (stufe-is-bootstrapable))
+			       "./bootstrap &&"
+			     ""))
+	(configurable-command (if (and (not (stufe-is-make-runnable))
+				       (or (stufe-is-bootstrapable)
+					   (stufe-is-configurable)))
+				  "./configure --enable-debug &&"
+				"")))
+    (if (not (or (stufe-is-make-runnable)
+		 (stufe-is-configurable)
+		 (stufe-is-bootstrapable)))
+	(stufe-guess-project-makefile))
+    (funcall stufe-compile-function 
+ 	     (stufe-run-in-work-folder (format "%s %s %s" 
+					       bootstrap-command 
+					       configurable-command
+					       stufe-make-command) command))))
+
 
 
 (defun stufe-run-in-work-folder (command argument)

@@ -1,10 +1,12 @@
 
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES=-I..
 
 bin_PROGRAMS=%project-name%
 %project-name%_SOURCES=main.cpp
+
+tests: all
+	./%project-name%
 
 
 

@@ -183,7 +183,7 @@ endif
 all: subdirs $(FILESTARGET)
 
 # Start by compiling the other folders
-GOALS := $(subst exec,$(EMPTY),$(MAKECMDGOALS))
+GOALS := $(subst tests,$(EMPTY),$(MAKECMDGOALS))
 subdirs:
   ifneq ($(strip $(DIRS)),)
 	@for dir in $(DIRS); do $(MAKE) -C $$dir $(GOALS); done
@@ -303,7 +303,7 @@ endif
 # file has been found in the current folder
 SCRIPT := $(wildcard script)
 
-exec:  subdirs $(PROJECTFILE)
+tests:  subdirs $(PROJECTFILE)
 ifeq ($(strip $(SCRIPT)),)
 # No script file has been found
 	@for file in $(VIEWEDFILES); do $(VIEWER) $$file; done
@@ -312,6 +312,6 @@ else
 endif
 
 
-.PHONY : all exec clean subdirs
+.PHONY : all tests clean subdirs
 
 

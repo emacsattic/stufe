@@ -123,7 +123,7 @@ PROJECTFILE := $(PROJECTPATH)/$(OUTPUTFILENAME)
 all: subdirs $(PROJECTFILE)
 
 # Start by compiling the other folders
-GOALS := $(subst exec,$(EMPTY),$(MAKECMDGOALS))
+GOALS := $(subst tests,$(EMPTY),$(MAKECMDGOALS))
 subdirs:
   ifneq ($(strip $(DIRS)),)
 	@for dir in $(DIRS); do $(MAKE) -C $$dir $(GOALS); done
@@ -139,7 +139,7 @@ $(PROJECTFILE): $(SRCS) makefile
 #
 clean : subdirs
 	@echo "Cleaning class file(s)..."
-	@find $(PATHTOCLEAN) -name *.class -exec rm -f {} \;
+	@find $(PATHTOCLEAN) -name *.class -tests rm -f {} \;
 
 #
 # We define a target to be able to run the program
@@ -150,7 +150,7 @@ clean : subdirs
 # file has been found in the current folder
 SCRIPT := $(wildcard script)
 
-exec:  subdirs $(PROJECTFILE)
+tests:  subdirs $(PROJECTFILE)
 ifneq ($(strip $(SCRIPT)),)
 # We found a script so we run it
 	./$(SCRIPT)
@@ -160,6 +160,6 @@ else
 endif
 
 
-.PHONY : all exec clean subdirs
+.PHONY : all tests clean subdirs
 
 

@@ -25,6 +25,14 @@
 ;; *
 ;; *************************************************
 
+(defun stufe-project-file-existp (filename)
+  "Test if a file exists in the current folder or the project folder"
+  (let ((folder (if stufe-working-folder
+		    stufe-working-folder
+		  "./")))
+    (file-exists-p (expand-file-name filename folder))))
+
+
 (defun stufe-find-makefile (folder)
   "Try to find a makefile in a folder"
   (cond 
