@@ -62,10 +62,10 @@
 				 (gud-call (format "set args %s" options))))
 			   (if stufe-gdb-tty
 			       (gud-call (format "tty %s" stufe-gdb-tty)))
-			   (gud-call "run")
 			   (mapcar (lambda (breakpoint) 
 				     (stufe-debug-add-breakpoint breakpoint))
-				   stufe-breakpoint-list)))
+				   stufe-breakpoint-list)
+			   (gud-call "run")))
 
 	("Add breakpoint" (lambda (file line)
 			    (gud-call (format "break %s:%s" 
