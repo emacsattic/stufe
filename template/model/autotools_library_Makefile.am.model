@@ -1,0 +1,11 @@
+## Process this file with automake to produce Makefile.in
+
+
+lib_LTLIBRARIES = lib%project-name%.la
+lib%project-name%_la_SOURCES = %project-name%.cpp
+
+
+
+
+
+

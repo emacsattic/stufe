@@ -31,12 +31,22 @@
    (["Name of the project" "%project-name%"])
    "autotools_Makefile.am.model"
    (model-from-file)))
+(stufe-register-template 
+ '("autotools-library-Makefile.am"
+   (["Name of the project" "%project-name%"])
+   "autotools_library_Makefile.am.model"
+   (model-from-file)))
 
 ;; Template to create a configure.ac file
 (stufe-register-template 
  '("autotools-configure.ac"
    (["Name of the project" "%project-name%"])
    "autotools_configure.ac.model"
+   (model-from-file)))
+(stufe-register-template 
+ '("autotools-library-configure.ac"
+   (["Name of the project" "%project-name%"])
+   "autotools_library_configure.ac.model"
    (model-from-file)))
 
 ;; Template to create a bootstrap file

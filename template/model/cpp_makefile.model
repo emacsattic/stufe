@@ -317,7 +317,7 @@ endif
 #
 # We define a target to be able to clean all the build files
 #
-clean : subdirs
+clean: subdirs
 ifneq ($(strip $(wildcard *.sti)),)
 	@echo "Cleaning Satom file(s)..."
 	-@rm $(wildcard *.sti)
@@ -368,7 +368,7 @@ endif
 # file has been found in the current folder
 SCRIPT := $(wildcard script)
 
-tests:  subdirs $(PROJECTFILE)
+tests: subdirs $(PROJECTFILE)
 ifneq ($(strip $(SCRIPT)),)
 # We found a script so we run it
 	./$(SCRIPT)

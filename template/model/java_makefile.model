@@ -137,7 +137,7 @@ $(PROJECTFILE): $(SRCS) makefile
 #
 # We define a target to be able to clean all the build files
 #
-clean : subdirs
+clean: subdirs
 	@echo "Cleaning class file(s)..."
 	@find $(PATHTOCLEAN) -name *.class -tests rm -f {} \;
 
@@ -150,7 +150,7 @@ clean : subdirs
 # file has been found in the current folder
 SCRIPT := $(wildcard script)
 
-tests:  subdirs $(PROJECTFILE)
+tests: subdirs $(PROJECTFILE)
 ifneq ($(strip $(SCRIPT)),)
 # We found a script so we run it
 	./$(SCRIPT)

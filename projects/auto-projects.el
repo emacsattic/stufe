@@ -52,11 +52,84 @@
 				      "main.cpp"
 				      't 't)))))
 
+
+;; Autotools sub project
+(stufe-register-project 
+ '("autotools-sub-project"
+   (stufe-projects-new-folder
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details
+				      "autotools-Makefile.am" 
+				      "Makefile.am"))
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details 
+				      "cpp-main" 
+				      "main.cpp"
+				      't 't)))))
+
+
+;; Autotools project
+(stufe-register-project 
+ '("autotools-library-project"
+   (stufe-projects-new-folder
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details
+				      "autotools-library-Makefile.am" 
+				      "Makefile.am"))
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details
+				      "autotools-library-configure.ac"
+				      "configure.ac"))
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details
+				      "autotools-bootstrap" 
+				      "bootstrap")
+      (message "%s" (expand-file-name "bootstrap"
+				      (stufe-project-get-location project-details)))
+      (set-file-modes (expand-file-name "bootstrap"
+					(stufe-project-get-location project-details)) 
+		      755))
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details 
+				      "cpp-main-so" 
+				      (concat (stufe-format-standard-name 
+					       (stufe-project-get-name project-details))
+					      ".cpp")
+				      't 't)))))
+
+
+;; Autotools sub project
+(stufe-register-project 
+ '("autotools-library-sub-project"
+   (stufe-projects-new-folder
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details
+				      "autotools-Makefile.am" 
+				      "Makefile.am"))
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details 
+				      "cpp-main" 
+				      "main.cpp"
+				      't 't)))))
+
 ;; Add the menu item
 
 (stufe-project-add-menu-item stufe-menu-cpp-projects-context
 			     "New Autotools project..." 
 			     "autotools-project")
+
+(stufe-project-add-menu-item stufe-menu-cpp-projects-context
+			     "New Autotools sub project..." 
+			     "autotools-sub-project")
+
+
+(stufe-project-add-menu-item stufe-menu-cpp-projects-context
+			     "New Autotools library project..." 
+			     "autotools-library-project")
+
+(stufe-project-add-menu-item stufe-menu-cpp-projects-context
+			     "New Autotools library sub project..." 
+			     "autotools-library-sub-project")
 
 
 
