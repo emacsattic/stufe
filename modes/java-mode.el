@@ -132,7 +132,7 @@
 			   
 			   (lambda ()
 			     (stufe-shortcut-add-local [(control *)] 
-						       'stufe-switch-satom-file))
+						       'stufe-switch-java-satom-file))
 
 			   ;; Keyboard shortcut
 			   (lambda ()

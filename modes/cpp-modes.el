@@ -207,7 +207,7 @@
 						      'stufe-create-new-cpp-property))
 			  (lambda ()
 			    (stufe-shortcut-add-local [(control *)] 
-							'stufe-switch-satom-file))
+							'stufe-switch-cpp-satom-file))
 			  )))
 
 

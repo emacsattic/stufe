@@ -347,6 +347,9 @@ nil otherwise."
 
 	  ((string= file-extension "hpp") (find-file (concat file-name ".cpp")))
 
+	  ((string= file-extension "cxx") (find-file (concat file-name ".hxx")))
+	  ((string= file-extension "hxx") (find-file (concat file-name ".cxx")))
+
 	  ((string= file-extension "h") 
 	   (cond ((funcall file-present (concat file-name ".c"))
 		   (find-file (concat file-name ".c")))
@@ -357,14 +360,22 @@ nil otherwise."
 	  ((string= file-extension "c") (find-file (concat file-name ".h"))))))
 
 
-(defun stufe-switch-satom-file ()
+(defun stufe-switch-cpp-satom-file ()
   "Switch between normal class and _st file"
   (interactive)
-  (let* ((file-name (file-name-nondirectory (buffer-file-name)))
+  (let* ((file-name (file-name-sans-extension (file-name-nondirectory (buffer-file-name))))
 	 (file-directory (file-name-directory (buffer-file-name)))
 	 (file-target (if (string= (substring file-name 0 3) "_st")
-			  (concat file-directory (substring file-name 3))
-			(concat file-directory (concat "_st" file-name)))))
-    (if (or (file-exists-p file-target) (get-file-buffer file-target))
-	(find-file file-target))))
-
+			  (concat file-directory 
+				  (substring file-name 3) 
+				  (if (string= (file-name-extension (buffer-file-name)) "cxx")
+				      ".cpp"
+				    ".hpp"))
+			(concat file-directory 
+				(concat "_st" 
+					file-name 
+					(if (string= (file-name-extension (buffer-file-name)) "cpp")
+					    ".cxx"
+					  ".hxx"))))))
+  (if (or (file-exists-p file-target) (get-file-buffer file-target))
+      (find-file file-target))))
