@@ -132,6 +132,8 @@ project"
 
 (defun stufe-guess-project-makefile ()
   (cond
+   ((and stufe-working-folder (not (string= "" stufe-working-folder)))
+    (error "Stufe does not create makefiles when the project path is set" major-mode))
    ;; Default makefile for LaTeX mode
    ((eq major-mode 'latex-mode) 
     (stufe-project-template-to-file 
