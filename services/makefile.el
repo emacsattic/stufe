@@ -68,13 +68,30 @@
     (stufe-rebuild-string (stufe-makefile-get-values makefile key)
 			  " ")))
 
+(defun stufe-makefile-remove-variable-name (line-value &optional current-list equalsign-flag)
+  (let* ((equalsign-index (if line-value
+			      (string-match "=" (car line-value))))
+	 (current-string (if line-value
+			     (if equalsign-flag
+				 (car line-value)
+			       (if equalsign-index
+				   (substring (car line-value)
+					      (+ equalsign-index 1))
+				 '())))))
+    (if line-value
+	(stufe-makefile-remove-variable-name (cdr line-value)
+					     (if current-string
+						 (push current-string current-list)
+					       current-list)
+					     (if current-string 1))
+      (reverse current-list))))
 
 (defun stufe-makefile-get-values (makefile key)
   "Get the corresponding value in a makefile for a specified key"
   (let ((makefile-line-value (stufe-makefile-get-line-value makefile key)))
     (if makefile-line-value
-	(cdr (split-string makefile-line-value
-			   "[= \f\t\n\r\v]+"))
+	(stufe-makefile-remove-variable-name 
+	 (split-string makefile-line-value "[ \f\t\n\r\v]+"))
       nil)))
 
 (defun stufe-makefile-get-line-value (makefile key)
