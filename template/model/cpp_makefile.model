@@ -293,7 +293,7 @@ endif
 # We build Satom files
 %.sti : %.stc
 	@echo "Building Satom files..."
-	$(SATOMCOMPILER) $<
+	-$(SATOMCOMPILER) $<
 	@touch $@
 
 # We build the depencies for modified source files
@@ -318,6 +318,10 @@ endif
 # We define a target to be able to clean all the build files
 #
 clean : subdirs
+ifneq ($(strip $(wildcard *.sti)),)
+	@echo "Cleaning Satom file(s)..."
+	-@rm $(wildcard *.sti)
+endif
 ifneq ($(strip $(wildcard *.o)),)
 	@echo "Cleaning object file(s)..."
 	-@rm $(wildcard *.o)

@@ -45,7 +45,8 @@
 	(setq stufe-file-loaded (list (expand-file-name "stufe.el" stufe-root)))
 	(stufe-load-file (expand-file-name "services" stufe-root))
 	(stufe-load-file stufe-root)
-	(setq stufe-loading nil))))
+	(setq stufe-loading nil)
+	(message "Stufe loaded."))))
 
 (defvar stufe-file-avoided
   '("." ".." "CVS")

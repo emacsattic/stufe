@@ -24,6 +24,8 @@
 ;; *
 ;; *************************************************
 
+(stufe-require-file "services/register.el")
+
 
 (stufe-register-mode '("elisp-mode"
 			 ("cvs-mode"

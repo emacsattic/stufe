@@ -27,6 +27,9 @@
 
 ;; Define the prog mode
 
+(stufe-require-file "services/register.el")
+
+
 (stufe-register-mode '("prog-mode"
 			 (
 			  "imenu-mode"

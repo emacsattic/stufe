@@ -25,6 +25,8 @@
 ;; *************************************************
 
 
+
+
 (setq stufe-run-debugger nil)
 (setq stufe-debug-function nil)
 (setq stufe-debug-command nil)
@@ -151,6 +153,14 @@
   (if (stufe-get-debug-process)
       (kill-process (stufe-get-debug-process))))
 
+(defvar stufe-gdb-tty
+  nil
+  "tty to use for debugging programm")
+
+(defun stufe-debug-tty (ttyfile)
+  "Set the tty for the next gdb call"
+  (interactive "stty file: ")
+  (setq stufe-gdb-tty ttyfile))
 
 
 ;; *************************************************

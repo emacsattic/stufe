@@ -24,6 +24,8 @@
 ;; *
 ;; *************************************************
 
+(stufe-require-file "services/register.el")
+
 (defun stufe-run-debugger-c-mode (debug-command)
   (setq stufe-debug-buffer-name "*gud*")
   (format "%s %s"
@@ -35,15 +37,19 @@
 
 (setq stufe-c-debug-command-table
       '(("Debug project" (lambda ()
-			   (let ((debugfolder (stufe-makefile-get-value 
-					       (stufe-project-makefile-path) 
-					       "DEBUGFOLDER")))
-			     (if debugfolder
-				 (gud-call (format "cd %s" debugfolder))))
+			   (let* ((debugfolder (stufe-makefile-get-value 
+						(stufe-project-makefile-path) 
+						"DEBUGFOLDER"))
+				  (folder (if (not (string= debugfolder ""))
+					      debugfolder
+					    (stufe-makefile-get-value 
+					     (stufe-project-makefile-path)
+					     "PROJECTPATH"))))
+			     (gud-call (format "cd %s" folder)))
 			   (let* ((debugtarget (stufe-makefile-get-value 
 						(stufe-project-makefile-path) 
 						"DEBUGTARGET"))
-				  (target (if debugtarget
+				  (target (if (not (string= debugtarget ""))
 					      debugtarget
 					    (stufe-makefile-get-value 
 					     (stufe-project-makefile-path)
@@ -55,6 +61,8 @@
 					   "OPTION")))
 			     (if options
 				 (gud-call (format "set args %s" options))))
+			   (if stufe-gdb-tty
+			       (gud-call (format "tty %s" stufe-gdb-tty)))
 			   (gud-call "run")
 			   (mapcar (lambda (breakpoint) 
 				     (stufe-debug-add-breakpoint breakpoint))

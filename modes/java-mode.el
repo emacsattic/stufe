@@ -24,6 +24,7 @@
 ;; *
 ;; *************************************************
 
+(stufe-require-file "services/register.el")
 
 (defun stufe-run-debugger-java-mode (debug-command)
   (let ((debug-command (format "%s%s %s %s"

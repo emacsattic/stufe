@@ -24,6 +24,8 @@
 ;; *
 ;; *************************************************
 
+(stufe-require-file "services/register.el")
+
 ;; Define the prog mode
 (stufe-register-mode '("debug-mode"
 			 (

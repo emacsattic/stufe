@@ -24,6 +24,10 @@
 ;; *
 ;; *************************************************
 
+
+(stufe-require-file "services/register.el")
+
+
 ;; Define the makefile mode
 
 (stufe-register-mode '("makefile-mode"

@@ -58,7 +58,9 @@
 ;; *************************************************
 
 
-(setq stufe-mode-list (stufe-register-new "modes"))
+(defvar stufe-mode-list 
+  (stufe-register-new "modes")
+  "List of modes available in Stufe")
 
 (defun stufe-get-mode-description (mode-name)
   (stufe-register-get-description mode-name stufe-mode-list))
@@ -67,7 +69,7 @@
 (defun stufe-register-mode (mode-description)
   (setq stufe-mode-list
 	(stufe-register-add-data mode-description
-				   stufe-mode-list)))
+				 stufe-mode-list)))
 
 (defun stufe-copy-mode (mode-origin mode-destination)
   (stufe-register-mode 
