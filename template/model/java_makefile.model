@@ -4,7 +4,8 @@
 # Name of the project (also the name of the output)
 PROJECT = %project-name%
 
-# Path of the output
+# Path of the output (full directory name, without environment
+  variable)
 PROJECTPATH = .
 
 # Options to pass to the program
@@ -12,10 +13,6 @@ OPTION =
 
 # Other folder to compile
 DIRS = 
-
-# Set a classpath if this is needed added to the original CLASSPATH
-# variable of system. Directories and zip/jar files separated by :
-EXTRACLASSPATH = $(CLASSPATH)
 
 # Verbose compiling
 #   yes: command line used are displayed
@@ -126,7 +123,7 @@ subdirs:
 
 $(PROJECTFILE): $(SRCS) makefile
 	@echo "Building..."
-	$(JAVAC) -classpath $(EXTRACLASSPATH) $(DEBUGINFOFLAG) -d $(PROJECTPATH) *.java
+	$(JAVAC) -classpath $(CLASSPATH):$(PROJECTPATH) $(DEBUGINFOFLAG) -d $(PROJECTPATH) *.java
 	@echo "The project '$(PROJECT)' has been build."
 
 #
@@ -151,7 +148,7 @@ ifneq ($(strip $(SCRIPT)),)
 	./$(SCRIPT)
 else
 # We didn't find a script file, so we run the program
-	$(JAVA) -cp $(EXTRACLASSPATH) $(PROJECT) $(OPTION)
+	$(JAVA) -cp $(CLASSPATH):$(PROJECTPATH) $(PROJECT) $(OPTION)
 endif
 
 

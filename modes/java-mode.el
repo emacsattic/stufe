@@ -26,11 +26,15 @@
 
 
 (defun stufe-run-debugger-java-mode (debug-command)
-  (let ((debug-command (format "%s%s %s"
+  (let ((debug-command (format "%s%s %s %s"
 			       (if stufe-working-folder
 				   (format "cd %s && " stufe-working-folder)
 				 "")
 			       debug-command
+			       (format "-classpath=%s:%s"
+				       (getenv "CLASSPATH")
+				       (stufe-makefile-get-value (stufe-project-makefile-path)
+								 "PROJECTPATH"))
 			       (stufe-makefile-get-value (stufe-project-makefile-path)
 							 "PROJECT"))))
     (message debug-command)
