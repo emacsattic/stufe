@@ -30,16 +30,28 @@
   "Default pattern used for the grep command")
 
 
-(defun stufe-grep-word-in-pattern ()
+(defun stufe-grep-word-current ()
   (interactive)
   (grep (format "%s -n %s %s" 
 		grep-program 
 		(current-word) 
 		stufe-grep-pattern)))
 
+;; Define global key to bind with these functions
+(global-set-key [f2] 'stufe-grep-word-current)
 
 
-(global-set-key [f2] 'stufe-grep-word-in-pattern)
+;; Add the items in the stufe menu
+(defvar stufe-menu-grep-context
+  nil
+  "Context of the grep menu")
+
+(setq stufe-menu-grep-context
+      (stufe-add-menu-item-group "Grep"))
+
+(stufe-add-menu-item stufe-menu-grep-context
+		       "Search a word in current folder" 
+		       'stufe-grep-word-current)
 
 
 

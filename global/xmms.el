@@ -89,7 +89,7 @@ command in a buffer."
   (interactive)
   (stufe-run-aumix "-w-5"))
 
-;; Define global key to bind with this functions
+;; Define global key to bind with these functions
 (global-set-key [(control shift j)] `stufe-xmms-last)
 (global-set-key [(control shift k)] `stufe-xmms-change)
 (global-set-key [(control shift l)] `stufe-xmms-next)
