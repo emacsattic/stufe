@@ -44,15 +44,15 @@
 			    (setq stufe-compile-function 
 				  (lambda (command) 
 				    (save-some-buffers 1)
-				    (if (not (tex-shell-running))
-					(tex-start-shell)
-				      (save-current-buffer
-					(save-excursion 
-					  (set-buffer (get-buffer "*tex-shell*"))
-					  (end-of-buffer)
-					  (if (eq (current-column) 0)
-					      (progn (stop-process (tex-shell-running) t)
-						     (tex-send-command "bg"))))))
+;;				    (if (not (tex-shell-running))
+				    (tex-start-shell)
+;; 				      (save-current-buffer
+;; 					(save-excursion 
+;; 					  (set-buffer (get-buffer "*tex-shell*"))
+;; 					  (end-of-buffer)
+;; 					  (if (eq (current-column) 0)
+;; 					      (progn (stop-process (tex-shell-running) t)
+;; 						     (tex-send-command "bg"))))))
 				    (tex-start-tex command "")
 				    (if (stufe-get-compilation-window)
 					(save-selected-window
