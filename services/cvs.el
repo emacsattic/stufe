@@ -28,12 +28,18 @@
 
 
 (defun stufe-cvs-commit (description)
-  "Run the 'commit' command of cvs"
+  "Run the 'commit' command of cvs for the current folder"
   (interactive "*sLog description: ")
   (stufe-cvs-run-cvs (format "commit%s"
 				 (progn
 				   (stufe-cvs-update)
 				   (format " -m \"%s\" " description)))))
+
+
+(defun stufe-cvs-tag (description)
+  "Run the 'tag' command of cvs for the current folder"
+  (interactive "*sTag: ")
+  (stufe-cvs-run-cvs (format "tag -c %s" description)))
 
 
 (defun stufe-cvs-add-buffer ()
@@ -48,7 +54,7 @@
 
 
 (defun stufe-cvs-update ()
-  "Run the 'update' command and update buffers in emacs"
+  "Run the 'update' command for the current folder and update buffers in emacs"
   (interactive)
   (stufe-cvs-run-cvs "update -d")
   (update-all-buffers))
