@@ -6,7 +6,6 @@
  * @author %author%
  * 
  **/
-
 public class %ClassName% {
 
 %classbody%
