@@ -192,8 +192,8 @@ $(PROJECTFILE) : all
 %.dvi : %.tex $(DEPENDENCIES) makefile
 	@echo "Compiling $@..."
   ifeq ($(BIBLIOGRAPHY),true) 
-       -$(LATEX) -interaction=nonstopmode $<
-       -$(BIBTEX) $(basename $<)
+	-$(LATEX) -interaction=nonstopmode $<
+	-$(BIBTEX) $(basename $<)
   endif
 	$(LATEX) -interaction=nonstopmode $< 
   ifeq ($(INDEX),true) 	
@@ -213,8 +213,8 @@ $(PROJECTFILE) : all
 %.pdf : %.tex $(DEPENDENCIES) makefile
 	@echo "Compiling $@ in pdf..."
   ifeq ($(BIBLIOGRAPHY),true) 
-       -$(PDFLATEX) -interaction=nonstopmode $<
-       -$(BIBTEX) $(basename $<)
+	-$(PDFLATEX) -interaction=nonstopmode $<
+	-$(BIBTEX) $(basename $<)
   endif
 	$(PDFLATEX) -interaction=nonstopmode $<
   ifeq ($(INDEX),true) 	
