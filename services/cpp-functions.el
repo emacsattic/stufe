@@ -345,6 +345,15 @@ nil otherwise."
 		  
 	  ((string= file-extension "c") (find-file (concat file-name ".h"))))))
 
-    
 
+(defun stufe-switch-satom-file ()
+  "Switch between normal class and _st file"
+  (interactive)
+  (let* ((file-name (file-name-nondirectory (buffer-file-name)))
+	 (file-directory (file-name-directory (buffer-file-name)))
+	 (file-target (if (string= (substring file-name 0 3) "_st")
+			  (concat file-directory (substring file-name 3))
+			(concat file-directory (concat "_st" file-name)))))
+    (if (or (file-exists-p file-target) (get-file-buffer file-target))
+	(find-file file-target))))
 
