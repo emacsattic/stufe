@@ -20,6 +20,7 @@
 
 
 (require 'easymenu)
+(stufe-require-file "global/utils.el")
 
 
 ;; *************************************************
@@ -83,14 +84,14 @@
 
 (defun stufe-add-menu-item-group (item-string &optional context before)
   "Add a new group in the stufe menu"
-  (easy-menu-add-item stufe
-		      (reverse context)
-		      (easy-menu-create-menu item-string '())
-		      before)
+  (ignore-errors (easy-menu-add-item stufe
+				     (reverse context)
+				     (easy-menu-create-menu item-string '())
+				     before))
   (cons item-string context))
 
 (easy-menu-define stufe global-map "Stufe menu" '("Stufe"))
-(easy-menu-add stufe global-map)
+(ignore-errors (easy-menu-add stufe global-map))
 
 
 

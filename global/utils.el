@@ -185,49 +185,8 @@ permissions"
     (defun butlast (list index)	
       (reverse (nthcdr index (reverse list)))))
 
-(if (not (functionp 'define-key-after))
-    (defun define-key-after (keymap key definition &optional after)
-      "Add binding in KEYMAP for KEY => DEFINITION, right after AFTER's binding.
-This is like `define-key' except that the binding for KEY is placed
-just after the binding for the event AFTER, instead of at the beginning
-of the map.  Note that AFTER must be an event type (like KEY), NOT a command
-\(like DEFINITION).
-
-If AFTER is t or omitted, the new binding goes at the end of the keymap.
-
-KEY must contain just one event type--that is to say, it must be a
-string or vector of length 1, but AFTER should be a single event
-type--a symbol or a character, not a sequence.
-
-Bindings are always added before any inherited map.
-
-The order of bindings in a keymap matters when it is used as a menu."
-      (unless after (setq after t))
-      (or (keymapp keymap)
-	  (signal 'wrong-type-argument (list 'keymapp keymap)))
-      (if (> (length key) 1)
-	  (error "multi-event key specified in `define-key-after'"))
-      (let ((tail keymap) done inserted
-	    (first (aref key 0)))
-	(while (and (not done) tail)
-	  ;; Delete any earlier bindings for the same key.
-	  (if (eq (car-safe (car (cdr tail))) first)
-	      (setcdr tail (cdr (cdr tail))))
-	  ;; When we reach AFTER's binding, insert the new binding after.
-	  ;; If we reach an inherited keymap, insert just before that.
-	  ;; If we reach the end of this keymap, insert at the end.
-	  (if (or (and (eq (car-safe (car tail)) after)
-		       (not (eq after t)))
-		  (eq (car (cdr tail)) 'keymap)
-		  (null (cdr tail)))
-	      (progn
-		;; Stop the scan only if we find a parent keymap.
-		;; Keep going past the inserted element
-		;; so we can delete any duplications that come later.
-		(if (eq (car (cdr tail)) 'keymap)
-		    (setq done t))
-		;; Don't insert more than once.
-		(or inserted
-		    (setcdr tail (cons (cons (aref key 0) definition) (cdr tail))))
-		(setq inserted t)))
-	  (setq tail (cdr tail))))))
+(when (not (fboundp 'ignore-errors))
+  (defmacro ignore-errors (&rest body)
+    "Execute FORMS; if an error occurs, return nil. 
+Otherwise, return result of last FORM."
+    `(condition-case nil (progn ,@body) (error nil))))
