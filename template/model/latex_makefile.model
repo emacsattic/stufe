@@ -15,8 +15,13 @@ LATEXFORMAT = ps
 
 # Use BiBTeX to generate the bilbiography
 #   true: use bibtex 
-#   false : doesn't use bibtoex for the bibliography
+#   false : doesn't use bibtex for the bibliography
 BIBLIOGRAPHY = false
+
+# Use makeindex to generate the index
+#   true: use makeindex 
+#   false : doesn't use makeindex
+INDEX = false
 
 # Multiple files
 #  true  - each tex file is compiled
@@ -187,15 +192,19 @@ $(PROJECTFILE) : all
 %.dvi : %.tex $(DEPENDENCIES) makefile
 	@echo "Compiling $@..."
   ifeq ($(BIBLIOGRAPHY),true) 
-	-$(LATEX) -interaction=nonstopmode $<
-	-$(BIBTEX) $(basename $<)
+       -$(LATEX) -interaction=nonstopmode $<
+       -$(BIBTEX) $(basename $<)
+  endif
+	$(LATEX) -interaction=nonstopmode $< 
+  ifeq ($(INDEX),true) 	
+	makeindex $(addsuffix .idx, $(basename $<))
   endif
 	$(LATEX) -interaction=nonstopmode $< 
 	$(LATEX) -interaction=nonstopmode $< 
-ifeq ($(LATEXFORMAT),dvi)
+  ifeq ($(LATEXFORMAT),dvi)
 	@mv $(addsuffix .dvi, $(basename $<)) tmp.dvi
 	@mv tmp.dvi $(PROJECTFILE).dvi
-endif
+  endif
 
 %.ps : %.dvi
 	@echo "Converting $@ into postcript format..."
@@ -204,9 +213,13 @@ endif
 %.pdf : %.tex $(DEPENDENCIES) makefile
 	@echo "Compiling $@ in pdf..."
   ifeq ($(BIBLIOGRAPHY),true) 
-	-$(LATEX) -interaction=nonstopmode $<
-	-$(BIBTEX) $(basename $<)
+       -$(PDFLATEX) -interaction=nonstopmode $<
+       -$(BIBTEX) $(basename $<)
   endif
+	$(PDFLATEX) -interaction=nonstopmode $<
+  ifeq ($(INDEX),true) 	
+	makeindex $(addsuffix .idx, $(basename $<))
+  endif	
 	$(PDFLATEX) -interaction=nonstopmode $<
 	$(PDFLATEX) -interaction=nonstopmode $<
 
@@ -237,10 +250,45 @@ ifneq ($(strip $(wildcard *.ps)),)
 	@echo "Cleaning postscript file(s)..."
 	-@rm $(wildcard *.ps)
 endif
-ifneq ($(strip $(wildcard *.aux)),)
+#Clean all latex files
 	@echo "Cleaning LaTeX file(s)..."
-	-@rm $(wildcard *.aux) $(wildcard *.log) $(wildcard *.out)
+ifneq ($(strip $(wildcard *.aux)),) 
+	-@rm $(wildcard *.aux) 
 endif
+ifneq ($(strip $(wildcard *.log)),) 
+	-@rm $(wildcard *.log) 
+endif
+ifneq ($(strip $(wildcard *.out)),) 
+	-@rm $(wildcard *.out) 
+endif
+ifneq ($(strip $(wildcard *.bbl)),) 
+	-@rm $(wildcard *.bbl) 
+endif
+ifneq ($(strip $(wildcard *.blg)),) 
+	-@rm $(wildcard *.blg) 
+endif
+ifneq ($(strip $(wildcard *.glo)),) 
+	-@rm $(wildcard *.glo) 
+endif
+ifneq ($(strip $(wildcard *.toc)),) 
+	-@rm $(wildcard *.toc) 
+endif
+ifneq ($(strip $(wildcard *.ilg)),) 
+	-@rm $(wildcard *.ilg) 
+endif
+ifneq ($(strip $(wildcard *.gls)),) 
+	-@rm $(wildcard *.gls) 
+endif
+ifneq ($(strip $(wildcard *.idx)),) 
+	-@rm $(wildcard *.idx) 
+endif
+ifneq ($(strip $(wildcard *.ind)),) 
+	-@rm $(wildcard *.ind) 
+endif
+ifneq ($(strip $(wildcard *.lof)),) 
+	-@rm $(wildcard *.lof) 
+endif
+
 
 
 #
