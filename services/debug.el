@@ -106,6 +106,7 @@
   (stufe-debug-print-variable (thing-at-point 'word)))
 
 
+
 ;; *************************************************
 ;; * 
 ;; * Command to send to the debugger program
@@ -144,7 +145,7 @@
   "Print a variable in the debugger"
   (let ((command-function (stufe-get-debugger-function "Print variable")))
     (if command-function
-	(funcall command-function))))
+	(funcall command-function variable))))
 
 
 (defun stufe-debug-add-main-breakpoint ()
