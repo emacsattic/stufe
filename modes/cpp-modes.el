@@ -25,11 +25,23 @@
 ;; *************************************************
 
 (defun stufe-run-debugger-c-mode (debug-command)
+  (setq stufe-debug-buffer-name "*gud*")
   (format "%s %s"
 	  debug-command 
 	  (if stufe-working-folder
 	      (format "--cd=%s" stufe-working-folder)
 	    "")))
+
+
+(setq stufe-c-debug-command-table
+      '(("LoadProject" "file")
+        ("RunProject" "run")
+	("AddMainBreakpoint" "break")
+	("AddBreakpoint" "break")
+	("ClearBreakpoint" "clear")
+	("Continue" "continue")
+	("Print" "print")))
+
 
 (stufe-register-mode '("c-prog-mode"
 			 (
@@ -60,7 +72,23 @@
 			  (lambda ()
 			    (stufe-shortcut-add-local [(control 0)] 
 							'stufe-switch-cpp-file))
-			   )))
+
+			   ;; Initialize debugging
+			   (lambda ()
+			     (make-local-variable 'stufe-debug-command)
+			     (setq stufe-debug-command "gdb")
+
+			     (make-local-variable 'stufe-debug-command)
+			     (setq stufe-debug-function 'gdb)
+
+			     (make-local-variable 'stufe-run-debugger)
+			     (setq stufe-run-debugger 'stufe-run-debugger-c-mode)
+
+			     (make-local-variable 'stufe-debug-get-main-breakpoint)
+			     (setq stufe-debug-get-main-breakpoint (lambda () "main"))
+
+			     (make-local-variable 'stufe-debug-command-table)
+			     (setq stufe-debug-command-table stufe-c-debug-command-table)))))
 
 (stufe-register-mode '("c-mode"
 			 ( 

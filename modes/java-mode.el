@@ -26,22 +26,31 @@
 
 
 (defun stufe-run-debugger-java-mode (debug-command)
-  (message "Debug command: %s"
-	   (format "%s %s %s"
-		   (if stufe-working-folder
-		       (format "cd %s &&" stufe-working-folder)
-		     "")
-		   debug-command
-		   (stufe-makefile-get-value (stufe-project-makefile-path)
-					     "PROJECT")))
+  (let ((project (stufe-makefile-get-value (stufe-project-makefile-path)
+					   "PROJECT")))
+    (setq stufe-debug-buffer-name (format "*gud-%s*" project))
+    (format "%s %s %s"
+	    (if stufe-working-folder
+		(format "cd %s &&" stufe-working-folder)
+	      "")
+	    debug-command
+	    project)))
 
-  (format "%s %s %s"
-	  (if stufe-working-folder
-	      (format "cd %s &&" stufe-working-folder)
-	    "")
-	  debug-command
-	  (stufe-makefile-get-value (stufe-project-makefile-path)
-				    "PROJECT")))
+
+(setq stufe-java-debug-command-table
+      '(("LoadProject" "")
+        ("RunProject" "run")
+	("AddMainBreakpoint" "stop in")
+	("AddBreakpoint" "stop at")
+	("ClearBreakpoint" "clear")
+	("Continue" "cont")
+	("Print" "print")))
+
+
+(defun stufe-debug-java-get-main-breakpoint ()
+  "Get a string to represent the breakpoint to the main method"
+  "Coucou.main")
+
 
 
 (stufe-register-mode '("java-mode"
@@ -93,8 +102,16 @@
 			     (make-local-variable 'stufe-debug-command)
 			     (setq stufe-debug-function 'jdb)
 
+			     ;;(make-local-variable 'stufe-debug-get-main-breakpoint)
+
+			     (setq stufe-debug-get-main-breakpoint
+				   'stufe-debug-java-get-main-breakpoint)
+
 			     (make-local-variable 'stufe-run-debugger)
-			     (setq stufe-run-debugger 'stufe-run-debugger-java-mode)))))
+			     (setq stufe-run-debugger 'stufe-run-debugger-java-mode)
+
+			     (make-local-variable 'stufe-debug-command-table)
+			     (setq stufe-debug-command-table stufe-java-debug-command-table)) )))
 
 
 ;; Add the hook to list of the things to do when opening a Java file
