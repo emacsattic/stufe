@@ -30,7 +30,7 @@ DEBUGINFO = gdb
 ADDINCPATH = 
 
 # Other libraries to add when linking the project
-ADDLIB = 
+ADDLIB = stdc++
 
 # Other library paths to add when linking the project
 ADDLIBPATH = 

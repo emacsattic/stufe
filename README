@@ -57,9 +57,9 @@ The future of this project is not clearly set because I am writing
 functions when I need them but two of my goals at the moment are
 improve the interface of the debugger, support more languages.
 
-Stufe is working on Linux PC with Emacs 21. Most of the functions are
-working with Emacs 20 and on a Windows platform. I never test it on
-other platform.
+Stufe is working on Linux PC with Emacs 21 in graphic mode. Most of
+the functions are working with Emacs 20 and Emacs 21 on a Windows
+platform. I never test it on other platform or text mode.
 
 
 

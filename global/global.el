@@ -72,9 +72,6 @@
 
 ;; Items for useful bindings
 (stufe-add-menu-item (stufe-get-stufe-context)
-		       "Reload stufe config" 
-		       'load-config)
-(stufe-add-menu-item (stufe-get-stufe-context)
 		       "Run command..." 
 		       'compile)
 (stufe-add-menu-item (stufe-get-stufe-context)

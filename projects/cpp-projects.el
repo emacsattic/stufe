@@ -20,6 +20,23 @@
 
 ;; *************************************************
 ;; * 
+;; * Function to create shared object project
+;; *
+;; *************************************************
+
+(defun stufe-cpp-so-project-create-makefile (project-details makefile-template)
+  "Create a makefile to build shared object file"
+  (let ((filepath (expand-file-name "makefile"
+				    (stufe-project-get-location project-details))))
+    (stufe-template-args-into-file makefile-template
+				     (list (stufe-project-get-name project-details)
+					   (stufe-apply-args-on-template "cpp-so-makefile-options"
+									   '()))
+				     filepath)))
+
+
+;; *************************************************
+;; * 
 ;; * Functions to create a new C++ project
 ;; *
 ;; *************************************************
@@ -30,7 +47,7 @@
    (stufe-projects-new-folder
     (lambda (project-details)
       (stufe-project-template-to-file project-details 
-					"cpp-makefile" 
+					"c-makefile" 
 					"makefile"))
     (lambda (project-details)
       (stufe-project-template-to-file project-details 
@@ -54,12 +71,28 @@
  '("c-so-project"
    (stufe-projects-new-folder
     (lambda (project-details)
-      (stufe-cpp-so-project project-details)))))
+      (stufe-cpp-so-project-create-makefile project-details 
+					    "c-makefile"))
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details 
+				      "cpp-main-so" 
+				      (concat (stufe-format-standard-name 
+					       (stufe-project-get-name project-details))
+					      ".c")
+				      't 't)))))
 (stufe-register-project 
  '("cpp-so-project"
    (stufe-projects-new-folder
     (lambda (project-details)
-      (stufe-cpp-so-project project-details)))))
+      (stufe-cpp-so-project-create-makefile project-details "cpp-makefile"))    
+    (lambda (project-details)
+      (stufe-project-template-to-file project-details 
+				      "cpp-main-so" 
+				      (concat (stufe-format-standard-name 
+					       (stufe-project-get-name project-details))
+					      ".cpp")
+				      't 't)))))
+
 
 ;; Add the new item in the projects menu of the stufe menu
 
@@ -80,14 +113,3 @@
 			       "New C project..." 
 			       "c-project")
 
-;; Function used by the shared object project to create te makefile
-
-(defun stufe-cpp-so-project (project-details)
-  "Create a makefile to build shared object file"
-  (let ((filepath (expand-file-name "makefile"
-				    (stufe-project-get-location project-details))))
-    (stufe-template-args-into-file "cpp-makefile"
-				     (list (stufe-project-get-name project-details)
-					   (stufe-apply-args-on-template "cpp-so-makefile-options"
-									   '()))
-				     filepath)))

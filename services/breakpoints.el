@@ -20,7 +20,7 @@
 
 ;; *************************************************
 ;; * 
-;; * Function to set breakpoints in source code
+;; * Function to manipulate breakpoint structure
 ;; *
 ;; *************************************************
 
@@ -30,8 +30,10 @@
   "List used to store breakpoint")
 
 
-(defun stufe-get-current-breakpoint ()
-  (cons (buffer-name) (stufe-get-current-line)))
+(defun stufe-create-new-breakpoint (file line overlay)
+  "Create an overlay from a breakpoint and return the new breakpoint
+with the overlay information"
+  (list file line overlay))
 
 
 (defun stufe-breakpoint-get-file (breakpoint)
@@ -41,31 +43,70 @@
 
 (defun stufe-breakpoint-get-line (breakpoint)
   "Get the file defined for a breakpoint"
-  (cdr breakpoint))
+  (cadr breakpoint))
+
+
+(defun stufe-breakpoint-get-overlays (breakpoint)
+  "Get the file defined for a breakpoint"
+  (car (cddr breakpoint)))
+
+
+;; *************************************************
+;; * 
+;; * Function to set breakpoints in source code
+;; *
+;; *************************************************
+
+
+(defun stufe-find-listed-breakpoint (breakpoint)
+  "Find a breakpoint in the breakpoint list"
+  (let ((breakpoint-file (stufe-breakpoint-get-file breakpoint))
+	(breakpoint-line (stufe-breakpoint-get-line breakpoint))
+	(evaluation nil)
+	(current-element stufe-breakpoint-list))
+    (while (and current-element (not evaluation))
+      (progn 
+	(setq evaluation 
+	      (and (string= breakpoint-file 
+			    (stufe-breakpoint-get-file (car current-element)))
+		   (equal breakpoint-line
+			  (stufe-breakpoint-get-line (car current-element)))))
+	(if (not evaluation)
+	    (setq current-element (cdr current-element)))))
+    (if evaluation
+	(car current-element)
+      nil)))
+
 
 
 (defun stufe-set-breakpoint ()
   (interactive)
-  (let ((current-breakpoint (stufe-get-current-breakpoint)))
-    (if (not (member current-breakpoint
-		     stufe-breakpoint-list))
-	(progn 
+  (let* ((current-breakpoint 
+	  (stufe-create-new-breakpoint (buffer-name) 
+				       (stufe-get-current-line)
+				       'nil))
+	 (listed-breakpoint 
+	  (stufe-find-listed-breakpoint current-breakpoint)))
+    (if listed-breakpoint
+	(progn
 	  (setq stufe-breakpoint-list 
-		(cons current-breakpoint stufe-breakpoint-list))
-	  (let ((overlay (make-overlay (stufe-get-beginning-of-line)
-				       (stufe-get-end-of-line))))
-	    (overlay-put overlay 'before-string "¤"))
+		(delete listed-breakpoint stufe-breakpoint-list))
 	  (if (stufe-get-debug-process)
-	      (stufe-debug-add-breakpoint current-breakpoint)))
-      (progn 
-	(setq stufe-breakpoint-list 
-	      (delete current-breakpoint stufe-breakpoint-list))
-	(if (stufe-get-debug-process)
-	    (stufe-debug-remove-breakpoint current-breakpoint))
-	(while (overlays-at (point))
-	  (delete-overlay (car (overlays-at (point))))))))
-    (message (format "%s" stufe-breakpoint-list))
-    (redraw-display))
-
+	      (stufe-debug-remove-breakpoint listed-breakpoint))
+	  (delete-overlay 
+	   (stufe-breakpoint-get-overlays listed-breakpoint)))
+      (let* ((overlay (make-overlay (stufe-get-beginning-of-line)
+				    (stufe-get-end-of-line)))
+	     (new-breakpoint 
+	      (stufe-create-new-breakpoint 
+	       (stufe-breakpoint-get-file current-breakpoint)
+	       (stufe-breakpoint-get-line current-breakpoint)
+	       overlay)))
+ 	    (overlay-put overlay 'before-string "¤")
+	    (setq stufe-breakpoint-list 
+		  (cons new-breakpoint stufe-breakpoint-list))
+	    (if (stufe-get-debug-process)
+		(stufe-debug-add-breakpoint current-breakpoint)))))
+      (message (format "%s" stufe-breakpoint-list)))
 
 
