@@ -177,7 +177,7 @@ endif
 
 # We define exactly what file is the output of the project
 OUTPUTFILENAME = $(PROJECT)
-ifeq ($(PROJECTTYPE),so)
+ifeq ($(strip $(PROJECTTYPE)),so)
   OUTPUTFILENAME = lib$(PROJECT).so.$(LIBRARYVERSION).$(BUILDVERSION).0
   SOVERSIONNAME = lib$(PROJECT).so.$(LIBRARYVERSION)
   SOLINKNAME = lib$(PROJECT).so
@@ -217,7 +217,7 @@ endif
 
 
 # Shared object options
-ifeq ($(PROJECTTYPE),so)
+ifeq ($(strip $(PROJECTTYPE)),so)
   SOPROPERTIES = -D_REENTRANT -fPIC
   LDSOPROPERTIES = -shared -Wl,-soname,$(SOVERSIONNAME)
 endif
@@ -274,7 +274,7 @@ subdirs:
 $(PROJECTFILE): $(DEPS) $(OBJS)
 	@echo "Linking..."
 	$(LINKCC) -o $(PROJECTFILE) $(OBJS) $(LDFLAGS)
-ifeq ($(PROJECTTYPE),so)
+ifeq ($(strip $(PROJECTTYPE)),so)
 	@echo "Creating symbolic links for the library..."	
 	$(DEBUGMARK)ln -sf $(OUTPUTFILENAME) $(PROJECTPATH)/$(SOVERSIONNAME)
 	$(DEBUGMARK)ln -sf $(OUTPUTFILENAME) $(PROJECTPATH)/$(SOLINKNAME)
