@@ -18,6 +18,10 @@
 ;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+(stufe-load-file "menu.el")
+
+
 ;; *************************************************
 ;; * 
 ;; * Functions to run the make command
@@ -46,10 +50,21 @@
 
 (defun stufe-make-rebuild ()
   (interactive)
-  (stufe-run-make "clean all"))
+  (stufe-run-make "-k clean all"))
 
 
-(setq stufe-compile-function 'compile)
+(setq stufe-compile-function 
+      '(lambda (&optional command)
+	 (interactive)
+	 (save-some-buffers 1)
+	 (if command
+	     (compile command)
+	   (call-interactively 'compile))
+	 (if (stufe-get-compilation-window)
+	     (save-selected-window
+	       (select-window (stufe-get-compilation-window))
+	       (goto-char (point-max))))))
+
 
 (defun stufe-run-make (command)
   "Save all the buffers and run the make command"
@@ -58,14 +73,8 @@
 	   (not (or (file-exists-p "makefile")
 		    (file-exists-p "Makefile"))))
       (stufe-guess-project-makefile))
-  (save-some-buffers 1)
   (funcall stufe-compile-function 
-	   (stufe-run-in-work-folder stufe-make-command
-				       command))
-  (if (stufe-get-compilation-window)
-      (save-selected-window
-	(select-window (stufe-get-compilation-window))
-	(goto-char (point-max)))))
+	   (stufe-run-in-work-folder stufe-make-command command)))
 
 
 (defun stufe-run-in-work-folder (command argument)
@@ -126,3 +135,16 @@
   "Get the current window used to compile"
   (if (stufe-get-compilation-buffer)
       (get-buffer-window (stufe-get-compilation-buffer))))
+
+
+;; *************************************************
+;; * 
+;; * Bindings
+;; *
+;; *************************************************
+
+(global-set-key [(f9)] stufe-compile-function)
+
+(stufe-add-menu-item (stufe-get-stufe-context)
+		       "Run command..." 
+		       stufe-compile-function)

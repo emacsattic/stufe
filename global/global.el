@@ -58,20 +58,15 @@
        (select-window (stufe-get-window-under-cursor))
        (scroll-up stufe-mouse-scroll-step))))
 
+
 ;; Handy bindings for the editor
 (global-set-key [home] 'beginning-of-line)
 (global-set-key [end] 'end-of-line) 
 (global-set-key [(control tab)] 'other-window)
 (global-set-key [(f4)] 'next-error)
-(global-set-key [(f9)] 'compile)
 (setq Man-notify-method 'newframe)
 (global-set-key [(f1)] (lambda () (interactive) (man (current-word))))
 
-
-;; Items for useful bindings
-(stufe-add-menu-item (stufe-get-stufe-context)
-		       "Run command..." 
-		       'compile)
 
 
 
