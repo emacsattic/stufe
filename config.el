@@ -92,6 +92,3 @@ the mouse wheel")
 (defvar stufe-no-color-theme 
   nil)
 
-;; True if stufe can load its keymap
-(defvar stufe-no-keymap 
-  nil)

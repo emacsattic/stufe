@@ -297,29 +297,30 @@ declaration"
 (defun stufe-switch-cpp-file ()
   "Switch between c/cpp<->h/hpp"
   (interactive)
-  (let ((file-extension (get-file-extension (buffer-name)))
-	(file-name (get-file-name (buffer-name)))
+  (let ((file-extension (file-name-extension (buffer-file-name)))
+	(file-name (file-name-sans-extension
+		    (file-name-nondirectory (buffer-file-name))))
 	(file-present (lambda (filename)
 			(or (file-exists-p filename)
 			    (get-file-buffer filename)))))
 
-    (cond ((string= file-extension ".cpp") 
-	   (cond ((file-present (concat file-name ".hpp"))
+    (cond ((string= file-extension "cpp") 
+	   (cond ((funcall file-present (concat file-name ".hpp"))
 		  (find-file (concat file-name ".hpp")))
-		 ((file-present (concat file-name ".h"))
+		 ((funcall file-present (concat file-name ".h"))
 		  (find-file (concat file-name ".h")))
 		 ('t (find-file (concat file-name ".hpp")))))
 
-	  ((string= file-extension ".hpp") (find-file (concat file-name ".cpp")))
+	  ((string= file-extension "hpp") (find-file (concat file-name ".cpp")))
 
-	  ((string= file-extension ".h") 
-	   (cond ((file-present (concat file-name ".c"))
+	  ((string= file-extension "h") 
+	   (cond ((funcall file-present (concat file-name ".c"))
 		   (find-file (concat file-name ".c")))
-		  ((file-present (concat file-name ".cpp"))
+		  ((funcall file-present (concat file-name ".cpp"))
 		   (find-file (concat file-name ".cpp")))
 		  ('t (find-file (concat file-name ".c")))))
 		  
-	  ((string= file-extension ".c") (find-file (concat file-name ".h"))))))
+	  ((string= file-extension "c") (find-file (concat file-name ".h"))))))
 
     
 
