@@ -16,9 +16,18 @@ libtoolize --force
 $AUTOHEADER --version | head -n 1 && $AUTOHEADER
 $AUTOMAKE --version | head -n 1 && $AUTOMAKE --foreign --add-missing 
 $AUTOCONF --version | head -n 1 && $AUTOCONF
+<<<<<<< autotools_bootstrap.model
+
+if [ "$1" = "--update" ]
+then
+    ./config.status --recheck && ./config.status && make clean all
+fi
+
+=======
 
 if [ \( "$1" = "--update" \) -a \( -f "./config.status" \) ]
 then
     ./config.status --recheck && ./config.status && make clean all
 fi
 
+>>>>>>> 1.4
