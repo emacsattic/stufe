@@ -58,6 +58,11 @@ ifeq ($(strip $(LATEX_COMPILER)),)
 LATEX_COMPILER = latex
 endif
 
+# Default BIBTeX compiler
+ifeq ($(strip $(BIBTEX_COMPILER)),)
+BIBTEX_COMPILER = bibtex
+endif
+
 # Default pdf compiler
 ifeq ($(strip $(PDFLATEX_COMPILER)),)
 PDFLATEX_COMPILER = pdflatex
@@ -97,6 +102,7 @@ endif
 LATEX= $(DEBUGMARK)$(LATEX_COMPILER)
 PDFLATEX= $(DEBUGMARK)$(PDFLATEX_COMPILER)
 DVIPS = $(DEBUGMARK)$(DVI2PS)
+BIBTEX= $(DEBUGMARK)$(BIBTEX_COMPILER)
 
 
 #
