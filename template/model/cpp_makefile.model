@@ -288,7 +288,7 @@ ifeq ($(strip $(PROJECTTYPE)),so)
 	$(DEBUGMARK)ln -sf $(OUTPUTFILENAME) $(PROJECTPATH)/$(SOVERSIONNAME)
 	$(DEBUGMARK)ln -sf $(OUTPUTFILENAME) $(PROJECTPATH)/$(SOLINKNAME)
 endif
-	@echo "The project '$(PROJECT)' has been build."
+	@echo "The project '$(PROJECT)' has been built."
 
 # We build Satom files
 %.sti : %.stc
@@ -352,7 +352,7 @@ $(DOXYGENCONFIGURATIONFILE):
 
 ifeq ($(DOCUMENTATIONPROGRAM),doxygen)
 doc: $(DOXYGENCONFIGURATIONFILE)
-	$(DOCPROG) doxygen.config
+	$(DOCPROG) $(DOXYGENCONFIGURATIONFILE)
 else
 doc:
 	$(DOCPROG) -d $(DOCPLUSPLUSOUPUTDIR) *pp *.h $(DOCINCLUDEFILES)
