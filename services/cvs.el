@@ -30,7 +30,7 @@
 (defun stufe-cvs-update ()
   "Run the 'update' command and update buffers in emacs"
   (interactive)
-  (stufe-cvs-run-cvs "update")
+  (stufe-cvs-run-cvs "update -d")
   (update-all-buffers))
 
 
