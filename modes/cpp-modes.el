@@ -177,6 +177,9 @@
 			  (lambda ()
 			    (stufe-shortcut-add-local [(control ?c) (control ?f)] 
 							'stufe-create-new-cpp-class-member))
+			  (lambda ()
+			    (stufe-shortcut-add-local [(control *)] 
+							'stufe-switch-satom-file))
 			  )))
 
 
