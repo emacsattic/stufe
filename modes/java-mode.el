@@ -25,6 +25,25 @@
 ;; *************************************************
 
 
+(defun stufe-run-debugger-java-mode (debug-command)
+  (message "Debug command: %s"
+	   (format "%s %s %s"
+		   (if stufe-working-folder
+		       (format "cd %s &&" stufe-working-folder)
+		     "")
+		   debug-command
+		   (stufe-makefile-get-value (stufe-project-makefile-path)
+					     "PROJECT")))
+
+  (format "%s %s %s"
+	  (if stufe-working-folder
+	      (format "cd %s &&" stufe-working-folder)
+	    "")
+	  debug-command
+	  (stufe-makefile-get-value (stufe-project-makefile-path)
+				    "PROJECT")))
+
+
 (stufe-register-mode '("java-mode"
 			 ( "prog-mode"
 
@@ -69,7 +88,13 @@
 			   ;; Initialize debugging
 			   (lambda ()
 			     (make-local-variable 'stufe-debug-command)
-			     (setq stufe-debug-command "jdb")))))
+			     (setq stufe-debug-command "jdb")
+
+			     (make-local-variable 'stufe-debug-command)
+			     (setq stufe-debug-function 'jdb)
+
+			     (make-local-variable 'stufe-run-debugger)
+			     (setq stufe-run-debugger 'stufe-run-debugger-java-mode)))))
 
 
 ;; Add the hook to list of the things to do when opening a Java file

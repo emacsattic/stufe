@@ -24,6 +24,12 @@
 ;; *
 ;; *************************************************
 
+(defun stufe-run-debugger-c-mode (debug-command)
+  (format "%s %s"
+	  debug-command 
+	  (if stufe-working-folder
+	      (format "--cd=%s" stufe-working-folder)
+	    "")))
 
 (stufe-register-mode '("c-prog-mode"
 			 (

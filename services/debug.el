@@ -25,6 +25,8 @@
 ;; *************************************************
 
 
+(setq stufe-run-debugger 'stufe-run-debugger-c-mode)
+(setq stufe-debug-function 'gdb)
 (setq stufe-debug-command "gdb")
 (setq stufe-debug-buffer-name "*gud*")
 
@@ -33,19 +35,23 @@
   "Return the buffer used for debugging"
   (get-buffer stufe-debug-buffer-name))
 
+
 (defun stufe-get-debug-process ()
   "Return the process used for debugging"
   (get-buffer-process (stufe-get-debug-buffer)))
+
 
 (defun stufe-kill-debug-window ()
   "Kill the buffer used to debug"
   (if (stufe-get-debug-buffer)
       (kill-buffer (stufe-get-debug-buffer))))
 
+
 (defun stufe-get-debug-window ()
   "Get the current window used to debug"
   (if (stufe-get-debug-buffer)
       (get-buffer-window (stufe-get-debug-buffer))))
+
 
 (defun stufe-launch-debug-window ()
   "Find a place for the debug buffer"
@@ -57,11 +63,9 @@
     (if debug-window
 	(set-window-buffer debug-window (get-buffer-create stufe-debug-buffer-name))))
   (save-selected-window
-    (gdb (format "%s %s"
-		 stufe-debug-command 
-		 (if stufe-working-folder
-		     (format "--cd=%s" stufe-working-folder)
-		   "")))))
+    (funcall stufe-debug-function
+	     (funcall stufe-run-debugger stufe-debug-command))))
+
 
 (defun stufe-debug-project () 
   "Start the debug mode"
