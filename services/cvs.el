@@ -45,6 +45,16 @@
   (stufe-cvs-run-cvs (format "tag -c %s" description)))
 
 
+(defun stufe-cvs-branch (description)
+  "Run the 'tag' command of cvs for the current folder"
+  (interactive "*sBranch name: ")
+  (stufe-cvs-run-cvs (format "tag -c -b %s" description))
+  (if (yes-or-no-p "Do you want to update your working copy to work in the branch ? ")
+      (progn 
+	(stufe-cvs-run-cvs (format "update -r %s" description))
+	(update-all-buffers))))
+
+
 (defun stufe-cvs-add-buffer ()
   "Add the current buffer to cvs"
   (interactive)
