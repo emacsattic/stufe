@@ -79,6 +79,10 @@ the mouse wheel")
   "make"
   "The make command for stufe")
 
+(defvar stufe-makefile-variable-prefix
+  ""
+  "Prefix for makefile variable")
+
 ;; Set the default folder for backup files
 (setq backup-directory-alist '(("." . "/tmp")))
 

@@ -1,7 +1,11 @@
 #!/bin/sh
 
-aclocal 
+[ -z "$ACLOCAL" ] && ACLOCAL=aclocal
+[ -z "$AUTOMAKE" ] && AUTOMAKE=automake
+[ -z "$AUTOCONF" ] && AUTOCONF=autoconf
+
+
+$ACLOCAL --version | head -n 1 && $ACLOCAL
 libtoolize --force 
-automake --foreign --add-missing 
-autoconf 
-autoheader
+$AUTOMAKE --version | head -n 1 && $AUTOMAKE --foreign --add-missing 
+$AUTOCONF --version | head -n 1 && $AUTOCONF

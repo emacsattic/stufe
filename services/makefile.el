@@ -100,7 +100,9 @@
 
 (defun stufe-makefile-get-values (makefile key)
   "Get the corresponding value in a makefile for a specified key"
-  (let ((makefile-line-value (stufe-makefile-get-line-value makefile key)))
+  (let ((makefile-line-value (stufe-makefile-get-line-value makefile 
+							    (concat stufe-makefile-variable-prefix 
+								    key))))
     (if makefile-line-value
 	(stufe-makefile-remove-variable-name 
 	 (split-string makefile-line-value "[ \f\t\n\r\v]+"))
@@ -108,6 +110,7 @@
 
 (defun stufe-makefile-get-line-value (makefile key)
   "Get the corresponding line of a value in a makefile for a specified key"
+  (message "Get value of %s" key)
   (let* ((initial-buffer (get-file-buffer makefile))
 	 (makefile-buffer (if (not initial-buffer)
 			      (find-file makefile)
