@@ -223,7 +223,7 @@
 				default-directory))))
 
 
-(stufe-add-menu-item nil
+(stufe-add-menu-item (stufe-get-stufe-context)
 		     "Set working folder..." 
 		     'stufe-interactive-set-working-folder)
 

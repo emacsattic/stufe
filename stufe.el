@@ -26,8 +26,6 @@
 ;; *
 ;; *************************************************
 
-(provide 'stufe)
-
 (defvar stufe-root nil
   "Root folder used for the research of stufe file")
 
@@ -91,4 +89,5 @@
 
 (stufe)
 
+(provide 'stufe)
 

@@ -34,7 +34,7 @@
     (setq stufe-working-folder current-working-folder)))
 
 
-(stufe-add-menu-item nil
+(stufe-add-menu-item (stufe-get-stufe-context)
 		     "Update Stufe" 
 		     'stufe-cvs-update-stufe
 		     "Run command...")

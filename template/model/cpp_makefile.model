@@ -165,6 +165,11 @@ ifeq ($(strip $(PROFILER)),)
 PROFILER = gprof
 endif
 
+# Default Satom compiler
+ifeq ($(strip $(SATOM_COMPILER)),)
+SATOM_COMPILER = stcpp
+endif
+
 #
 # Define command line options from the makefile options
 #
@@ -237,7 +242,8 @@ CXXFLAGS = $(CFLAGS)
 LINKCC = $(DEBUGMARK)$(LINKER)
 LDFLAGS += $(ADDITIONALLIBRARY) $(ADDITIONALPATHLIBRARY) $(LDSOPROPERTIES) \
 $(PROFILINGFLAG)
-
+# Define the command for Satom
+SATOMCOMPILER = $(DEBUGMARK)$(SATOM_COMPILER)
 
 #
 # The next step is to make lists of the files we want to compile
@@ -250,6 +256,9 @@ OBJS := $(patsubst %.c,%.o,$(wildcard *.c)) \
         $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 # List of the dependies files
 DEPS := $(patsubst %.o,%.d,$(OBJS))
+# List of Satom files
+STC := $(wildcard *.stc)
+STI := $(patsubst %.stc,%.sti,$(STC))
 
 # 
 # All the options and commands are now define. So, we can start
@@ -271,7 +280,7 @@ subdirs:
 	@for dir in $(DIRS); do $(MAKE) -C $$dir $(GOALS); done
   endif
 
-$(PROJECTFILE): $(DEPS) $(OBJS)
+$(PROJECTFILE): $(PROJECT).sti $(DEPS) $(OBJS)
 	@echo "Linking..."
 	$(LINKCC) -o $(PROJECTFILE) $(OBJS) $(LDFLAGS)
 ifeq ($(strip $(PROJECTTYPE)),so)
@@ -280,6 +289,12 @@ ifeq ($(strip $(PROJECTTYPE)),so)
 	$(DEBUGMARK)ln -sf $(OUTPUTFILENAME) $(PROJECTPATH)/$(SOLINKNAME)
 endif
 	@echo "The project '$(PROJECT)' has been build."
+
+# We build Satom files
+%.sti : %.stc
+	@echo "Building Satom files..."
+	$(SATOMCOMPILER) $<
+	@touch $@
 
 # We build the depencies for modified source files
 %.d : %.cpp
@@ -368,5 +383,6 @@ endif
 ifneq ($(strip $(DEPS)),)
 ifeq (,$(findstring clean,$(MAKECMDGOALS)))
 -include $(DEPS)
+-include $(STI)
 endif
 endif
