@@ -208,7 +208,7 @@
 	      (if (file-executable-p working-folder)
 		  working-folder
 		(error "Cannot cd to %s:  Permission denied" working-folder)))))
-  (setq compilation-search-path (list stufe-working-folder)))
+  (setq compilation-search-path (list stufe-working-folder ".")))
 
 
 (defun stufe-interactive-set-working-folder ()
