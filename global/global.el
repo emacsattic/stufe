@@ -63,7 +63,6 @@
 (global-set-key [end] 'end-of-line) 
 (global-set-key [(control tab)] 'other-window)
 (global-set-key [(f4)] 'next-error)
-(global-set-key [(control z)] 'undo)
 (global-set-key [(f9)] 'compile)
 (setq Man-notify-method 'newframe)
 (global-set-key [(f1)] (lambda () (interactive) (man (current-word))))
