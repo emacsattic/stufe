@@ -68,7 +68,7 @@
   "Context of the grep menu")
 
 (setq stufe-menu-grep-context
-      (stufe-add-menu-item-group "Grep"))
+      (stufe-add-menu-item-group "Grep" nil "Projects"))
 
 (stufe-add-menu-item stufe-menu-grep-context
 		       "Grep word" 

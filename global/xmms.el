@@ -104,21 +104,21 @@ command in a buffer."
 
 
 (setq stufe-menu-xmms-context
-      (stufe-add-menu-item-group "Xmms"))
+      (stufe-add-menu-item-group "Xmms" nil "Grep"))
 (stufe-add-menu-item stufe-menu-xmms-context
-		       "Last music" 
-		       'stufe-xmms-last)
-(stufe-add-menu-item stufe-menu-xmms-context
-		       "Next music" 
-		       'stufe-xmms-next)
-(stufe-add-menu-item stufe-menu-xmms-context
-		       "Play/Stop music" 
-		       'stufe-xmms-change)
+		       "Increase Pcm" 
+		       'stufe-aumix-up)
 (stufe-add-menu-item stufe-menu-xmms-context
 		       "Decrease Pcm" 
 		       'stufe-aumix-down)
 (stufe-add-menu-item stufe-menu-xmms-context
-		       "Increase Pcm" 
-		       'stufe-aumix-up)
+		       "Play/Stop music" 
+		       'stufe-xmms-change)
+(stufe-add-menu-item stufe-menu-xmms-context
+		       "Next music" 
+		       'stufe-xmms-next)
+(stufe-add-menu-item stufe-menu-xmms-context
+		       "Last music" 
+		       'stufe-xmms-last)
 
 

@@ -18,6 +18,10 @@
 ;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+(require 'easymenu)
+
+
 ;; *************************************************
 ;; * 
 ;; * Function to deal with the items in the stufe 
@@ -25,10 +29,6 @@
 ;; *
 ;; *************************************************
 
-
-;; stufe menu context
-(defvar stufe-menu-context '[]
-  "Context to add item in the stufe menu")
 
 
 ;; *************************************************
@@ -38,32 +38,32 @@
 ;; *************************************************
 
 (defun stufe-menu-create-local (local-item)
-  "Create a new (overwriting if it already exists) item in the menu bar"
-  (let* ((context (stufe-get-context-item [menu-bar] local-item))
-	 (existing-key (lookup-key (current-local-map) context)))
-    (if (keymapp existing-key)
-	(suppress-keymap existing-key))
-    (define-key 
-      (current-local-map)
-      context
-      (cons local-item (make-sparse-keymap local-item)))
-    (setq stufe-menu-current-context context)))
+  "Create a new (overwriting if it already exists) item in the menu bar")
+;;   (let* ((context (stufe-get-context-item [menu-bar] local-item))
+;; 	 (existing-key (lookup-key (current-local-map) context)))
+;;     (if (keymapp existing-key)
+;; 	(suppress-keymap existing-key))
+;;     (define-key 
+;;       (current-local-map)
+;;       context
+;;       (cons local-item (make-sparse-keymap local-item)))
+;;     (setq stufe-menu-current-context context)))
 
 
 (defun stufe-menu-add-item-local (item-string real-binding)
-  "Add an item in the last sub-menu (inside the stufe menu)"
-  (define-key (current-local-map)
-    (stufe-get-context-item stufe-menu-current-context 
-			      item-string)
-    (cons item-string real-binding)))
+  "Add an item in the last sub-menu (inside the stufe menu)")
+;;   (define-key (current-local-map)
+;;     (stufe-get-context-item stufe-menu-current-context 
+;; 			      item-string)
+;;     (cons item-string real-binding)))
   
 
 (defun stufe-menu-add-menubar-local ()
-  "Add a menubar item in the current menu"
-  (define-key (current-local-map) 
-    (stufe-get-context-item stufe-menu-current-context 
-			      (format "%s" (random)))
-    '("--")))
+  "Add a menubar item in the current menu")
+;;   (define-key (current-local-map) 
+;;     (stufe-get-context-item stufe-menu-current-context 
+;; 			      (format "%s" (random)))
+;;     '("--")))
 
 
 
@@ -89,32 +89,46 @@
 ;; *
 ;; *************************************************
 
-(defun stufe-add-menu-item (context item-string real-binding)
+(defun test-hello ()
+  (interactive)
+  (message "Hello world"))
+
+(defun stufe-add-menu-item (context item-string real-binding &optional before)
   "Add an item in the last sub-menu (inside the stufe menu)"
-  (define-key global-map
-    (stufe-get-context-item context item-string)
-    (cons item-string real-binding)))
+  (easy-menu-add-item stufe (reverse context) (vector item-string 'test-hello t) before))
+;;   (define-key global-map
+;;     (stufe-get-context-item context item-string)
+;;     (cons item-string real-binding)))
 
 
-(defun stufe-add-menu-item-group (item-string &optional context)
+(defun stufe-add-menu-item-group (item-string &optional context before)
   "Add a new group in the stufe menu"
-  (let ((new-context (stufe-get-context-item (if context
-						   context
-						 stufe-menu-context) 
-					       item-string)))
-    (define-key global-map
-      new-context
-      (cons item-string (make-sparse-keymap item-string)))
-    new-context))
+  (message "Adding %s in %s..." item-string context)
+  (easy-menu-add-item stufe
+		      (reverse context)
+		      (easy-menu-create-menu item-string '())
+		      before)
+  (cons item-string context))
+
+;;   (let ((new-context (stufe-get-context-item (if context
+;; 						   context
+;; 						 stufe-menu-context) 
+;; 					       item-string)))
+;;     (define-key global-map
+;;       new-context
+;;       (cons item-string (make-sparse-keymap item-string)))
+;;     new-context))
 
 
 
 ;; Add the stufe menu in the global bar menu
-(define-key-after 
-  (lookup-key global-map [menu-bar])
-  [stufe]
-  (cons "Stufe" (make-sparse-keymap "stufe"))
-  'search)
-(setq stufe-menu-context '[menu-bar stufe])
+;; (define-key-after 
+;;   (lookup-key global-map [menu-bar])
+;;   [stufe]
+;;   (cons "Stufe" (make-sparse-keymap "stufe"))
+;;   'search)
+(easy-menu-define stufe global-map "Stufe menu" '("Stufe"))
+(easy-menu-add stufe global-map)
+
 
 

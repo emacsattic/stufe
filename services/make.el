@@ -143,6 +143,6 @@
 
 (global-set-key [(f5)] stufe-compile-function)
 
-(stufe-add-menu-item (stufe-get-stufe-context)
-		       "Run command..." 
-		       stufe-compile-function)
+(stufe-add-menu-item nil
+		     "Run command..." 
+		     stufe-compile-function)

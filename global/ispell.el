@@ -40,7 +40,7 @@
   "Context of the spell check menu")
 
 (setq stufe-menu-spell-check-context
-      (stufe-add-menu-item-group "Spell check"))
+      (stufe-add-menu-item-group "Spell check"  nil "Update Stufe"))
 
 (stufe-add-menu-item stufe-menu-spell-check-context 
 		       "Define current dictionary" 

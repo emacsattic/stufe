@@ -223,9 +223,9 @@
 				default-directory))))
 
 
-(stufe-add-menu-item (stufe-get-stufe-context)
-		       "Set working folder..." 
-		       'stufe-interactive-set-working-folder)
+(stufe-add-menu-item nil
+		     "Set working folder..." 
+		     'stufe-interactive-set-working-folder)
 
 
 (global-set-key [(control R)] 'stufe-interactive-set-working-folder)
@@ -240,12 +240,8 @@
 ;; *
 ;; *************************************************
 
-(defvar stufe-projects-menu-context
-  nil
-  "Context of the projects menu")
-
 (setq stufe-menu-projects-context
-      (stufe-add-menu-item-group "Projects"))
+      (stufe-add-menu-item-group "Projects" nil "Run command..."))
 
 
 
