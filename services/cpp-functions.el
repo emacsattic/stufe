@@ -157,7 +157,13 @@ declaration"
 ;; *************************************************
 
 (defun stufe-build-modifiers-string (function-declaration)
-  (cadr (split-string function-declaration ")")))
+  (cadr (split-string (car (split-string function-declaration 
+					 ";")) 
+		      ")")))
+
+
+(defun stufe-build-modifiers-string (function-declaration)
+  (car (split-string function-declaration ";")))
 
 
 (defun stufe-is-function-purely-virtual (function-declaration)
