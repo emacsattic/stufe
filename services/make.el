@@ -40,7 +40,7 @@
 
 (defun stufe-make-build ()
   (interactive)
-  (stufe-run-make "all"))
+  (stufe-run-make "-k all"))
 
 
 (defun stufe-make-clean ()
