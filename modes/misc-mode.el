@@ -28,8 +28,11 @@
 (stufe-register-mode '("imenu-mode"
 		       (
 			(lambda ()
-			  (imenu-add-to-menubar 
-			   (capitalize
-			    (file-name-sans-extension 
-			     (file-name-nondirectory (buffer-file-name)))))))))
+			  (let ((file-name (buffer-file-name)))
+			    (imenu-add-to-menubar 
+			     (if file-name
+				 (capitalize
+				  (file-name-sans-extension 
+				   (file-name-nondirectory (buffer-file-name))))
+			       (buffer-name))))))))
 

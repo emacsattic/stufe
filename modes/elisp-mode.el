@@ -26,7 +26,9 @@
 
 
 (stufe-register-mode '("elisp-mode"
-			 ("cvs-mode")))
+			 ("cvs-mode"
+
+			  "imenu-mode")))
 
 
 ;; Add the hook to list of the things to do when opening a EmacsLisp file
