@@ -27,26 +27,48 @@
 
 ;; *************************************************
 ;; * 
+;; * Functions to extract data from the description
+;; * of an argument
+;; *
+;; *************************************************
+
+(defun stufe-argument-get-type (argument-description)
+  "Return the type of an argument from its declaration"
+  (car argument-description))
+
+(defun stufe-argument-get-name (argument-description)
+  "Return the name of an argument from its declaration"
+  (cadr argument-description))
+
+(defun stufe-argument-get-default (argument-description)
+  "Return the default value of an argument from its declaration"
+  (let ((list-element (cddr argument-description)))
+    (if list-element
+	(car list-element)
+      'nil)))
+
+(defun stufe-argument-make-description (type-value name-value default-value)
+  (list type-value name-value default-value))
+					 
+
+;; *************************************************
+;; * 
 ;; * Functions to manipulate arguments in function
 ;; * declaration
 ;; *
 ;; *************************************************
 
-(defun stufe-argument-get-name (argument-description)
-  "Return the name of an argument from its declaration"
-  (car argument-description))
-
-
-(defun stufe-argument-get-type (argument-description)
-  "Return the type of an argument from its declaration"
-  (cdr argument-description))
-
-
 (defun stufe-extract-argument-description (argument-declaration)
   "Return an argument description from its declaration"
-  (let ((string-split (split-string argument-declaration " ")))
-    (cons (car (last string-split))
-	  (butlast string-split 1))))
+  (let* ((string-split (split-string argument-declaration "="))
+	 (default-value (if (cdr string-split)
+			    (cadr string-split)
+			  'nil))
+	 (name-value (car (last (split-string (car string-split) " ") 1)))
+	 (type-value (stufe-rebuild-string 
+		      (butlast (split-string (car string-split) " ") 1)
+		      " ")))
+    (stufe-argument-make-description type-value name-value default-value)))
 
 
 (defun stufe-extract-arguments-description (function-declaration)
@@ -67,8 +89,13 @@
 
 (defun stufe-build-arguments-string (function-declaration)
   "Build a string of the set of arguments of the function"
-  (stufe-rebuild-string (stufe-build-arguments-list function-declaration)
-			  ","))
+  (stufe-rebuild-string 
+   (mapcar (lambda (argument-description)
+	     (format "%s %s" 
+		     (stufe-argument-get-type argument-description)
+		     (stufe-argument-get-name argument-description)))
+	   (stufe-extract-arguments-description function-declaration))
+   ", "))
 
    
 (defun stufe-make-arguments-documentation (function-declaration)
