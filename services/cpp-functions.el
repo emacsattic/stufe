@@ -191,12 +191,14 @@ declaration"
 
 
 (defun stufe-exist-body-file (header-file)
-  (let ((file-extension (file-name-extension header-file))
-	(search-body-file (lambda (extension)
-			    (or (file-exists-p 
-				 (concat (get-file-name header-file) extension))
-				(get-file-buffer
-				 (concat (get-file-name header-file) extension))))))
+  (let* ((file-extension (file-name-extension header-file))
+	 (file-name (file-name-sans-extension
+		     (file-name-nondirectory header-file)))
+	 (search-body-file (lambda (extension)
+			     (or (file-exists-p 
+				  (concat file-name extension))
+				 (get-file-buffer
+				  (concat file-name extension))))))
     (cond 
      ((string= file-extension "hpp") (funcall search-body-file ".cpp"))
      ((string= file-extension "h") (or (funcall search-body-file ".c")
