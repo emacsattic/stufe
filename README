@@ -1,0 +1,67 @@
+-----------------------------------------------
+  Some Technical & Useful Functions for Emacs
+-----------------------------------------------
+
+     Emacs made friendly for beginners
+
+
+
+Stufe comes from two different reasons : 
+
+1) the first one is, progressively, I found new features on the web
+and I used to put them in my .emacs file.
+
+2) the second one is, I was coming from a MS-DOS/Windows world where
+it is possible to push only one key on the keyboard to compile, run or
+debug the current project. I was missing this simplicity. So, I start
+adding functions to simplify my life under Emacs until by .emacs file
+becomes unreadable because of its size.
+
+
+
+This is the reason why I started to split .emacs in files and classify
+them in folders. People saw me using my Emacs with Stufe and ask me
+where it was possible to get this software : I decided to release my
+work for everybody.
+
+
+Here is what Stufe can propose to you :
+
+Stufe gives keyboard shortcuts and menu items to common functions of
+Emacs. Its aims is to give an easier access to some functions for
+beginners of Emacs that doesn't know all the possibilities of this
+editor.
+
+It has also a support for templates (easily customable) to be able to
+create Makefile for C/C++, Java and LaTeX. Templates are also used to
+create basic files in LaTeX, class or functions (respecting the
+JavaDoc specifications for comments for the functions, classes or
+variables : so it is possible to generate the documentation with
+doxygen, doc++ or the javadoc).
+
+It activates also some default Emacs minor-mode for major-mode (like
+flyspell, hscroll-minor-mode, the mouse-wheel...), so a beginner can
+immediatly uses this function
+
+It is also possible to create project. A project is a set of files
+created for a particular goals. As a current state, it is possible to
+create project for a LaTeX document, C/C++ executable or shared object
+(for Linux), a Java project and cook recipe (for my girlfriend).
+
+At last but not least, themacs supports for some programming languages
+a debugger. It uses already existing functions of Emacs but add one or
+two things. It is for example possible to launch automatically gdb on
+the executable of the project or to set breakpoints when the debugger
+is not launched.
+
+The future of this project is not clearly set because I am writing
+functions when I need them but two of my goals at the moment are
+improve the interface of the debugger, support more languages.
+
+
+
+
+
+
+
+

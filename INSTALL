@@ -1,0 +1,22 @@
+Basic Installation
+==================
+
+Two lines have to be add in the $HOME/.emacs to be able to use stufe :
+
+1) The root folder of stufe has to be specified :
+
+      (setq stufe-root "<where you installed stufe>")
+
+   For example : (setq stufe-root "~/stufe")
+
+
+2) Then, we load stufe : 
+
+      (load-file "<where you installed stufe>/stufe.el")
+
+   For example : (load-file "~/stufe/stufe.el")
+
+
+Then, most of the functions of stufe are accessible from the Stufe
+menu and from the Project menu (when stufe functions are accessible
+for a particular mode).
