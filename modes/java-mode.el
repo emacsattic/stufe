@@ -26,26 +26,33 @@
 
 
 (defun stufe-run-debugger-java-mode (debug-command)
-  (format "%s %s %s"
-	  (if stufe-working-folder
-	      (format "cd %s &&" stufe-working-folder)
-	    "")
-	  debug-command
-	  (stufe-makefile-get-value (stufe-project-makefile-path)
-				    "PROJECT")))
+  (let ((debug-command (format "%s%s %s"
+			       (if stufe-working-folder
+				   (format "cd %s && " stufe-working-folder)
+				 "")
+			       debug-command
+			       (stufe-makefile-get-value (stufe-project-makefile-path)
+							 "PROJECT"))))
+    (message debug-command)
+    debug-command))
 
 
 
 (setq stufe-java-debug-command-table
       '(("Load project" nil)
 
-        ("Run project" (lambda () 
-			 (stufe-send-debug-command "run")))
+	("Run project" (lambda () 
+ 			 (stufe-send-debug-command "run")))
 
 	("Stufe Set BreakPoint" (lambda (buffer)
 				  (stufe-java-get-class-identity buffer)))
 
-	("Add main breakpoint" nil)
+	("Add main breakpoint" (lambda()
+				 (stufe-send-debug-command
+				  (format "stop in %s.main"
+					  (stufe-makefile-get-value 
+					   (stufe-project-makefile-path)
+					   "PROJECT")))))
 
 	("Add breakpoint" (lambda (classid line)
 			    (stufe-send-debug-command 
