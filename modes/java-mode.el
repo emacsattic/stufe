@@ -43,13 +43,14 @@
 	("AddMainBreakpoint" "stop in")
 	("AddBreakpoint" "stop at")
 	("ClearBreakpoint" "clear")
-	("Continue" "")
+	("Continue" "cont")
 	("Print" "print")))
 
 
 (defun stufe-debug-java-get-main-breakpoint ()
   "Get a string to represent the breakpoint to the main method"
-  "Coucou.main")
+  (format "%s.main" (stufe-makefile-get-value (stufe-project-makefile-path)
+					      "PROJECT"))) 
 
 
 
