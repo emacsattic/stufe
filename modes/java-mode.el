@@ -43,7 +43,7 @@
 	("AddMainBreakpoint" "stop in")
 	("AddBreakpoint" "stop at")
 	("ClearBreakpoint" "clear")
-	("Continue" "cont")
+	("Continue" "")
 	("Print" "print")))
 
 
