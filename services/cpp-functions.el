@@ -162,10 +162,6 @@ declaration"
 		      ")")))
 
 
-(defun stufe-build-modifiers-string (function-declaration)
-  (car (split-string function-declaration ";")))
-
-
 (defun stufe-is-function-purely-virtual (function-declaration)
   "Test if a function is purely virtual from its declaration"
   (let ((modifiers-string (stufe-build-modifiers-string function-declaration)))
