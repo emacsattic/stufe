@@ -51,8 +51,10 @@
 
 
 ;; Enable the mouse wheel
-(setq mouse-wheel-follow-mouse t)
-(mouse-wheel-mode t)
+(when (fboundp 'mouse-wheel-mode)
+  (setq mouse-wheel-follow-mouse t)
+  (mouse-wheel-mode t))
+
 
 
 ;; Handy bindings for the editor
