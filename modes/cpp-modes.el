@@ -35,10 +35,20 @@
 
 (setq stufe-c-debug-command-table
       '(("Debug project" (lambda ()
-			   (gud-call (format "file %s" 
-					     (stufe-makefile-get-value 
-					      (stufe-project-makefile-path)
-					      "PROJECT")))
+			   (let ((debugfolder (stufe-makefile-get-value 
+					       (stufe-project-makefile-path) 
+					       "DEBUGFOLDER")))
+			     (if debugfolder
+				 (gud-call (format "cd %s" debugfolder))))
+			   (let* ((debugtarget (stufe-makefile-get-value 
+						(stufe-project-makefile-path) 
+						"DEBUGTARGET"))
+				  (target (if debugtarget
+					      debugtarget
+					    (stufe-makefile-get-value 
+					     (stufe-project-makefile-path)
+					     "PROJECT"))))
+			     (gud-call (format "file %s" target)))
 			   (gud-call "break main")
 			   (let ((options (stufe-makefile-get-value 
 					   (stufe-project-makefile-path) 
