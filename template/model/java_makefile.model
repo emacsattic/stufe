@@ -51,6 +51,14 @@ endif
 ifeq ($(strip $(DEBUGINFO)),)
 DEBUGINFO = no
 endif
+# Default path to clean for this project
+ifeq ($(findstring .,$(PROJECT)), .)
+	PATHTOCLEAN = $(PROJECTPATH)/$(subst .,/,$(basename $(PROJECT)))
+else
+	PATHTOCLEAN = $(PROJECTPATH)
+endif
+
+
 
 
 #
@@ -131,7 +139,7 @@ $(PROJECTFILE): $(SRCS) makefile
 #
 clean : subdirs
 	@echo "Cleaning class file(s)..."
-	@find $(PROJECTPATH) -name *.class -exec rm -f {} \;
+	@find $(PATHTOCLEAN) -name *.class -exec rm -f {} \;
 
 #
 # We define a target to be able to run the program
