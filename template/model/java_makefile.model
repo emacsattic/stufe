@@ -24,7 +24,7 @@ VERBOSE = no
 # Debuging informations
 #   no: no debug information 
 #   yes: debug info for jdb
-DEBUGINFO = no
+DEBUGINFO = yes
 
 #*****************************************************************#
 #*                                                               *#
