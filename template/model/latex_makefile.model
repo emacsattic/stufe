@@ -201,8 +201,12 @@ endif
 	@echo "Converting $@ into postcript format..."
 	$(DVIPS) $< -o $(addsuffix .ps, $(basename $<))
 
-%.pdf : %.tex makefile
+%.pdf : %.tex $(DEPENDENCIES) makefile
 	@echo "Compiling $@ in pdf..."
+  ifeq ($(BIBLIOGRAPHY),true) 
+	-$(LATEX) -interaction=nonstopmode $<
+	-$(BIBTEX) $(basename $<)
+  endif
 	$(PDFLATEX) -interaction=nonstopmode $<
 	$(PDFLATEX) -interaction=nonstopmode $<
 
