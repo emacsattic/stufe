@@ -1,0 +1,25 @@
+\documentclass[a4paper,english]{letter}
+
+
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+
+
+\address{My address}
+
+\signature{%author%}
+
+
+\begin{document}
+\begin{letter}{Beginning of the letter}
+
+\opening{Opening}
+
+
+My letter
+
+
+\closing{Closing}
+
+\end{letter}
+\end{document}
