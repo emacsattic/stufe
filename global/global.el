@@ -66,6 +66,7 @@
 (global-set-key [(f4)] 'next-error)
 (setq Man-notify-method 'newframe)
 (global-set-key [(f1)] (lambda () (interactive) (man (current-word))))
+(global-set-key [(control ?c) (control ?c)] 'comment-region)
 
 
 
