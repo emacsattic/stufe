@@ -42,6 +42,10 @@
 			   (lambda ()
 			     (stufe-menu-add-item-local "Create a new member..." 
 							  'stufe-create-new-java-class-member))
+
+			   (lambda ()
+			     (stufe-menu-add-item-local "Create a new bean property..." 
+							  'stufe-create-new-java-bean-property))
 			   
 			   ;; Keyboard shortcut
 			   (lambda ()
@@ -50,6 +54,10 @@
 			   (lambda ()
 			     (stufe-shortcut-add-local [(control ?c) (control ?f)] 
 							 'stufe-create-new-java-class-member))
+
+			   (lambda ()
+			     (stufe-shortcut-add-local [(control ?c) (control ?p)] 
+							 'stufe-create-new-java-bean-property))
 			   
 			   ;; Keyboard shortcut
 			   (lambda ()

@@ -44,6 +44,30 @@
    (model-from-file)))
 
 
+;; Template to create a Java bean property
+(stufe-register-template
+ '("java-bean-property" 
+   (["Variable declaration" "%declaration%"]
+    ["Variable name" "%variable-name%"]
+    ["Variable type" "%variable-type%"]
+    ["Variable standard name" "%variable-standard-name%"])
+   "java_bean_property.model"
+   (model-from-file)))
+
+
+;; Template to create a new Java variable
+(stufe-register-template
+ '("java-variable-declaration"
+   (["Variable declaration" "%declaration%" 
+     (function . (lambda (argument) (stufe-fill-semi-colomn argument)))])
+   "/**
+ *
+ * ...
+ * 
+ **/
+%declaration%"))
+
+
 ;; Template to create a new Java member
 (stufe-register-template
  '("java-member-declaration"

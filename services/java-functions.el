@@ -18,6 +18,36 @@
 ;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+;; *************************************************
+;; * 
+;; * Functions to deal with Java variable
+;; *
+;; *************************************************
+
+
+(defun stufe-java-get-variable-name (variable-declaration)
+  "Return the name of a variable from its declaration"
+  (car (last (split-string (car (split-string (car (split-string variable-declaration 
+								 ";"))
+					      "="))
+			   " "))))
+
+
+(defun stufe-java-get-variable-type (variable-declaration)
+  "Return the name of a variable from its declaration"
+  (let ((string-split (split-string (car (split-string (car (split-string variable-declaration 
+									  ";"))
+						       "="))
+				    " ")))
+    (nth (- (length string-split) 2) string-split)))
+
+
+(defun stufe-java-get-standard-variable-name (variable-declaration)
+  (upcase-initials 
+   (stufe-java-get-variable-name variable-declaration)))
+
+
 ;; *************************************************
 ;; * 
 ;; * Functions for the Java mode
@@ -53,8 +83,21 @@
 (defun stufe-create-new-java-variable (variable-declaration)
   "Create a new java variable in Java mode"
   (stufe-string-to-current-buffer
-   (stufe-apply-args-on-template "java-member-declaration"
+   (stufe-apply-args-on-template "java-variable-declaration"
 				   (list variable-declaration))
+   'indent))
+
+
+(defun stufe-create-new-java-bean-property (property-declaration)
+  "Create a new bean property in Java mode"
+  (interactive "*sProperty declaration: ")
+  (stufe-string-to-current-buffer
+   (stufe-apply-args-on-template "java-bean-property"
+				 (list (stufe-apply-args-on-template "java-variable-declaration"
+								     (list property-declaration))
+				       (stufe-java-get-variable-name property-declaration)
+				       (stufe-java-get-variable-type property-declaration)
+				       (stufe-java-get-standard-variable-name property-declaration)))
    'indent))
 
 
@@ -64,3 +107,5 @@
   (if (stufe-is-a-function-declaration member-declaration)
       (stufe-create-new-java-function member-declaration)
     (stufe-create-new-java-variable member-declaration)))
+
+
