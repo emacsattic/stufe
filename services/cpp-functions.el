@@ -180,10 +180,28 @@ declaration"
 ;; *
 ;; *************************************************
 
+;; (defun stufe-get-cpp-class-name ()
+;;   (save-excursion 
+;;     (if (search-forward "//) " (point-max) 't)
+;; 	(thing-at-point 'word)
+;;       "")))
+;; I don't understand everything in the code of the following function
+;; but it seems to do the job : I found it at:
+;; http://www.theprogrammerstoolbox.com/emacsinit.html
+;; so, thanks to David Gallucci
+;; The good thing about it is it avoid to have //( tag
 (defun stufe-get-cpp-class-name ()
-  (save-excursion 
-    (search-forward "//) ")
-    (thing-at-point 'word)))
+  "If the point is in a class definition, gets the name of the class.  Return
+nil otherwise."
+  (save-excursion
+    (let ((brace (assoc 'inclass (c-guess-basic-syntax))))
+      (if (null brace) '()
+        (goto-char (cdr brace))
+        (let ((class-open (assoc 'class-open (c-guess-basic-syntax))))
+          (if class-open (goto-char (cdr class-open)))
+          (if (looking-at "^class[ \t]+\\([A-Za-z_][^ \t:{]*\\)")
+              (buffer-substring (match-beginning 1) (match-end 1))
+            (error "Error parsing class definition!")))))))
 
 
 (defun stufe-is-a-function-declaration (member-declaration)
@@ -211,9 +229,10 @@ declaration"
   (goto-char (point-max))
   (let ((case-fold-search-old case-fold-search))
     (setq case-fold-search nil)
-    (search-backward (format "//) %s" searched-element))
-    (setq case-fold-search case-fold-search-old))
-  (backward-char 1))
+    (if (search-backward (format "//) %s" searched-element) 0 't)
+	(backward-char 1)
+      (goto-char (point-max)))
+    (setq case-fold-search case-fold-search-old)))
   
 
 (defun stufe-create-new-cpp-function (function-declaration)

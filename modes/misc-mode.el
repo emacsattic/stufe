@@ -20,34 +20,16 @@
 
 ;; *************************************************
 ;; * 
-;; * Functions to specify the prog mode used in most
-;; * programming mode
+;; * Other available settings for different modes
 ;; *
 ;; *************************************************
 
-;; Define the prog mode
 
-(stufe-register-mode '("prog-mode"
-			 (
-			  "imenu-mode"
+(stufe-register-mode '("imenu-mode"
+		       (
+			(lambda ()
+			  (imenu-add-to-menubar 
+			   (capitalize
+			    (file-name-sans-extension 
+			     (file-name-nondirectory (buffer-file-name)))))))))
 
-			  (lambda ()
-			    (stufe-menu-add-item-local "Open settings" 
-							 'stufe-open-makefile))
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
-
-			  "cvs-mode"
-
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
-
-			  "makefile-mode"
-
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
-
-			  (lambda ()
-			    (stufe-shortcut-add-local [(control shift s)] 
-							`stufe-open-makefile))
-			  )))
