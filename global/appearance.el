@@ -96,5 +96,7 @@
   (global-font-lock-mode)
   (global-font-lock-mode))
 
+(stufe-activate-color)
+
 
 
