@@ -20,21 +20,38 @@
 
 ;; *************************************************
 ;; * 
-;; * Functions to specify the EmacsLisp mode
+;; * Grep functions for Stufe
 ;; *
 ;; *************************************************
 
 
-(stufe-register-mode '("elisp-mode"
-			 ("cvs-mode"
-			  ;; Defines local buffer variables
-			  (lambda ()
-			    ;; Grep patterns
-			    (make-local-variable 'stufe-grep-pattern)
-			    (setq stufe-grep-pattern "*.el"))
-
-			  "imenu-mode")))
+(defvar stufe-grep-pattern
+  "*.*"
+  "Default pattern used for the grep command")
 
 
-;; Add the hook to list of the things to do when opening a EmacsLisp file
-(stufe-associate-mode-with-hook 'emacs-lisp-mode-hook "elisp-mode")
+(defun stufe-grep-word-in-pattern ()
+  (interactive)
+  (grep (format "%s -n %s %s" 
+		grep-program 
+		(current-word) 
+		stufe-grep-pattern)))
+
+
+
+(global-set-key [f2] 'stufe-grep-word-in-pattern)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

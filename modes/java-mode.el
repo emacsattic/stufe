@@ -69,6 +69,12 @@
 (stufe-register-mode '("java-mode"
 			 ( "prog-mode"
 
+			  ;; Defines local buffer variables
+			  (lambda ()
+			    ;; Grep patterns
+			    (make-local-variable 'stufe-grep-pattern)
+			    (setq stufe-grep-pattern "*.java"))
+
 			   ;; Menu item
 			   (lambda ()
 			     (stufe-menu-add-item-local "Exec" 

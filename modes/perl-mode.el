@@ -27,6 +27,13 @@
 
 (stufe-register-mode '("perl-mode"
 			 ("imenu-mode"
+
+			  ;; Defines local buffer variables
+			  (lambda ()
+			    ;; Grep patterns
+			    (make-local-variable 'stufe-grep-pattern)
+			    (setq stufe-grep-pattern "*.pl"))
+
 			  "cvs-mode")))
 
 

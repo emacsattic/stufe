@@ -95,10 +95,14 @@
 			    (stufe-shortcut-add-local [(control 0)] 
 							'stufe-switch-cpp-file))
 
-			  ;; Add a default context for the man pages
+			  ;; Defines local buffer variables
 			  (lambda ()
+			    ;; Man pages
 			    (make-local-variable 'stufe-default-man-page)
-			    (setq stufe-default-man-page "2"))
+			    (setq stufe-default-man-page "2")
+			    ;; Grep patterns
+			    (make-local-variable 'stufe-grep-pattern)
+			    (setq stufe-grep-pattern "*.[cChH] *.[ch]pp"))
 
 			   ;; Initialize debugging
 			   (lambda ()
