@@ -130,9 +130,9 @@
 			     (stufe-shortcut-add-local [(control ?c) (control ?p)] 
 							 'stufe-create-new-java-bean-property))
 			   
-			  (lambda ()
-			    (stufe-shortcut-add-local [(control *)] 
-							'stufe-switch-satom-file))
+			   (lambda ()
+			     (stufe-shortcut-add-local [(control *)] 
+						       'stufe-switch-satom-file))
 
 			   ;; Keyboard shortcut
 			   (lambda ()

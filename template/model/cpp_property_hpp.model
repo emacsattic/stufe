@@ -1,0 +1,26 @@
+public:
+/**
+*
+*
+* @return  the %variable-name% property
+*
+**/
+%variable-type% get%variable-standard-name%() {
+return %variable-name%;
+}
+
+/**
+*
+* Set the %variable-name% property
+* 
+* @param   %variable-name% the new value of the property
+*
+* @return  void
+*
+**/
+void set%variable-standard-name%(%variable-type% %variable-name%) {
+this->%variable-name% = %variable-name%;
+}    
+
+protected:
+%declaration%

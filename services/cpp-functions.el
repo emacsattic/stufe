@@ -266,6 +266,17 @@ nil otherwise."
 	   't)
 	  (stufe-switch-cpp-file)))))
 
+(defun stufe-create-new-cpp-property (property-declaration)
+  "Create a new property in C++ mode"
+  (interactive "*sProperty declaration: ")
+  (stufe-string-to-current-buffer
+   (stufe-apply-args-on-template "cpp-property"
+				 (list (stufe-apply-args-on-template "cpp-class-member-declaration"
+								     (list property-declaration))
+				       (stufe-java-get-variable-name property-declaration)
+				       (stufe-java-get-variable-type property-declaration)
+				       (stufe-java-get-standard-variable-name property-declaration)))
+   'indent))
 
 (defun stufe-create-new-cpp-variable (variable-declaration)
   "Create a new cpp variable in CPP code"

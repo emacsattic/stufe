@@ -125,3 +125,13 @@
 {
 }
 "))
+
+;; Template to create a C++ property
+(stufe-register-template
+ '("cpp-property" 
+   (["Variable declaration" "%declaration%"]
+    ["Variable name" "%variable-name%"]
+    ["Variable type" "%variable-type%"]
+    ["Variable standard name" "%variable-standard-name%"])
+   "cpp_property_hpp.model"
+   (model-from-file)))

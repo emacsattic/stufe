@@ -181,6 +181,9 @@
 			  (lambda ()
 			    (stufe-menu-add-item-local "Create a new member..." 
 							 'stufe-create-new-cpp-class-member))
+			   (lambda ()
+			     (stufe-menu-add-item-local "Create a new property..." 
+							  'stufe-create-new-cpp-property))
 			  (lambda ()
 			    (stufe-menu-add-menubar-local))
 
@@ -201,6 +204,9 @@
 			  (lambda ()
 			    (stufe-shortcut-add-local [(control ?c) (control ?f)] 
 							'stufe-create-new-cpp-class-member))
+			  (lambda ()
+			    (stufe-shortcut-add-local [(control ?c) (control ?p)] 
+						      'stufe-create-new-cpp-property))
 			  (lambda ()
 			    (stufe-shortcut-add-local [(control *)] 
 							'stufe-switch-satom-file))
