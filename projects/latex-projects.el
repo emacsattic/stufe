@@ -26,7 +26,7 @@
 
 ;; C/C++ project
 (stufe-register-project 
- '("latex-project"
+ '("latex-article"
    (stufe-projects-new-folder
     (lambda (project-details)
       (stufe-project-template-to-file project-details 
@@ -48,8 +48,8 @@
 				   (stufe-get-project-menu)))
 
 (stufe-project-add-menu-item stufe-menu-latex-projects-context
-			       "New LaTeX project..." 
-			       "latex-project")
+			       "New LaTeX article..." 
+			       "latex-article")
 
 
 
