@@ -27,19 +27,27 @@
 ;; *************************************************
 
 
+
 (defvar stufe-root nil
   "Root folder used for the research of stufe file")
+
+
+(defvar stufe-loading nil
+  "Variable use as flag to avoid recursif loading")
 
 
 (defun stufe ()
   "Load the stufe module by loading the file in the current folder"
   (interactive)
-  (unless stufe-root (setq stufe-root "~/stufe"))
-  (message "Searching for stufe files to load in %s..." stufe-root)
-  (setq stufe-file-loaded (list (expand-file-name "stufe.el" stufe-root)))
-  (stufe-load-file (expand-file-name "services" stufe-root))
-  (stufe-load-location stufe-root)
-  (message "done."))
+  (if (not stufe-loading)
+      (progn
+	(setq stufe-loading t)
+	(unless stufe-root (setq stufe-root "~/stufe"))
+	(message "Searching for stufe files to load in %s..." stufe-root)
+	(setq stufe-file-loaded (list (expand-file-name "stufe.el" stufe-root)))
+	(stufe-load-file (expand-file-name "services" stufe-root))
+	(stufe-load-file stufe-root)
+	(setq stufe-loading nil))))
 
 (defvar stufe-file-avoided
   '("." ".." "CVS")
@@ -56,43 +64,30 @@
   (and (not (member (file-name-nondirectory file) 
 		    stufe-file-avoided))
 	    (not (member file stufe-file-loaded))
+	    (string= file (file-name-sans-versions file))
+	    (not (string= "." (substring (file-name-nondirectory file) 0 1)))
 	    (file-readable-p file)))
 
 
-(defun stufe-get-file-extension (file)
-  "Returns the last extension of a file"
-  (let ((file-name (file-name-sans-extension file)))
-    (if (string= file file-name)
-	""
-      (substring file (+ (length file-name) 1)))))
+(defun stufe-require-file (file)
+  "Load a file from Stufe"
+  (stufe-load-file (expand-file-name file stufe-root)))
 
 
 (defun stufe-load-file (file)
-  "Load a file : the file can be a folder or an elips file"
-  (setq stufe-file-loaded (cons file stufe-file-loaded))
-  (if (file-directory-p file)
-      (stufe-load-location file)
-    (when (string= stufe-file-extension 
-		   (stufe-get-file-extension file))
-      (load-file (if (file-exists-p file)
-		     file
-		   (expand-file-name file current-location))))))
-
-
-(defun stufe-load-location (directory)
-  "Load recursively all elisp file from the directory passed as argument. 
-File already loaded are not reload."
-  (let ((directory-files (directory-files directory 'full-name))
-	(first-file-load (expand-file-name (concat
-					    (file-name-nondirectory directory) ".el") 
-					   directory))
-	(load-one-file (lambda (file)
-			 (if (stufe-file-allowed-p file)
-			       (stufe-load-file file)))))
-    (setq current-location directory)
-    (funcall load-one-file first-file-load)
-    (mapcar load-one-file directory-files)))
-
+  "Load a file : the file can be a folder or an elisp file"
+  (when (stufe-file-allowed-p file)
+    (setq stufe-file-loaded (cons file stufe-file-loaded))
+    (if (file-directory-p file)
+	(let ((directory-files (directory-files file t)))
+	  (stufe-load-file (expand-file-name (concat
+					      (file-name-nondirectory file) ".el") 
+					     file))
+	  (mapcar 'stufe-load-file directory-files))
+      (when (and (string= stufe-file-extension 
+			  (file-name-extension file))
+		 (file-exists-p file))
+	(load-file file)))))
 
 (stufe)
 

@@ -25,7 +25,6 @@
 ;; *************************************************
 
 
-
 ;; Definition of the selection for this Windows
 (custom-set-variables
  '(pc-select-meta-moves-sexps t)
@@ -44,19 +43,16 @@
 (setq mouse-sel-retain-highlight t)
 
 ;; Highlight matching parenthesis
-(show-paren-mode t)
+(cond ((fboundp 'paren-set-mode)
+       (paren-set-mode 'sexp))
+      ((fboundp 'show-paren-mode)
+       (show-paren-mode 1))
+      (t nil))
 
-;; Define the wheel mouse key
-(define-key global-map [mouse-4]
-  '(lambda () (interactive)
-     (save-selected-window 
-       (select-window (stufe-get-window-under-cursor))
-       (scroll-down stufe-mouse-scroll-step))))
-(define-key global-map [mouse-5]
-  '(lambda () (interactive)
-     (save-selected-window 
-       (select-window (stufe-get-window-under-cursor))
-       (scroll-up stufe-mouse-scroll-step))))
+
+;; Enable the mouse wheel
+(setq mouse-wheel-follow-mouse t)
+(mouse-wheel-mode t)
 
 
 ;; Handy bindings for the editor

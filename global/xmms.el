@@ -90,11 +90,11 @@ command in a buffer."
   (stufe-run-aumix "-w-5"))
 
 ;; Define global key to bind with these functions
-(global-set-key [(control shift j)] `stufe-xmms-last)
-(global-set-key [(control shift k)] `stufe-xmms-change)
-(global-set-key [(control shift l)] `stufe-xmms-next)
-(global-set-key [(control shift m)] `stufe-aumix-down)
-(global-set-key [(control shift p)] `stufe-aumix-up)
+(global-set-key [(control J)] `stufe-xmms-last)
+(global-set-key [(control K)] `stufe-xmms-change)
+(global-set-key [(control L)] `stufe-xmms-next)
+(global-set-key [(control M)] `stufe-aumix-down)
+(global-set-key [(control P)] `stufe-aumix-up)
 
 
 ;; Add the items in the stufe menu

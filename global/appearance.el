@@ -92,9 +92,8 @@
 (defun stufe-activate-color ()
   "Active the stufe theme color for Emacs"
   (unless stufe-no-color-theme (define-colors))
-  (setq global-font-lock-mode t)
-  (global-font-lock-mode)
-  (global-font-lock-mode))
+  (if (fboundp 'global-font-lock-mode)
+      (global-font-lock-mode t)))
 
 (stufe-activate-color)
 
