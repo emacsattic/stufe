@@ -93,7 +93,7 @@
 (define-key-after 
   (lookup-key global-map [menu-bar])
   [stufe]
-  (cons "stufe" (make-sparse-keymap "stufe"))
+  (cons "Stufe" (make-sparse-keymap "stufe"))
   'search)
 (setq stufe-menu-context '[menu-bar stufe])
 
