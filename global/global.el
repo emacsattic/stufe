@@ -65,7 +65,9 @@
 (global-set-key [(control tab)] 'other-window)
 (global-set-key [(f4)] 'next-error)
 (setq Man-notify-method 'newframe)
-(global-set-key [(f1)] (lambda () (interactive) (man (current-word))))
+(global-set-key [(f1)] (lambda () (interactive) (man (format "%s %s" 
+							     stufe-default-man-page 
+							     (current-word)))))
 (global-set-key [(control ?c) (control ?c)] 'comment-region)
 
 

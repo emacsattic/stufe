@@ -95,6 +95,10 @@
 			    (stufe-shortcut-add-local [(control 0)] 
 							'stufe-switch-cpp-file))
 
+			  (lambda ()
+			    (make-local-variable 'stufe-default-man-page)
+			    (setq stufe-default-man-page "2"))
+
 			   ;; Initialize debugging
 			   (lambda ()
 			     (make-local-variable 'stufe-debug-buffer-name)

@@ -30,6 +30,11 @@
   (load-file (expand-file-name "config.el" stufe-root)))
 
 
+(defvar stufe-default-man-page
+  ""
+  "Default man page to call. An empty string means the default man page")
+
+
 (defvar stufe-mouse-scroll-step
   3
   "Value representing the number of step scrolled when using 
