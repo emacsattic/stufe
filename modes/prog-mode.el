@@ -29,36 +29,22 @@
 
 (stufe-register-mode '("prog-mode"
 			 (
-			  "cvs-mode"
-
-			  (lambda ()
-			    (stufe-menu-add-menubar-local))
 			  (lambda ()
 			    (stufe-menu-add-item-local "Open settings" 
 							 'stufe-open-makefile))
 			  (lambda ()
-			    (stufe-menu-add-item-local "Rebuild" 
-							 'stufe-make-rebuild))
-			  (lambda ()
-			    (stufe-menu-add-item-local "Clean" 
-							 'stufe-make-clean))
+			    (stufe-menu-add-menubar-local))
+
+			  "cvs-mode"
+
 			  (lambda ()
 			    (stufe-menu-add-menubar-local))
 
-			  (lambda ()
-			    (stufe-menu-add-item-local "Compile" 
-							 'stufe-make-build))
+			  "makefile-mode"
 
-			  ;; Add the shortcut			  
 			  (lambda ()
-			    (stufe-shortcut-add-local [(f7)] 
-							`stufe-make-build))
-			  (lambda ()
-			    (stufe-shortcut-add-local [(meta f7)] 
-							`stufe-make-clean))
-			  (lambda ()
-			    (stufe-shortcut-add-local [(control f7)] 
-							`stufe-make-rebuild))
+			    (stufe-menu-add-menubar-local))
+
 			  (lambda ()
 			    (stufe-shortcut-add-local [(control shift s)] 
 							`stufe-open-makefile))

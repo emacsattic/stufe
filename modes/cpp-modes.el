@@ -36,11 +36,9 @@
 
 			  "prog-mode" 
 			   
-			   ;; Menu item
 			   (lambda ()
 			     (stufe-menu-add-item-local "Exec" 
 							  'stufe-make-exec))
-
 			  (lambda ()
 			    (stufe-menu-add-menubar-local))
 

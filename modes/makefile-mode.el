@@ -20,37 +20,47 @@
 
 ;; *************************************************
 ;; * 
-;; * Functions to specify the Java mode
+;; * Functions to use a makefile
 ;; *
 ;; *************************************************
 
+;; Define the makefile mode
 
-(stufe-register-mode '("java-mode"
-			 ( "prog-mode"
+(stufe-register-mode '("makefile-mode"
+			 (
+			  (lambda ()
+			    (stufe-menu-add-item-local "Rebuild" 
+							 'stufe-make-rebuild))
+			  (lambda ()
+			    (stufe-menu-add-item-local "Clean" 
+							 'stufe-make-clean))
+
+			  (lambda ()
+			    (stufe-menu-add-item-local "Compile" 
+							 'stufe-make-build))
+
+			  ;; Add the shortcut			  
+			  (lambda ()
+			    (stufe-shortcut-add-local [(f7)] 
+							`stufe-make-build))
+			  (lambda ()
+			    (stufe-shortcut-add-local [(meta f7)] 
+							`stufe-make-clean))
+			  (lambda ()
+			    (stufe-shortcut-add-local [(control f7)] 
+							`stufe-make-rebuild))
+
+			  )))
+
+
+(stufe-register-mode '("makefile-file-mode"
+			 ( "makefile-mode"
 
 			   ;; Menu item
 			   (lambda ()
 			     (stufe-menu-add-item-local "Exec" 
 							  'stufe-make-exec))
-			   
-			   ;; Menu item
-			   (lambda ()
-			     (stufe-menu-add-menubar-local))
-			   (lambda ()
-			     (stufe-menu-add-item-local "Create a new class..." 
-							  'stufe-create-new-java-class))
-			   (lambda ()
-			     (stufe-menu-add-item-local "Create a new member..." 
-							  'stufe-create-new-java-class-member))
-			   
-			   ;; Keyboard shortcut
-			   (lambda ()
-			     (stufe-shortcut-add-local [(control o)] 
-							 'stufe-create-new-java-class))
-			   (lambda ()
-			     (stufe-shortcut-add-local [(control f)] 
-							 'stufe-create-new-java-class-member))
-			   
+			   			   
 			   ;; Keyboard shortcut
 			   (lambda ()
 			     (stufe-shortcut-add-local [(f5)] 
@@ -58,7 +68,4 @@
 			   )))
 
 
-;; Add the hook to list of the things to do when opening a Java file
-(stufe-associate-mode-with-hook 'java-mode-hook "java-mode")
-
-
+(stufe-associate-mode-with-hook 'makefile-mode-hook "makefile-file-mode")

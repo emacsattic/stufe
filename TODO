@@ -1,6 +1,10 @@
 Open Tasks
 ==========
 
+- make makefiles executable
+- correct C++ creation functions
+- open makefile from the menu
+
 - support for more languages
 
 - develop functions for the debugger
