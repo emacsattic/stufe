@@ -6,8 +6,7 @@
 * @return  the %variable-name% property
 *
 **/
-public %variable-type% get%variable-standard-name%() 
-{
+public %variable-type% get%variable-standard-name%() {
 return %variable-name%;
 }
 
@@ -20,7 +19,6 @@ return %variable-name%;
 * @return  void
 *
 **/
-public void set%variable-standard-name%(%variable-type% %variable-name%) 
-{
+public void set%variable-standard-name%(%variable-type% %variable-name%) {
 this.%variable-name% = %variable-name%;
 }    
