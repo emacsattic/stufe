@@ -94,6 +94,5 @@ the mouse wheel")
 (setq dabbrev-upcase-means-case-search 'true)
 
 ;; True if stufe can load its color set
-(defvar stufe-no-color-theme 
-  nil)
+(defvar stufe-no-color-theme 't)
 
