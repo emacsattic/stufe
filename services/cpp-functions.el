@@ -136,7 +136,7 @@ declaration"
 			" "))
 
 (defun stufe-build-function-name (function-declaration)
-  "Build a list of the return definition of the function"
+  "Return the name of the function"
   (car (last (split-string (car (split-string function-declaration "(")) " "))))
  
 

@@ -67,6 +67,9 @@
 				     'no-save
 				     'indent)))
 
+(defun stufe-get-java-class-name ()
+  (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+
 
 (defun stufe-create-new-java-function (function-declaration)
   "Create a new java function in Java mode"
@@ -75,8 +78,11 @@
 				   (list function-declaration
 					 (stufe-make-arguments-documentation
 					  function-declaration)
-					 (stufe-make-return-value-documentation
-					  function-declaration)))
+					 (if (equal (stufe-get-java-class-name)
+						    (stufe-build-function-name function-declaration))
+					     ""
+					   (stufe-make-return-value-documentation
+					    function-declaration))))
    'indent))
 
 
