@@ -31,7 +31,7 @@
 			  (let ((file-name (buffer-file-name)))
 			    (imenu-add-to-menubar 
 			     (if file-name
-				 (capitalize
+				 (upcase-initials
 				  (file-name-sans-extension 
 				   (file-name-nondirectory (buffer-file-name))))
 			       (buffer-name))))))))
