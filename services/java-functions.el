@@ -115,3 +115,33 @@
     (stufe-create-new-java-variable member-declaration)))
 
 
+;; *************************************************
+;; * 
+;; * Functions to get the package name of a class
+;; *
+;; *************************************************
+
+
+(defun stufe-java-get-class-identity (buffer)
+  "Return the identifier of the class from a buffer"
+  (let ((package-name-position (save-current-buffer 
+			       (save-excursion
+				 (set-buffer buffer)
+				 (goto-char (point-min))
+				 (search-forward "package" nil 't))))
+	(class-name (file-name-nondirectory 
+		    (file-name-sans-extension (buffer-file-name buffer)))))
+    (if package-name-position
+	(format "%s.%s"
+		(let ((package-name (save-current-buffer 
+				      (save-excursion
+					(set-buffer buffer)
+					(goto-char package-name-position)
+					(buffer-substring (+ package-name-position 1)
+							  (- (search-forward ";") 1))))))
+		  (set-text-properties 1 (length package-name)
+				       package-name
+				       nil)
+		  (car (split-string (car (split-string package-name " ")) "\n")))
+		class-name)
+      class-name)))

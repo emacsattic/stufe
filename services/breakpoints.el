@@ -81,8 +81,11 @@ with the overlay information"
 
 (defun stufe-set-breakpoint ()
   (interactive)
-  (let* ((current-breakpoint 
-	  (stufe-create-new-breakpoint (buffer-name) 
+  (let* ((command-function (stufe-get-debugger-function "Stufe Set BreakPoint"))
+	 (current-breakpoint 
+	  (stufe-create-new-breakpoint (if command-function
+					   (funcall command-function (current-buffer))
+					 (buffer-name))
 				       (stufe-get-current-line)
 				       'nil))
 	 (listed-breakpoint 

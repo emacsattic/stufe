@@ -42,14 +42,14 @@
         ("Run project" (lambda () 
 			 (stufe-send-debug-command "run")))
 
+	("Stufe Set BreakPoint" (lambda (buffer)
+				  (stufe-java-get-class-identity buffer)))
+
 	("Add main breakpoint" nil)
 
-	("Add breakpoint" (lambda (file line)
+	("Add breakpoint" (lambda (classid line)
 			    (stufe-send-debug-command 
-			     (format "stop at %s:%s"
-				     (file-name-nondirectory 
-				      (file-name-sans-extension file))
-				     line))))
+			     (format "stop at %s:%s" classid line))))
 	
 	("Clear breakpoint" (lambda (file line)
 			      (stufe-send-debug-command 
