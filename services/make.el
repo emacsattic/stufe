@@ -143,7 +143,7 @@
 ;; *
 ;; *************************************************
 
-(global-set-key [(f9)] stufe-compile-function)
+(global-set-key [(f5)] stufe-compile-function)
 
 (stufe-add-menu-item (stufe-get-stufe-context)
 		       "Run command..." 
