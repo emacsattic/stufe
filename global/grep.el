@@ -37,7 +37,7 @@
 	(expression-pattern (if expression
 				(format "\"%s\"" expression)
 			      (format "\"%s\"" (current-word)))))
-    (grep (format "find %s -name \"%s\" -exec grep -n -H -I %s {} \\; 2> "
+    (grep (format "find %s \\( -name \"%s\" \\) -exec grep -n -H -I %s {} \\; 2> "
 		  (if directory
 		      directory
 		    (if filename
