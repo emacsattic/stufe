@@ -84,10 +84,6 @@ the mouse wheel")
 ;; Set completion case sensitive by default
 (setq dabbrev-upcase-means-case-search 'true)
 
-;; Set default ispell dictionnary
-(defvar stufe-default-ispell-langage 
-  "")
-
 ;; True if stufe can load its color set
 (defvar stufe-no-color-theme 
   nil)
