@@ -141,6 +141,15 @@ project"
 	(file-name-sans-extension (buffer-file-name)))))
      "latex-makefile" 
      "makefile"))
+   ;; Default makefile for Java mode
+   ((eq major-mode 'java-mode)
+    (stufe-project-template-to-file 
+     (stufe-create-project-details-from-working-folder 
+      (file-name-nondirectory
+       (file-name-sans-versions
+	(file-name-sans-extension (buffer-file-name)))))     
+     "java-makefile" 
+     "makefile"))
    ;; Default makefile for C++ mode
    ((or (eq major-mode 'c++-mode)
 	(eq major-mode 'c-mode))
