@@ -72,8 +72,8 @@
 			  ;; Defines local buffer variables
 			  (lambda ()
 			    ;; Grep patterns
-			    (make-local-variable 'stufe-grep-pattern)
-			    (setq stufe-grep-pattern "*.java"))
+			    (make-local-variable 'stufe-grep-file-pattern)
+			    (setq stufe-grep-file-pattern "*.java"))
 
 			   ;; Menu item
 			   (lambda ()

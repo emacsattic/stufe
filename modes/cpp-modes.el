@@ -101,8 +101,8 @@
 			    (make-local-variable 'stufe-default-man-page)
 			    (setq stufe-default-man-page "2")
 			    ;; Grep patterns
-			    (make-local-variable 'stufe-grep-pattern)
-			    (setq stufe-grep-pattern "*.[cChH] *.[ch]pp"))
+			    (make-local-variable 'stufe-grep-file-pattern)
+			    (setq stufe-grep-file-pattern "*.[cChH] *.[ch]pp"))
 
 			   ;; Initialize debugging
 			   (lambda ()

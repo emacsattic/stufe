@@ -31,8 +31,8 @@
 			  ;; Defines local buffer variables
 			  (lambda ()
 			    ;; Grep patterns
-			    (make-local-variable 'stufe-grep-pattern)
-			    (setq stufe-grep-pattern "*.pl"))
+			    (make-local-variable 'stufe-grep-file-pattern)
+			    (setq stufe-grep-file-pattern "*.pl"))
 
 			  "cvs-mode")))
 

@@ -25,20 +25,38 @@
 ;; *************************************************
 
 
-(defvar stufe-grep-pattern
+(defvar stufe-grep-file-pattern
   "*.*"
   "Default pattern used for the grep command")
 
 
-(defun stufe-grep-word-current ()
+(defun stufe-grep-word-recursively
+ (&optional file-pattern)
+  "Run grep to match the current word with a file pattern recursively"
+  (interactive)
+  (stufe-grep-word-current 
+   (format "$(find %s -name \"%s\")" 
+	   (if stufe-working-folder
+	       (concat stufe-working-folder "/")
+	     "./")
+	   (stufe-rebuild-string (split-string stufe-grep-file-pattern)
+				 "\" -or -name \""))))
+
+
+
+(defun stufe-grep-word-current (&optional file-pattern)
+  "Run grep to match the current word with a file pattern"
   (interactive)
   (grep (format "%s -n %s %s" 
 		grep-program 
-		(current-word) 
-		stufe-grep-pattern)))
+		(current-word)
+		(if file-pattern
+		    file-pattern
+		    stufe-grep-file-pattern))))
 
 ;; Define global key to bind with these functions
-(global-set-key [f2] 'stufe-grep-word-current)
+(global-set-key [(f2)] 'stufe-grep-word-current)
+(global-set-key [(shift f2)] 'stufe-grep-word-recursively)
 
 
 ;; Add the items in the stufe menu
@@ -50,8 +68,12 @@
       (stufe-add-menu-item-group "Grep"))
 
 (stufe-add-menu-item stufe-menu-grep-context
-		       "Search a word in current folder" 
+		       "Grep word" 
 		       'stufe-grep-word-current)
+
+(stufe-add-menu-item stufe-menu-grep-context
+		       "Grep word recursively" 
+		       'stufe-grep-word-recursively)
 
 
 
