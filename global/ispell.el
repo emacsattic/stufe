@@ -31,7 +31,7 @@
 
 ;; Bindings keys on handy functions
 (global-set-key [(f3)] 'ispell-word)
-(global-set-key [(meta f3)] 'ispell-buffer)
+(global-set-key [(meta f3)] 'flyspell-buffer)
 
 
 ;; Items menu
@@ -44,7 +44,8 @@
 
 (stufe-add-menu-item stufe-menu-spell-check-context 
 		       "Buffer spell check" 
-		       'ispell-buffer)
+		       'flyspell-buffer)
+
 (stufe-add-menu-item stufe-menu-spell-check-context 
 		       "Word spell check" 
 		       'ispell-word)

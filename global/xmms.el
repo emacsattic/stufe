@@ -26,45 +26,40 @@
 ;; *************************************************
 
 
+(defvar stufe-xmms-command 
+  "xmms"
+  "Command used to run the mp3 player")
 
-;; Variable to be able to decide if Xmms is running
-;; or not. We assume it is running when we run Emacs
-(setq stufe-music-running t)
+(defvar stufe-xmms-process
+  "*Xmms-Process*"
+  "Name used for the xmms process")
+
+
+(defun stufe-run-xmms (option)
+  "Run a xmms command with an option. Display the output of the
+command in a buffer."
+  (start-process stufe-xmms-process
+		 nil 
+		 stufe-xmms-command  
+		 option))
 
 
 (defun stufe-xmms-next ()
   "Next music in the play list"
   (interactive)
-  (shell-command "xmms -f" nil nil))
+  (stufe-run-xmms "-f"))
 
 
 (defun stufe-xmms-last ()
   "Last music in the play list"
   (interactive)
-  (shell-command "xmms -r" nil nil))
-
-
-(defun stufe-xmms-pause ()
-  "Pause the current music"
-  (interactive)
-  (shell-command "xmms -u" nil nil)
-  (setq stufe-music-running nil))
-
-
-(defun stufe-xmms-play ()
-  "Play the current music"
-  (interactive)
-  (shell-command "xmms -p" nil nil)
-  (setq stufe-music-running t))
+  (stufe-run-xmms "-r"))
 
 
 (defun stufe-xmms-change ()
   "Play/stop the current music"
   (interactive)
-  (if stufe-music-running
-      (stufe-xmms-pause)
-    (stufe-xmms-pause)))
-    
+  (stufe-run-xmms "-t"))
 
 ;; Define global key to bind with this functions
 (global-set-key [(control shift j)] `stufe-xmms-last)
