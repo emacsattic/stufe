@@ -90,8 +90,10 @@
 				     before))
   (cons item-string context))
 
-(easy-menu-define stufe global-map "Stufe menu" '("Stufe"))
-(ignore-errors (easy-menu-add stufe global-map))
+(easy-menu-define stufe global-map "Stufe menu" '("Stufe" ["About Stufe" 
+							   stufe-about-stufe
+							   t]))
+(easy-menu-add stufe global-map)
 
 
 

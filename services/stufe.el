@@ -19,6 +19,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+(defun stufe-about-stufe ()
+  (interactive)
+  (message "Stufe v0.1"))
+
+
 (defun stufe-cvs-update-stufe ()
   "Run the 'update' command for stufe"
   (interactive)
