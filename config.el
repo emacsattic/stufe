@@ -86,4 +86,4 @@ the mouse wheel")
 
 ;; Set default ispell dictionnary
 (defvar stufe-default-ispell-langage 
-  "francais")
+  "")
