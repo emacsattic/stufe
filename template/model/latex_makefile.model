@@ -13,6 +13,16 @@ DIRS =
 #   pdf : compile with pdflatex
 LATEXFORMAT = ps
 
+# Use BiBTeX to generate the bilbiography
+#   true: use bibtex 
+#   false : doesn't use bibtoex for the bibliography
+BIBLIOGRAPHY = false
+
+# Multiple files
+#  true  - each tex file is compiled
+#  false - only $(PROJECT).tex is compiled
+MULTIPLEFILES = false
+
 # Verbose compiling
 #   yes: command line used are displayed
 #   no: command line used are not displayed
@@ -39,12 +49,24 @@ ifeq ($(strip $(PROJECT)),)
 PROJECT = project
 endif
 
+# Default for generating the bibliography using BiBTeX
+ifeq ($(strip $(BIBLIOGRAPHY)),)
+BIBLIOGRAPHY = false
+endif
+
 # Output of the full compilation
 #   dvi : compile with LaTeX and stop after its dvi output
 #   ps : compile with LaTeX and apply the dvips command on the dvi 
 #   pdf : compile with pdflatex
 ifeq ($(strip $(LATEXFORMAT)),)
 LATEXFORMAT = ps
+endif
+
+# Multiple files
+#  true  - each tex file is compiled
+#  false - only $(PROJECT).tex is compiled
+ifeq ($(strip $(MULTIPLEFILES)),)
+MULTIPLEFILES = false
 endif
 
 
@@ -115,25 +137,31 @@ PROJECTFILE = $(PROJECT)
 # List of the source files
 SRCS := $(wildcard *.tex)
 
-# List of LaTeX output files 
-DVIS := $(patsubst %.tex,%.dvi,$(wildcard *.tex))
-PDFS := $(patsubst %.tex,%.pdf,$(wildcard *.tex))
+# Define the list of files to compile
 
-# List of PS output files
-PSS := $(patsubst %.tex,%.ps,$(wildcard *.tex))
-
-# Make a list of the files we want to see
+# Default LaTeX file output
 ifeq ($(LATEXFORMAT),dvi)
-VIEWEDFILES := $(patsubst %.tex,%.dvi,$(wildcard *.tex))
+FILESTARGETSUFFIXE = dvi
 VIEWER = $(DVI_VIEWER)
 endif
 ifeq ($(LATEXFORMAT),ps)
-VIEWEDFILES := $(patsubst %.tex,%.dvi.ps,$(wildcard *.tex))
+FILESTARGETSUFFIXE = ps
 VIEWER = $(PS_VIEWER)
 endif
 ifeq ($(LATEXFORMAT),pdf)
-VIEWEDFILES := $(patsubst %.tex,%.pdf,$(wildcard *.tex))
+FILESTARGETSUFFIXE = pdf
 VIEWER = $(PDF_VIEWER)
+endif
+
+
+ifeq ($(MULTIPLEFILES),true)
+FILESTARGET = $(patsubst %.tex,%.$(FILESTARGETSUFFIXE),$(wildcard *.tex))
+VIEWEDFILES = $(patsubst %.tex,%.$(FILESTARGETSUFFIXE),$(wildcard *.tex))
+DEPENDENCIES = 
+else
+FILESTARGET = $(PROJECTFILE).$(FILESTARGETSUFFIXE)
+VIEWEDFILES = $(PROJECTFILE).$(FILESTARGETSUFFIXE)
+DEPENDENCIES = $(wildcard *.tex)
 endif
 
 # 
@@ -144,7 +172,7 @@ endif
 
 # This is the default target. It points to the other folder to build
 # and the program to build
-all: subdirs $(LATEXFORMAT)
+all: subdirs $(FILESTARGET)
 
 # Start by compiling the other folders
 GOALS := $(subst exec,$(EMPTY),$(MAKECMDGOALS))
@@ -156,16 +184,12 @@ subdirs:
 $(PROJECTFILE) : all
 
 
-# Compilation des fichiers LaTeX
-dvi : $(DVIS)
-
-ps : $(PSS)
-
-pdf : $(PDFS)
-
-%.dvi : %.tex makefile
+%.dvi : %.tex $(DEPENDENCIES) makefile
 	@echo "Compiling $@..."
-	$(LATEX) -interaction=nonstopmode $< 
+  ifeq ($(BIBLIOGRAPHY),true) 
+	-$(LATEX) -interaction=nonstopmode $<
+	-$(BIBTEX) $(basename $<)
+  endif
 	$(LATEX) -interaction=nonstopmode $< 
 	$(LATEX) -interaction=nonstopmode $< 
 ifeq ($(LATEXFORMAT),dvi)
@@ -175,7 +199,7 @@ endif
 
 %.ps : %.dvi
 	@echo "Converting $@ into postcript format..."
-	$(DVIPS) $< -o $<.ps
+	$(DVIPS) $< -o $(addsuffix .ps, $(basename $<))
 
 %.pdf : %.tex makefile
 	@echo "Compiling $@ in pdf..."
