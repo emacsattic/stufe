@@ -42,30 +42,29 @@
 			    (stufe-shortcut-add-local [(f5)]
 						      'stufe-make-exec))
 
-			  
-			  (lambda ()
-			    (setq tex-start-options-string "")
-			    (make-local-variable 'stufe-compile-function)
-			    (setq stufe-compile-function 
-				  (lambda (command) 
-				    (save-some-buffers 1)
-;;				    (if (not (tex-shell-running))
-				    (tex-start-shell)
-;; 				      (save-current-buffer
-;; 					(save-excursion 
-;; 					  (set-buffer (get-buffer "*tex-shell*"))
-;; 					  (end-of-buffer)
-;; 					  (if (eq (current-column) 0)
-;; 					      (progn (stop-process (tex-shell-running) t)
-;; 						     (tex-send-command "bg"))))))
-				    (tex-start-tex command "")
-				    (if (stufe-get-compilation-window)
-					(save-selected-window
-					  (select-window (stufe-get-compilation-window))
-					  (enlarge-window (- compilation-window-height
-							     (window-height)))))))
-			    (make-local-variable 'stufe-compilation-buffer-name)
-			    (setq stufe-compilation-buffer-name "*tex-shell*"))
+;; 			  (lambda ()
+;; 			    (setq tex-start-options-string "")
+;; 			    (make-local-variable 'stufe-compile-function)
+;; 			    (setq stufe-compile-function 
+;; 				  (lambda (command) 
+;; 				    (save-some-buffers 1)
+;; 				    (tex-start-shell)
+;; 				    (TeX-run-command "toto" "tata")
+;; ;;				    (if (not (tex-shell-running))
+;; ;; 				      (save-current-buffer
+;; ;; 					(save-excursion 
+;; ;; 					  (set-buffer (get-buffer "*tex-shell*"))
+;; ;; 					  (end-of-buffer)
+;; ;; 					  (if (eq (current-column) 0)
+;; ;; 					      (progn (stop-process (tex-shell-running) t)
+;; ;; 						     (tex-send-command "bg"))))))
+;; 				    (if (stufe-get-compilation-window)
+;; 					(save-selected-window
+;; 					  (select-window (stufe-get-compilation-window))
+;; 					  (enlarge-window (- compilation-window-height
+;; 							     (window-height)))))))
+;; 			    (make-local-variable 'stufe-compilation-buffer-name)
+;; 			    (setq stufe-compilation-buffer-name "*tex-shell*"))
 			  (lambda()
 			    (let* ((makefile-path (stufe-project-makefile-path))
 				   (dictionary (if makefile-path
