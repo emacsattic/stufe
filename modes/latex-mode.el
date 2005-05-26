@@ -65,6 +65,7 @@
 ;; 							     (window-height)))))))
 ;; 			    (make-local-variable 'stufe-compilation-buffer-name)
 ;; 			    (setq stufe-compilation-buffer-name "*tex-shell*"))
+
 			  (lambda()
 			    (let* ((makefile-path (stufe-project-makefile-path))
 				   (dictionary (if makefile-path
