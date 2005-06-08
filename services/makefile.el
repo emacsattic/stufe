@@ -36,6 +36,15 @@
 (defun stufe-find-makefile (folder)
   "Try to find a makefile in a folder"
   (cond 
+   ((file-exists-p (expand-file-name "Makefile" folder))
+    (expand-file-name "Makefile" folder))
+   ((file-exists-p (expand-file-name "makefile" folder))
+    (expand-file-name "makefile" folder))
+   (t nil)))
+
+(defun stufe-find-settings (folder)
+  "Try to find a makefile in a folder"
+  (cond 
    ((file-exists-p (expand-file-name "Makefile.am" folder))
     (expand-file-name "Makefile.am" folder))
    ((file-exists-p (expand-file-name "Makefile" folder))
@@ -48,7 +57,7 @@
 (defun stufe-open-makefile ()
   "Open the makefile found in the current folder"
   (interactive)
-  (let ((makefile-path (stufe-find-makefile "./")))
+  (let ((makefile-path (stufe-find-settings "./")))
     (if makefile-path
 	(find-file makefile-path)
       (progn 
