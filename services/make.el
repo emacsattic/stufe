@@ -45,7 +45,7 @@
 
 (defun stufe-make-clean ()
   (interactive)
-  (stufe-run-make "clean"))
+  (stufe-run-make "-k clean"))
 
 
 (defun stufe-make-rebuild ()
