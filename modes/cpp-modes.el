@@ -115,6 +115,8 @@
 
 			;; Defines local buffer variables
 			(lambda ()
+			  ;; Indentation
+			  (setq indent-tabs-mode nil)
 			  ;; Man pages
 			  (make-local-variable 'stufe-default-man-page)
 			  (setq stufe-default-man-page "2")

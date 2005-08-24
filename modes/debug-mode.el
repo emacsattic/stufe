@@ -43,6 +43,9 @@
 			     (stufe-shortcut-add-local [(ctrl f5)] 
 							 `stufe-debug-project))
 			   (lambda ()
+			     (stufe-shortcut-add-local [(ctrl shift b)] 
+							 `stufe-set-breakpoint))
+			   (lambda ()
 			     (stufe-shortcut-add-local [(f9)] 
 							 `stufe-set-breakpoint))
 							
