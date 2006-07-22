@@ -20,17 +20,23 @@
 
 
 ;; *************************************************
-;; * 
+;; *
 ;; * Function to set the major-mode of a stc file
 ;; *
 ;; *************************************************
 
 (setq auto-mode-alist
-      (append '(("\\.stc\\'" . sgml-mode)) auto-mode-alist))
+      (append '(("\\.stc\\'" . nxml-mode)) auto-mode-alist))
+
+(setq auto-mode-alist
+      (append '(("\\.sata\\'" . nxml-mode)) auto-mode-alist))
+
+(setq auto-mode-alist
+      (append '(("\\.xsl\\'" . nxml-mode)) auto-mode-alist))
 
 
 ;; *************************************************
-;; * 
+;; *
 ;; * Function to open a stc file
 ;; *
 ;; *************************************************
