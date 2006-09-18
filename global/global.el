@@ -19,7 +19,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; *************************************************
-;; * 
+;; *
 ;; * Global declarations of stufe
 ;; *
 ;; *************************************************
@@ -35,7 +35,7 @@
  '(pc-selection-mode t nil (pc-select)))
 
 
-;; No beep 
+;; No beep
 (setq visible-bell t)
 
 
@@ -62,20 +62,20 @@
 
 ;; Handy bindings for the editor
 (global-set-key [home] 'beginning-of-line)
-(global-set-key [end] 'end-of-line) 
+(global-set-key [end] 'end-of-line)
 (global-set-key [(control tab)] 'other-window)
 (global-set-key [(f4)] 'next-error)
 (setq Man-notify-method 'newframe)
 (global-set-key [(f1)] (lambda () (interactive) (man (current-word))))
-(global-set-key [(shift f1)] (lambda () (interactive) (man (format "%s %s" 
-								   stufe-default-man-page 
+(global-set-key [(shift f1)] (lambda () (interactive) (man (format "%s %s"
+								   stufe-default-man-page
 								   (current-word)))))
 
 (global-set-key [(control ?c) (control ?c)] 'comment-region)
 (global-set-key [(control ?c) (control ?k)] 'kill-compilation)
 
-
-
+;; Auto reloading of modified buffers
+(global-auto-revert-mode t)
 
 
 
